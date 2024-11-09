@@ -26,5 +26,3 @@ Each sprint has a separate document detailing its:
 We use **[Trello]** for tracking progress, managing backlogs, and updating sprint tasks.
 
 ---
-
-This README provides an overview of our Scrum setup, roles, and workflows for effectively managing the RepTrack project.
