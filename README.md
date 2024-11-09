@@ -3,11 +3,11 @@
 ## Team Members and Roles
 | Name            | Role            | Responsibilities                        |
 |-----------------|-----------------|-----------------------------------------|
-| Abdullah Yasser | Product Owner   | Defines project requirements and prioritizes features to meet client needs. |
-| Abdalla Tamer   | Scrum Master    | Facilitates Scrum events, removes blockers, and ensures the team adheres to Scrum practices. |
-| Ahmed Baioumy   | Developer       | Implements and tests the frontend and backend features of RepTrack. |
-| Mohamed Sami    | Developer       | Handles backend integrations and ensures data consistency and performance. |
-| Ziad Moutaz     | Developer       | Develops the UI and supports frontend/backend integration, maintaining usability standards. |
+| Ahmed Baioumy   | Front-end Developer  / Scrum Master| Develops and maintains the UI components and handles frontend integration. |
+| Ziad Moutaz     | Front-end Developer | Focuses on UI development and frontend/backend integration, ensuring usability standards. |
+| Abdalla Tamer   | Back-end Developer  | Facilitates Scrum events, removes blockers, and ensures the team adheres to Scrum practices. |
+| Abdullah Yasser | Back-end Developer  | Implements and tests back-end features of RepTrack. |
+| Mohamed Sami    | Back-end Developer  | Manages backend integrations and ensures data consistency and performance. |
 
 ## Scrum Workflow
 1. **Sprint Planning**: The team discusses the scope of each sprint, selecting tasks from the product backlog based on priority and capacity.
