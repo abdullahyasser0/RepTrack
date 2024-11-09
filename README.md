@@ -11,7 +11,7 @@
 
 ## Scrum Workflow
 1. **Sprint Planning**: The team discusses the scope of each sprint, selecting tasks from the product backlog based on priority and capacity.
-2. **Daily Stand-ups**: A 15-minute daily meeting to sync up on progress, blockers, and planned work.
+2. **Daily Stand-ups**: A 10-minute daily meeting to sync up on progress, blockers, and planned work.
 3. **Sprint Review**: Held at the end of each sprint to demonstrate completed work and gather feedback.
 4. **Sprint Retrospective**: The team reviews what went well, what could be improved, and actionable steps for the next sprint.
 
