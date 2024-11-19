@@ -1,1 +1,3 @@
-ECHO is on.
+from django.contrib import admin
+
+# Register your models here.
