@@ -1,4 +1,4 @@
 from django.urls import path
 from . import views
 
-urlpatterns = [path("login/", views.home), path("logout", views.logout_view),path("protectedpage/",views.protected_page)]
+urlpatterns = [path("login/", views.home), path("logout/", views.logout_view),path("protectedpage/",views.protected_page)]

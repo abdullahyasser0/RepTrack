@@ -11,7 +11,7 @@ def home(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("/")
+    return redirect("/main")
 
 @login_required
 def protected_page(request):
