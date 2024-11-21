@@ -1,3 +1,5 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './LoginForm.module.css';
 import { SocialLoginButton } from './SocialLoginButton';
 import { InputField } from './InputField';
@@ -62,7 +64,7 @@ export const LoginForm: React.FC = () => {
 
           <footer className={styles.formFooter}>
             <span>Don't have an account?</span>
-            <button type="button" className={styles.signupLink}>Sign Up</button>
+            <Link to="/signup" className={styles.signupLink}>Sign Up</Link>
           </footer>
         </form>
       </section>
