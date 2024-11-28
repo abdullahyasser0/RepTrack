@@ -5,21 +5,32 @@ import { SocialLoginButton } from './SocialLoginButton';
 import { InputField } from './InputField';
 
 export const LoginForm: React.FC = () => {
-  const socialLogins: { icon: string; text: string; variant: "primary" | "secondary" | "dark"; }[] = [
+  const socialLogins: { 
+    icon: string; 
+    text: string; 
+    variant: "primary" | "secondary" | "dark"; 
+    onClick?: () => void; 
+  }[] = [
     { 
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/a6e6c2ad92229ef5ea56f0d1aaab0f8026348d8244ea079c79a1ba13354953e7?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9", 
       text: "Login with Facebook", 
-      variant: 'primary' 
+      variant: 'primary',
+      onClick: () => console.log("Facebook login not yet implemented") // Placeholder for Facebook login
     },
     { 
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/ae4273c5a573ab7930804958d0b59c0432b59af31c59f89db1b79b981a4d58ab?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9", 
       text: "Login with Google", 
-      variant: 'secondary' 
+      variant: 'secondary',
+      onClick: () => {
+        // Redirect to backend Google login endpoint
+        window.location.href = 'http://127.0.0.1:8000/accounts/google/login/';
+      }
     },
     { 
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/492fe172f68991359a95a012c4201d3fdcae5ce38b90ceca5597e8940702b598?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9", 
       text: "Signup with X", 
-      variant: 'dark' 
+      variant: 'dark',
+      onClick: () => console.log("Signup with X not yet implemented") // Placeholder
     }
   ];
 

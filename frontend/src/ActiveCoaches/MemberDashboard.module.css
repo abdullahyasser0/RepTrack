@@ -1,0 +1,197 @@
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    background-color: #fff;
+  }
+  
+  .sidebar {
+    width: 280px;
+    background-color: #1A1363;
+    padding: 2rem 1.5rem;
+    color: #fff;
+  }
+  
+  .sidebarItem, .sidebarItemActive {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .sidebarItemActive {
+    background-color: #ECE9E9;
+    color: #1A1363;
+    font-weight: 700;
+  }
+  
+  .sidebarIcon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
+  
+  .mainContent {
+    flex: 1;
+    padding: 2rem;
+    background-color: #ECE9E9;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .headerTitle {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .headerIcon {
+    width: 78px;
+    height: 111px;
+    object-fit: contain;
+  }
+  
+  .headerText {
+    color: #1A1363;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+  }
+  
+  .membersSection {
+    background-color: #77749B;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  }
+  
+  .membersHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .membersTitle {
+    color: #FFFADF;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  
+  .searchContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: #5D57A3;
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+  }
+  
+  .searchInput {
+    background: transparent;
+    border: none;
+    color: #fff;
+    outline: none;
+  }
+  
+  .searchIcon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .membersTable {
+    margin-top: 2rem;
+  }
+  
+  .tableHeader {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    color: #FFFADF;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .memberRow {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    color: #fff;
+    margin: 1rem 0;
+  }
+  
+  .editButton {
+    background-color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.25rem 0.75rem;
+    color: #2B2B2B;
+    cursor: pointer;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .paginationButton {
+    background-color: #666385;
+    color: #2B2B2B;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+  }
+  
+  .adminProfile {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .adminAvatar {
+    width: 51px;
+    height: 51px;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .adminName {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .adminEmail {
+    font-size: 10px;
+    opacity: 0.8;
+  }
+  
+  @media (max-width: 991px) {
+    .dashboard {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      width: 100%;
+    }
+  
+    .mainContent {
+      padding: 1rem;
+    }
+  
+    .membersSection {
+      padding: 1rem;
+    }
+  
+    .tableHeader, .memberRow {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  }
