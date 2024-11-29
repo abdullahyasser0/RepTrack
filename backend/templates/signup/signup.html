@@ -1,0 +1,322 @@
+<style>
+    .signup-container {
+      border-radius: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .signup-wrapper {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-height: 950px;
+      width: 100%;
+      overflow: hidden;
+      align-items: start;
+      justify-content: center;
+      padding: 103px 80px;
+    }
+    
+    .background-image {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    
+    .form-container {
+      position: relative;
+      display: flex;
+      width: 402px;
+      max-width: 100%;
+      flex-direction: column;
+    }
+    
+    .signup-title {
+      color: rgb(26, 19, 99);
+      align-self: center;
+      font: 700 24px Manrope, sans-serif;
+    }
+    
+    .signup-subtitle {
+      color: rgb(52, 52, 52);
+      text-align: center;
+      align-self: center;
+      margin-top: 22px;
+      font: 600 14px Manrope, sans-serif;
+    }
+    
+    .signup-subtitle-ar {
+      color: rgb(52, 52, 52);
+      text-align: center;
+      align-self: center;
+      margin-top: 9px;
+      font: 600 14px Manrope, sans-serif;
+    }
+    
+    .input-field {
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.08);
+      width: 100%;
+      color: rgba(0, 0, 0, 0.7);
+      padding: 12px 15px 26px;
+      font: 400 16px Poppins, sans-serif;
+      border: 1px solid rgba(0, 0, 0, 0.4);
+      margin-top: 28px;
+    }
+    
+    .password-container {
+      display: flex;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+      margin-top: 28px;
+      padding: 0;
+      position: relative;
+    }
+    
+    .password-container input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 12px 15px;
+      font: 400 16px Poppins, sans-serif;
+      border-radius: 10px 0 0 10px;
+      background-color: transparent;
+      color: rgba(0, 0, 0, 0.7);
+    }
+    
+    .password-container input::placeholder {
+      color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .password-container img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    
+    .signup-button {
+      border-radius: 5px;
+      background-color: rgb(26, 19, 99);
+      margin-top: 29px;
+      width: 100%;
+      color: rgba(255, 255, 255, 0.9);
+      padding: 12px 70px 20px;
+      font: 600 16px Poppins, sans-serif;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .divider-text {
+      color: rgba(0, 0, 0, 0.8);
+      align-self: center;
+      margin-top: 32px;
+      font: 400 18px Poppins, sans-serif;
+    }
+    
+    .divider-container {
+      display: flex;
+      gap: 20px;
+      justify-content: space-between;
+    }
+    
+    .divider-line {
+      width: 146px;
+      height: 1px;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+    }
+    
+    .social-button {
+      border-radius: 10px;
+      display: flex;
+      gap: 40px;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 26px 0 0 11px;
+      padding: 8px 10px;
+      font: 600 16px Poppins, sans-serif;
+      cursor: pointer;
+      border: none;
+      align-items: center;
+      width: 100%;
+    }
+    
+    .social-icon {
+      aspect-ratio: 1.09;
+      object-fit: contain;
+      object-position: center;
+      width: 37px;
+    }
+    
+    .facebook-button {
+      background-color: rgb(24, 119, 242);
+    }
+    
+    .google-button {
+      background-color: rgba(255, 255, 255, 0.02);
+      color: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(0, 0, 0, 0.4);
+    }
+    
+    .x-button {
+      background-color: rgb(0, 0, 0);
+    }
+    
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+    .signup-button:hover {
+  background-color: rgb(22, 15, 85);
+}
+
+    
+    @media (max-width: 991px) {
+      .signup-wrapper {
+        max-width: 100%;
+        padding: 100px 20px 0;
+      }
+      
+      .input-field {
+        margin-left: 8px;
+        padding-right: 20px;
+      }
+      
+      .password-container {
+        margin-left: 8px;
+      }
+      
+      .signup-button {
+        margin: 0 2px 0 9px;
+        padding: 0 20px;
+      }
+      
+      .divider-container {
+        margin-right: 3px;
+      }
+      
+      .social-button {
+        margin-left: 10px;
+      }
+    }
+    </style>
+    
+    <form id="signup-form" class="signup-container">
+      <div class="signup-wrapper">
+        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8c1450cd16cbcb30df27ad352a6e94379fabf80b38f87f9d4db1aa024485de6e?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="background-image" />
+        <div class="form-container">
+          <h1 class="signup-title">Create an account</h1>
+          <p class="signup-subtitle">Connect with your friends today!</p>
+          <p class="signup-subtitle-ar">اعمل فورمتك النهارده</p>
+          
+          <label for="username" class="visually-hidden">Username</label>
+          <input type="text" id="username" class="input-field" placeholder="Enter Your Username" required />
+          
+          <label for="email" class="visually-hidden">Email</label>
+          <input type="email" id="email" class="input-field" placeholder="Enter Your Email" required />
+          
+          <label for="phone" class="visually-hidden">Phone Number</label>
+          <input type="tel" id="phone" class="input-field" placeholder="Enter Your Phone Number" required />
+          
+          <div class="password-container">
+            <label for="password" class="visually-hidden">Password</label>
+            <input type="password" id="password" placeholder="Enter Your Password" autocomplete="new-password" required />
+            <img
+              loading="lazy"
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/482a3c01cbff113ec02eb181752319c28b143aad3dd3547789a587c4e45bbfe3?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9"
+              
+              alt="Toggle password visibility"
+              class="password-toggle"
+              id="togglePassword"
+              data-visibility="hidden"
+            />
+          </div>
+    
+          <button type="submit" class="signup-button">Sign Up</button>
+          
+          <p class="divider-text">Or With</p>
+          <div class="divider-container">
+            <div class="divider-line"></div>
+            <div class="divider-line"></div>
+          </div>
+    
+          <button type="button" class="social-button google-button">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6658a138975c44bb4d019120bf7b03debbd334555acb7fe26d08e5215b665bc6?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="Google logo" class="social-icon" />
+            <span>Signup with Google</span>
+          </button>
+
+        </div>
+      </div>
+    </form>
+    
+    <script>
+        // Preload the visible and hidden icons
+        const visibleIcon = new Image();
+        const hiddenIcon = new Image();
+        visibleIcon.src = "https://cdn.builder.io/api/v1/image/assets/TEMP/482a3c01cbff113ec02eb181752319c28b143aad3dd3547789a587c4e45bbfe3?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9";
+        hiddenIcon.src = "https://cdn.builder.io/api/v1/image/assets/TEMP/482a3c01cbff113ec02eb181752319c28b143aad3dd3547789a587c4e45bbfe3?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9";
+      
+        const passwordInput = document.getElementById('password');
+        const togglePasswordIcon = document.getElementById('togglePassword');
+      
+        togglePasswordIcon.addEventListener('click', () => {
+          const isPasswordHidden = passwordInput.type === 'password';
+          passwordInput.type = isPasswordHidden ? 'text' : 'password';
+      
+          // Update icon without lag
+          togglePasswordIcon.src = isPasswordHidden 
+            ? visibleIcon.src 
+            : hiddenIcon.src;
+      
+          togglePasswordIcon.dataset.visibility = isPasswordHidden ? 'visible' : 'hidden';
+        });
+      </script>
+
+<script>
+    document.getElementById('signup-form').addEventListener('submit', function(event) {
+      event.preventDefault();  // Prevent the default form submission
+  
+      // Collect form data
+      const formData = new FormData();
+      formData.append('username', document.getElementById('username').value);
+      formData.append('email', document.getElementById('email').value);
+      formData.append('phone', document.getElementById('phone').value);
+      formData.append('password', document.getElementById('password').value);
+  
+      // Send data to the backend using fetch (AJAX)
+      fetch('/register/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': getCsrfToken(),  // If using CSRF protection
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message) {
+          alert(data.message);  // Show success message
+        } else {
+          alert('Error: ' + data.error);  // Show error message
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  
+    // Function to get CSRF token from cookies (if required)
+    function getCsrfToken() {
+      const csrfToken = document.cookie.match(/csrftoken=([^;]+)/);
+      return csrfToken ? csrfToken[1] : '';
+    }
+  </script>
