@@ -7,10 +7,11 @@ url: str = "https://sodghnhticinsggmbber.supabase.co"
 key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvZGdobmh0aWNpbnNnZ21iYmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyODY5MzMsImV4cCI6MjA0Nzg2MjkzM30.dCfS98X9PFoZpBohhf0UdgSvvcwByOlAPki7-BPlExg"
 supabase: Client = create_client(url, key)
 
-
+#for admin
 def get_Memberships():
     return supabase.table("memberships").select("*").execute()
 
+#for admin
 def get_Profiles():
     return supabase.table("profiles").select("*").execute()
 
@@ -41,3 +42,9 @@ def login(email,password):
              return False
     else:
          return False
+    
+
+
+def get_user(userid):
+    response = supabase.table("countries").select("id, name, cities(name)").\
+    join("cities", "countries.id", "cities.country_id").execute()
