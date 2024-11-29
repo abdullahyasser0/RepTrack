@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "allauth",
     "allauth.account",
+    "widget_tweaks",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "rest_framework",

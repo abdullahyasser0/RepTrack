@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django Google Sign-In</title>
+    <title>Login with Google</title>
 </head>
 <body>
-    {% load socialaccount %}
-    <h2>Google Login</h2>
-    <a href="{% provider_login_url 'google' %}?next=/main">Login with Google</a>
-    {% if user.is_authenticated%}
-    <p>You are signed in as {{user.email}}</p>
-    <a href="/main/logout">Logout</a>
+    <h2>Sign In with Google</h2>
+    
+    <!-- This button will redirect to the OAuth flow on the backend -->
+    <a href="{% url 'google_login' %}">Sign in with Google</a>
+
+    {% if user.is_authenticated %}
+        <p>You are signed in as {{ user.email }}</p>
+        <a href="/main/logout">Logout</a>
     {% endif %}
 </body>
 </html>
