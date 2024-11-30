@@ -63,6 +63,7 @@ def login(request):
         email = data.get('email')
         password = data.get('password')
 
+        # Check user in the database (supabase in this case)
         response = supabase.table('users').select('*').eq('email', email).execute()
 
         if response.data:
@@ -70,15 +71,20 @@ def login(request):
             stored_password = user['password']
 
             if check_password(password, stored_password):
+                # Set session after successful login
                 request.session['user_id'] = user['user_id'] 
-                print('I LOGGEDDD IINNNNNNNNNN')
-                return render(request, "profile/information.html")
+                print('I LOGGED IN')
+
+                # Redirect to the 'profile' URL name
+                return redirect(reverse('profile'))
+
             else:
                 return render(request, '', {'error': 'Invalid credentials'})
         else:
             return render(request, '', {'error': 'Invalid credentials'})
 
-    return render(request, '')
+    # For non-POST requests, return the login page
+    return render(request, 'login.html')
     
 
 
@@ -86,14 +92,14 @@ def get_user(userid):
     response = supabase.table("countries").select("id, name, cities(name)").\
     join("cities", "countries.id", "cities.country_id").execute()
 
-@login_required
 def profile_view(request):
     print('I AM IN PROOFIFLEE  VIEW')
     user_id = request.session.get('user_id')
-    # if user_id:
-    return render(request, 'profile/information.html')  
-    # else:
-    #     return redirect('Login')
+    if user_id:
+        print('User ID: ', user_id)
+        return render(request, 'profile/information.html')  
+    else:
+        return redirect('Login')
 
 def logout_view(request):
     logout(request)
