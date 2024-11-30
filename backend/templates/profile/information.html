@@ -1,0 +1,408 @@
+<style>
+    .admin-profile {
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      align-items: end;
+      padding: 68px 70px 42px;
+    }
+    
+    .profile-container {
+      border-radius: 18px;
+      background-color: #ece9e9;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      width: 930px;
+      max-width: 100%;
+      padding-right: 58px;
+    }
+    
+    .content-wrapper {
+      gap: 20px;
+      display: flex;
+    }
+    
+    .sidebar {
+      border-radius: 18px 0 0 18px;
+      background-color: #1a1363;
+      display: flex;
+      width: 320px;
+      flex-direction: column;
+      align-items: start;
+      color: #fff;
+      margin: 0 auto;
+      padding: 49px 0 49px 29px;
+      font: 400 10px Poppins, sans-serif;
+    }
+    
+    .profile-image {
+      aspect-ratio: 1;
+      object-fit: contain;
+      width: 51px;
+      align-self: center;
+    }
+    
+    .admin-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+    
+    .admin-email {
+      text-align: center;
+      align-self: center;
+      margin-top: 9px;
+    }
+    
+    .nav-item {
+      display: flex;
+      gap: 15px;
+      font-size: 12px;
+      margin: 16px 0 0 15px;
+    }
+    
+    .nav-icon {
+      aspect-ratio: 1;
+      object-fit: contain;
+      width: 20px;
+    }
+    
+    .nav-active {
+      border-radius: 10px 0 0 10px;
+      background-color: #ece9e9;
+      box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
+      display: flex;
+      margin-top: 11px;
+      gap: 16px;
+      color: #1a1363;
+      font-weight: 700;
+      padding: 8px 13px;
+    }
+    
+    .logout-item {
+      display: flex;
+      gap: 16px;
+      margin: 244px 0 0 10px;
+    }
+    
+    .main-content {
+      display: flex;
+      margin-top: -7px;
+      flex-direction: column;
+    }
+    
+    .header-logo {
+      aspect-ratio: 0.7;
+      object-fit: contain;
+      width: 78px;
+      box-shadow: 0 50px 28px rgba(0, 0, 0, 0.25);
+    }
+    
+    .content-section {
+      display: flex;
+      margin-top: 17px;
+      width: 100%;
+      padding-left: 15px;
+      flex-direction: column;
+    }
+    
+    .section-title {
+      color: #1a1363;
+      letter-spacing: 1.6px;
+      align-self: start;
+      font: 700 32px Poppins, sans-serif;
+    }
+    
+    .profile-info {
+      border-radius: 12px;
+      background-color: #fff;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      padding: 38px 23px 63px;
+      font-size: 13px;
+      color: #2b2b2b;
+    }
+    
+    .profile-photo {
+      aspect-ratio: 1;
+      object-fit: contain;
+      width: 69px;
+      align-self: center;
+    }
+    
+    .edit-profile {
+      align-self: center;
+      display: flex;
+      margin-top: 9px;
+      width: 113px;
+      gap: 7px;
+      text-align: center;
+    }
+    
+    .edit-icon {
+      aspect-ratio: 1;
+      object-fit: contain;
+      width: 17px;
+    }
+    
+    .info-grid {
+      display: flex;
+      margin-top: 25px;
+      gap: 36px;
+    }
+    
+    .info-labels {
+      align-self: start;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    
+    .info-values {
+      display: flex;
+      flex-direction: column;
+      text-align: right;
+      flex: 1;
+    }
+    
+    .register-btn {
+      border-radius: 100px;
+      background-color: #1a1363;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      margin-top: 24px;
+      font-size: 14px;
+      color: #fff;
+      font-weight: 700;
+      padding: 8px 23px;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .form-section {
+      border-radius: 12px;
+      background-color: #fff;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      padding: 24px 29px;
+      font: 16px Poppins, sans-serif;
+    }
+    
+    .form-input {
+      border-radius: 12px;
+      background-color: #e9e9e9;
+      height: 33px;
+      width: 100%;
+      border: none;
+      margin: 16px 0 10px;
+      padding: 0 12px;
+    }
+    
+    .form-label {
+      color: #2b2b2b;
+      font-weight: 700;
+    }
+    
+    .btn-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 9px;
+      margin-top: 25px;
+    }
+    
+    .btn-primary {
+      border-radius: 12px;
+      background-color: #1a1363;
+      color: #fff;
+      font-weight: 700;
+      padding: 3px 21px;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn-secondary {
+      border-radius: 12px;
+      background-color: #fff;
+      color: #1a1363;
+      padding: 3px 21px;
+      border: 2px solid #1a1363;
+      cursor: pointer;
+    }
+    
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+    
+    @media (max-width: 991px) {
+      .admin-profile {
+        padding: 0 20px;
+      }
+      
+      .profile-container {
+        padding-right: 20px;
+      }
+      
+      .content-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+      }
+      
+      .sidebar {
+        margin-top: 12px;
+      }
+      
+      .admin-name {
+        margin-left: 4px;
+      }
+      
+      .nav-item {
+        margin-left: 10px;
+      }
+      
+      .logout-item {
+        margin-top: 40px;
+      }
+      
+      .form-section {
+        padding: 20px;
+      }
+      
+      .btn-group {
+        flex-wrap: wrap;
+      }
+    }
+    </style>
+    
+    <div class="admin-profile">
+      <div class="profile-container">
+        <div class="content-wrapper">
+          <nav class="sidebar">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7ff79f1f02439b01f92311f84275ece20860a867f657c377e6d06b42db996fd7?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="Admin Profile Picture" class="profile-image" />
+            <h2 class="admin-name">Administrator Name</h2>
+            <span class="admin-email">juan.delacruz@gmail.com</span>
+            
+            <div class="nav-item">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" />
+              <span>Dashboard</span>
+            </div>
+            
+            <div class="nav-active">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/44dac14a6386f94f5501c52c61075c807d60ebe27437050b09f649dffee69b67?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" />
+              <span>Admin Profile</span>
+            </div>
+            
+            <div class="nav-item">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/924cd441e1c0088fd992bf81e391ca48c62c1aed5c4175f8e7e0017d16337df3?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" />
+              <span>Registration</span>
+            </div>
+            
+            <div class="nav-item">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/74b3ff1cad9e9a6a4d62ec42b525e77be8f0ae87362620d3f5894532016bb600?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" />
+              <span>Plan</span>
+            </div>
+            
+            <div class="nav-item">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4b76805a4712990364cab8cf64a035e42a288ef37941ddcc4e6d175a140ea816?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" />
+              <span>Payment</span>
+            </div>
+            
+            <div class="nav-item">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/31908d30b0e0a7420a7d52bb646f3e0ed49dd0ace7bd8d00a5168a9b292bfe78?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" />
+              <span>Inventory</span>
+            </div>
+            
+            <div class="nav-item">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/86184e038a7647fc42fa716208a0f37c701e13b2b4ed3f3d3bb780f80a2e6972?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" />
+              <span>View Members</span>
+            </div>
+            
+            <div class="nav-item">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d95ce50284bc9a30712d0f65a6ab45bee539aee7a4c3af6597806b147c66c27a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" />
+              <span>Coaches</span>
+            </div>
+            
+            <div class="nav-item">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5ac72295b589aa6fb8de4c9d6995ff8cac359da5913ac1a30a7d0c90403b9d08?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" />
+              <span>Report</span>
+            </div>
+            
+            <div class="logout-item">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/92eb9a935167468ac2f5cca68fd29f09e7041c091fa6bf516100441ca16f9526?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" />
+              <span>Logout</span>
+            </div>
+          </nav>
+    
+          <main class="main-content">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/ea58de615482b6fbb8bdb9990c83b114973529133782fdc8e652424da510dbaf?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="Company Logo" class="header-logo" />
+            
+            <section class="content-section">
+              <h1 class="section-title">Admin Information</h1>
+              
+              <div class="profile-info">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc906fe44f28c322561baca9a7c8a1c7af4a4efa4b6ce53967143d421e45d05c?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="Admin Avatar" class="profile-photo" />
+                
+                <div class="edit-profile">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7b91e7210d0e54770cff9350631cec610c7995660752242ebdb7d620e33c20fb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="edit-icon" />
+                  <span>Update Profile</span>
+                </div>
+                
+                <div class="info-grid">
+                  <div class="info-labels">
+                    <span>Username</span>
+                    <span>Contact no.</span>
+                  </div>
+                  <div class="info-values">
+                    <span>JuanDelaCruz</span>
+                    <span>09123456789</span>
+                  </div>
+                </div>
+                
+                <label class="form-label">Email Address:</label>
+                <span>juan.delacruz@gmail.com</span>
+              </div>
+    
+              <button class="register-btn">Register New Admin Account</button>
+    
+              <form class="form-section">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" class="form-input" />
+                
+                <label for="contact" class="form-label">Contact No.</label>
+                <input type="tel" id="contact" class="form-input" />
+                
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" class="form-input" />
+                
+                <div class="btn-group">
+                  <button type="submit" class="btn-primary">Save</button>
+                  <button type="reset" class="btn-secondary">Cancel</button>
+                </div>
+              </form>
+    
+              <form class="form-section">
+                <h3 class="form-label">Password</h3>
+                
+                <label for="current-password" class="form-label">Current Password</label>
+                <input type="password" id="current-password" class="form-input" />
+                
+                <label for="new-password" class="form-label">New Password</label>
+                <input type="password" id="new-password" class="form-input" />
+                
+                <label for="confirm-password" class="form-label">Re-type Password</label>
+                <input type="password" id="confirm-password" class="form-input" />
+                
+                <div class="btn-group">
+                  <button type="submit" class="btn-primary">Change</button>
+                  <button type="reset" class="btn-secondary">Clear</button>
+                </div>
+              </form>
+            </section>
+          </main>
+        </div>
+      </div>
+    </div>
