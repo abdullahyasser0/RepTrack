@@ -1,11 +1,13 @@
 from django.urls import path,include
 from . import views
-from databaseApi.views import signup
+from databaseApi.views import signup, login
 
 urlpatterns = [path('login/', views.login, name='login'),
                 path("logout/", views.logout_view),
                 path("protectedpage/",views.protected_page),
                 path("test/",views.home),
                 path('form/', views.form_view),
-                path('signup/',signup),
+                path('signup/',views.signup),
+                path('signupform/',signup, name = 'signupform'),
+                path('loginform/',login, name = 'loginform'),
                 ]

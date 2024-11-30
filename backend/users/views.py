@@ -27,7 +27,7 @@ def protected_page(request):
 
 
 def login(request):
-    return render(request,"login.html")
+    return render(request,"login/Login.html")
 
 def form_view(request):
     if request.method == 'POST':
@@ -42,7 +42,8 @@ def form_view(request):
     
     return render(request, 'myform/form.html', {'form': form})
 
-
+def signup(request):
+    return render(request, "signup/signup.html")
 
 def signup_view(request):
     if request.method == 'POST':
