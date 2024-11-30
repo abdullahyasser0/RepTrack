@@ -4,6 +4,11 @@ from django.contrib.auth.decorators import login_required
 from .forms import SimpleForm,SignupForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from .models import User 
+
 
 # Create your views here.
 
@@ -54,4 +59,4 @@ def signup_view(request):
     else:
         form = SignupForm()  # Create a new form instance for GET request
 
-    return render(request, 'myform/signup_form.html', {'form': form})
+    return render(request, 'signup/signup.html', {'form': form})
