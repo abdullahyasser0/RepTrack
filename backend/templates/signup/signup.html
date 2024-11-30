@@ -254,6 +254,7 @@
             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6658a138975c44bb4d019120bf7b03debbd334555acb7fe26d08e5215b665bc6?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="Google logo" class="social-icon" />
             <span>Signup with Google</span>
           </button>
+          <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
 
         </div>
       </div>
@@ -294,7 +295,7 @@
       formData.append('password', document.getElementById('password').value);
   
       // Send data to the backend using fetch (AJAX)
-      fetch('/register/', {
+      fetch('/signup/', {
         method: 'POST',
         body: formData,
         headers: {
