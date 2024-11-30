@@ -1,5 +1,327 @@
-<link href="information.css" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+.admin-profile {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    align-items:end;
+    justify-content:end;
+    padding: 68px 70px 42px;
+    width: fit-content;
+    
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  }
+  
+  .profile-container {
+    border-radius: 18px;
+    background-color: #ece9e9;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    padding-right: 58px;
+    height: 50%;
+  }
+  
+  .content-wrapper {
+    gap: 20px;
+    display: flex;
+    width: 100%;
+    
+  }
+  
+  .sidebar {
+    border-radius: 18px 0 0 18px;
+    background: #1a1363;
+    display: flex;
+    width: 280px;
+    flex-direction: column;
+    align-items: start;
+    color: #fff;
+    padding: 2rem 1rem;
+    font: 400 10px Poppins, sans-serif;
+    overflow-y: auto;
+  }
+  
+  .profile-image {
+    aspect-ratio: 1;
+    object-fit: contain;
+    width: 51px;
+    align-self: center;
+  }
+  
+  .admin-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  
+  .admin-email {
+    text-align: center;
+    align-self: center;
+    margin-top: 9px;
+  }
+  
+  .nav-item {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    margin: 18px 0 0 13px;
+    padding: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border-radius: 10px 0 0 10px;
+  }
+  .nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+  
+  .nav-icon {
+    aspect-ratio: 1;
+    object-fit: contain;
+    width: 20px;
+  }
+
+  .nav-text {
+    margin: auto 0;
+}
+  
+  .nav-active {
+    border-radius: 10px 0 0 10px;
+    background-color: #ece9e9;
+    box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
+    display: flex;
+    margin-top: 11px;
+    gap: 16px;
+    color: #1a1363;
+    font-weight: 700;
+    padding: 8px 13px;
+  }
+  .active-nav-item {
+    background: #ece9e9;
+    box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
+    color: #1a1363;
+    font-weight: 700;
+}
+  
+  .logout-item {
+    display: flex;
+    gap: 15px;
+    
+    margin: 16px 0 0 15px;
+  }
+  
+  .main-content {
+    display: flex;
+    margin-top: -7px;
+    flex-direction: column;
+  }
+  
+  .header-logo {
+    aspect-ratio: 0.7;
+    object-fit: contain;
+    width: 78px;
+    box-shadow: 0 50px 28px rgba(0, 0, 0, 0.25);
+  }
+  
+  .content-section {
+    display:flex;
+    margin-top: 17px;
+    max-width: 100%;
+    max-height: 10%;
+    padding-left: 15px;
+    flex-direction: column;
+  }
+  
+  .section-title {
+    color: #1a1363;
+    letter-spacing: 1.6px;
+    align-self: start;
+    font: 700 32px Poppins, sans-serif;
+  }
+  
+  .profile-info {
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 38px 23px 63px;
+    font-size: 13px;
+    color: #2b2b2b;
+    max-width: 70%;
+  }
+  
+  .profile-photo {
+    aspect-ratio: 1;
+    object-fit: contain;
+    width: 69px;
+    align-self: center;
+  }
+  
+  .edit-profile {
+    align-self: center;
+    display: flex;
+    margin-top: 9px;
+    width: 113px;
+    gap: 7px;
+    text-align: center;
+  }
+  
+  .edit-icon {
+    aspect-ratio: 1;
+    object-fit: contain;
+    width: 17px;
+  }
+  
+  .info-grid {
+    display: flex;
+    margin-top: 25px;
+    gap: 36px;
+  }
+  
+  .info-labels {
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  
+  .info-values {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    flex: 1;
+  }
+  
+  .register-btn {
+    border-radius: 100px;
+    background-color: #1a1363;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    margin-top: 24px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 700;
+    padding: 8px 23px ;
+    border: none;
+    cursor: pointer;
+    width: 75%;
+    justify-content: center;
+  
+  }
+  
+  .form-section {
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 24px 29px;
+    font: 16px Poppins, sans-serif;
+    width: 100%;
+    
+  }
+  
+  .form-input {
+    border-radius: 12px;
+    background-color: #e9e9e9;
+    height: 33px;
+    width: 100%;
+    border: none;
+    margin: 16px 0 10px;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+  
+  .form-label {
+    display: block;
+    color: #2b2b2b;
+    font-weight: 700;
+  }
+  
+  .btn-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 9px;
+    margin-top: 25px;
+  }
+  
+  .btn-primary {
+    border-radius: 12px;
+    background-color: #1a1363;
+    color: #fff;
+    font-weight: 700;
+    padding: 3px 21px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-secondary {
+    border-radius: 12px;
+    background-color: #fff;
+    color: #1a1363;
+    padding: 3px 21px;
+    border: 2px solid #1a1363;
+    cursor: pointer;
+  }
+  
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+  }
+  
+  @media (max-width: 991px) {
+    .admin-profile {
+      padding: 0 20px;
+    }
+    
+    .profile-container {
+      padding-right: 20px;
+    }
+    
+    .content-wrapper {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+    
+    .sidebar {
+      margin-top: 12px;
+    }
+    
+    .admin-name {
+      margin-left: 4px;
+    }
+    
+    .nav-item {
+      margin-left: 10px;
+    }
+    
+    .logout-item {
+      margin-top: 40px;
+    }
+    
+    .form-section {
+      padding: 20px;
+    }
+    
+    .btn-group {
+      flex-wrap: wrap;
+    }
+  }
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <body>
     <div class="admin-profile">
       <div class="profile-container">
