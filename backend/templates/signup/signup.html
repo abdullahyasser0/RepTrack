@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
+</head>
+
 <style>
     .signup-container {
       border-radius: 0;
@@ -349,7 +358,7 @@
             <div class="divider-line"></div>
           </div>
     
-          <button type="button" class="social-button google-button">
+          <button id="google-login-btn" type="button" class="social-button google-button">
             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6658a138975c44bb4d019120bf7b03debbd334555acb7fe26d08e5215b665bc6?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="Google logo" class="social-icon" />
             <span>Signup with Google</span>
           </button>
@@ -481,6 +490,72 @@ document.addEventListener('DOMContentLoaded', function() {
     return decodeURIComponent(cookieValue);
   }
 });
+document.addEventListener("DOMContentLoaded", function() {
+            try {
+                console.log("Initializing Supabase client...");
 
+                // Initialize Supabase with your project URL and public API key
+                const supabaseUrl = 'https://sodghnhticinsggmbber.supabase.co';  // Replace with your Supabase URL
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvZGdobmh0aWNpbnNnZ21iYmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyODY5MzMsImV4cCI6MjA0Nzg2MjkzM30.dCfS98X9PFoZpBohhf0UdgSvvcwByOlAPki7-BPlExg';  // Replace with your public anon key from the Supabase dashboard
+                
+                console.log('Supabase URL:', supabaseUrl);  // Log URL to ensure it's correct
+                console.log('Supabase Key:', supabaseKey);  // Be cautious, do not expose the key in production
+
+                // Check if supabase object exists before calling createClient
+                if (typeof supabase === 'undefined') {
+                    console.error('Supabase SDK is not loaded correctly.');
+                    return;
+                }
+
+                // Create the Supabase client object
+                const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+                console.log('Supabase client successfully created:', supabaseClient);
+
+                // Check if supabase.auth is available
+                if (supabaseClient && supabaseClient.auth) {
+                    console.log('Supabase auth is available:', supabaseClient.auth);
+                } else {
+                    console.error('Supabase auth object is not available. Something went wrong with the client creation.');
+                }
+
+                // Optionally, you can also check the version of the Supabase SDK for debugging purposes
+                console.log('Supabase SDK version:', supabase.VERSION);
+
+                // Google login button logic
+                document.getElementById('google-login-btn').onclick = async () => {
+                    try {
+                        console.log("Google login initiated...");
+
+                        // Trigger Google login via Supabase OAuth
+                        const { user, session, error } = await supabaseClient.auth.signInWithOAuth({
+                            provider: 'google', // Google OAuth provider
+                        });
+
+                        if (error) {
+                            console.error('Error during Google login:', error.message);
+                            return;
+                        }
+
+                        // Successfully logged in, you can access the user info here
+                        console.log('Logged in user:', user);
+                        console.log('Session data:', session);
+
+                        // Store the JWT token (access token) in localStorage or cookies
+                        localStorage.setItem('supabase_jwt', session.access_token);
+
+                        // Redirect to a protected page or dashboard
+                        window.location.href = '/dashboard'; // Replace with your desired page
+
+                    } catch (error) {
+                        console.error('Error during Google OAuth login:', error);
+                    }
+                };
+
+            } catch (error) {
+                // Log detailed error if anything goes wrong
+                console.error('Error during Supabase client initialization:', error);
+            }
+        });
     </script>
     
