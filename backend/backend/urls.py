@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from users.views import signup_view
+from databaseApi.views import profile_view
 urlpatterns = [
     path("admin/", admin.site.urls),
     # path("",include('api.urls')),
@@ -26,4 +27,5 @@ urlpatterns = [
     path("main/", include("users.urls")),
     path("protected/",include("users.urls")),
     path('signup/', include('users.urls')),
+    path('profile/', profile_view, name='profile'),
 ]
