@@ -287,4 +287,26 @@
       passwordToggleButton.src = 'https://cdn.builder.io/api/v1/image/assets/TEMP/576cce65a6f5a54005d0c024121ec174dd368897178c9898196255f404df8f5f?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9'; // Eye Closed icon
     }
   }
+
+
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient('https://your-project-id.supabase.co', 'your-public-api-key')
+
+async function loginWithGoogle() {
+    const { user, session, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+    })
+
+    if (error) {
+        console.error('Error during login:', error)
+        return
+    }
+
+    // Send the JWT token to Django Backend
+    const jwtToken = session.access_token
+    localStorage.setItem('jwt_token', jwtToken)
+    window.location.href = '/dashboard' // Redirect to a dashboard or protected route
+}
+
 </script>

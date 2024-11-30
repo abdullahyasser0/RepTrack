@@ -60,3 +60,52 @@ def signup_view(request):
         form = SignupForm()  # Create a new form instance for GET request
 
     return render(request, 'signup/signup.html', {'form': form})
+
+
+
+
+import requests
+from django.conf import settings
+from django.http import JsonResponse
+from django.contrib.auth.models import User
+from .models import UserProfile
+
+SUPABASE_API_URL = 'https://sodghnhticinsggmbber.supabase.co/auth/v1/user'
+
+def authenticate_user(request):
+    # Extract JWT token from the Authorization header
+    jwt_token = request.headers.get('Authorization')
+
+    if not jwt_token:
+        return JsonResponse({'error': 'No JWT token provided'}, status=400)
+
+    try:
+        # Verify the JWT token by sending it to Supabase
+        response = requests.get(SUPABASE_API_URL, headers={'Authorization': f'Bearer {jwt_token}'})
+
+        if response.status_code != 200:
+            return JsonResponse({'error': 'Invalid token'}, status=401)
+
+        # Extract user data from the response
+        user_data = response.json()
+        user_id = user_data.get('id')
+        email = user_data.get('email')
+
+        # Check if the user exists in your Django database
+        user, created = User.objects.get_or_create(email=email)
+
+        # Optionally, associate additional user info in a profile model
+        user_profile, profile_created = UserProfile.objects.get_or_create(user=user)
+        user_profile.supabase_user_id = user_id
+        user_profile.save()
+
+        # Respond with user data
+        return JsonResponse({'message': 'User authenticated successfully', 'user_id': user.id})
+
+    except requests.exceptions.RequestException as e:
+        return JsonResponse({'error': f'Error verifying token: {str(e)}'}, status=500)
+    
+
+
+def badny(request):
+    return render(request,"test.html")
