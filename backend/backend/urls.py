@@ -18,7 +18,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from users.views import signup_view
-from databaseApi.views import profile_view
+from databaseApi.views import profile_view,change_data,change_Password
+from users.views import signup_view,users,admins,coaches
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     # path("",include('api.urls')),
@@ -27,5 +29,11 @@ urlpatterns = [
     path("main/", include("users.urls")),
     path("protected/",include("users.urls")),
     path('signup/', include('users.urls')),
-    path('profile/', profile_view, name='profile'),
+    path('profile/', profile_view, name='profile/'),
+    path('profilesData/',admins,name='profiles'),
+    path('coachesData/',coaches,name='coachesData'),
+    path('usersData/',users,name='usersData'),
+    path('profilesData/',admins,name='profiles'),
+    path('changeDataForm/',change_data, name = 'changeDataForm'),
+    path('changePasswordForm/',change_Password, name = 'changePasswordForm'),
 ]

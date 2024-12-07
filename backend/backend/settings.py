@@ -34,7 +34,8 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 SITE_ID = 2
 
-LOGIN_URL = 'http://127.0.0.1:8000/' 
+LOGIN_URL = '/signup/login/'
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",

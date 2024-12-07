@@ -398,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('signup-form').addEventListener('submit', function(event) {
     event.preventDefault();  // Prevent the default form submission
 
-    const username = document.getElementById('username');
+    const username = document.getElementById('username').value;
     console.log('the data is',username);
     const email = document.getElementById('email').value;
     const phone = document.getElementById('phone').value;

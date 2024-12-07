@@ -1,5 +1,93 @@
-<style>
-  html, body {
+<script>
+function changeData(){
+  const username = document.getElementById("username").value
+  const contact = document.getElementById("contact").value
+  const email = document.getElementById("email").value
+  const changedData = {
+    email: email,
+    username: username,
+    contactinfo :contact
+  };
+  const changedataurl = "{% url 'changeDataForm' %}";
+  console.log("gg" , changedData)
+  fetch(changedataurl,{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken'),
+    },
+    body: JSON.stringify(changedData),
+}).then(response => {
+      if (response.ok) {
+        window.location.href = "{% url 'profiles' %}"; // Redirect on success
+      } else {
+        alert("An error occurred, please try again.");
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("An error occurred, please try again.");
+    });
+    function getCookie(name) {
+    const cookieValue = document.cookie
+      .split('; ')
+      .find(row => row.startsWith(name + '='))
+      .split('=')[1];
+    return decodeURIComponent(cookieValue);
+  }
+
+
+}
+
+
+function changePassword(){
+  const currentPassword = document.getElementById("current-password").value
+  const newPassword = document.getElementById("new-password").value
+  const confirmPassword = document.getElementById("confirm-password").value
+  if(newPassword == confirmPassword){
+  const changedData = {
+    password: currentPassword,
+    new_password: newPassword
+  };
+  const changedataurl = "{% url 'changePasswordForm' %}";
+  console.log("gg" , changedData)
+  fetch(changedataurl,{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken'),
+    },
+    body: JSON.stringify(changedData),
+}).then(response => {
+      if (response.ok) {
+        window.location.href = "{% url 'profiles' %}";
+      } else {
+        alert("An error occurred, please try again.");
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("An error occurred, please try again.");
+    });
+    function getCookie(name) {
+    const cookieValue = document.cookie
+      .split('; ')
+      .find(row => row.startsWith(name + '='))
+      .split('=')[1];
+    return decodeURIComponent(cookieValue);
+  }}
+  else{
+    alert("Password Does not match")
+    preventDefault()
+  }
+
+
+}
+
+</script>
+
+<!-- <link href="information.css" rel="stylesheet"> -->
+ <style>html, body {
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -17,13 +105,13 @@
     padding: 68px 70px 42px;
     width: fit-content;
     
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    /* box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25); */
   }
   
   .profile-container {
     border-radius: 18px;
     background-color: #ece9e9;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    /* box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25); */
     padding-right: 58px;
     height: 50%;
   }
@@ -36,16 +124,11 @@
   }
   
   .sidebar {
+    background: #1A1363;
     border-radius: 18px 0 0 18px;
-    background: #1a1363;
-    display: flex;
-    width: 280px;
-    flex-direction: column;
-    align-items: start;
+    padding: 2rem 1.5rem;
     color: #fff;
-    padding: 2rem 1rem;
-    font: 400 10px Poppins, sans-serif;
-    overflow-y: auto;
+    min-height: calc(99vh - 4rem);
   }
   
   .profile-image {
@@ -66,56 +149,52 @@
     align-self: center;
     margin-top: 9px;
   }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
   
   .nav-item {
     display: flex;
-    gap: 15px;
-    font-size: 12px;
-    margin: 18px 0 0 13px;
-    padding: 0.5rem;
-    width: 100%;
-    box-sizing: border-box;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-    border-radius: 10px 0 0 10px;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.2s;
   }
   .nav-item:hover {
     background: rgba(255, 255, 255, 0.1);
 }
   
-  .nav-icon {
-    aspect-ratio: 1;
-    object-fit: contain;
+.nav-icon {
     width: 20px;
+    height: 20px;
+    flex-shrink: 0;
   }
 
   .nav-text {
     margin: auto 0;
 }
-  
-  .nav-active {
-    border-radius: 10px 0 0 10px;
-    background-color: #ece9e9;
-    box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
-    display: flex;
-    margin-top: 11px;
-    gap: 16px;
-    color: #1a1363;
-    font-weight: 700;
-    padding: 8px 13px;
-  }
-  .active-nav-item {
+
+.active-nav-item {
     background: #ece9e9;
     box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
     color: #1a1363;
     font-weight: 700;
 }
   
-  .logout-item {
+.logout-item {
+    margin-top: auto;
     display: flex;
-    gap: 15px;
-    
-    margin: 16px 0 0 15px;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    text-decoration: none;
   }
   
   .main-content {
@@ -128,7 +207,7 @@
     aspect-ratio: 0.7;
     object-fit: contain;
     width: 78px;
-    box-shadow: 0 50px 28px rgba(0, 0, 0, 0.25);
+    /* box-shadow: 0 50px 28px rgba(0, 0, 0, 0.25); */
   }
   
   .content-section {
@@ -279,12 +358,44 @@
     clip: rect(0,0,0,0);
     border: 0;
   }
+  .dashboard-wrapper {
+    border-radius: 18px;
+    background: #ECE9E9;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 2rem;
+    margin: 1rem;
+    height: 95%;
+  }
   
+  .form-wrapper {
+  display: flex;
+  gap: 20px; /* Space between the two sections */
+  width: 150%;
+}
+
+.form-section {
+  flex: 1; /* Allow the sections to share available space equally */
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  padding: 24px 29px;
+  font: 16px Poppins, sans-serif;
+}
+.col-md-6 {
+  flex: 0 0 10%; /* Set the desired width (e.g., 60%) */
+  max-width: 30%; /* Ensure the column doesn't grow beyond this width */
+}
   @media (max-width: 991px) {
     .admin-profile {
       padding: 0 20px;
     }
     
+    .dashboard-wrapper {
+      margin: 0;
+      border-radius: 0;
+    }
+
+
     .profile-container {
       padding-right: 20px;
     }
@@ -318,100 +429,133 @@
     .btn-group {
       flex-wrap: wrap;
     }
-  }
-</style>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  }</style>
+  
     <body>
-    <div class="admin-profile">
-      <div class="profile-container">
+    <div class="dashboard-wrapper">
+    <div style="width: 100%;">
+      <div class="profile-container" style="width: 100%; height: 100%">
         <div class="content-wrapper">
-          <aside class="sidebar" role="navigation">
-          <nav>
-            <a href="#dashboard" class="nav-item" aria-current="false">
-              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-              <span>Dashboard</span>
+          <aside class="sidebar" role="navigation" style="width: 10.75%;">
+            <nav class="nav-menu">
+              <!-- {%for user in users %}
+                        
+              {%if user.user_id == id%}  -->
+              <a href="#admin-profile" class="active-nav-item nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c787861335dbc9c1626ea7cbbc4a47ff84032e0daa4b20a952a56cba95f22faf?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Profile</span>
+              </a>
+              {% if user.account_type == "admin" %}
+              <!-- Admin-specific sidebar buttons -->
+              <nav class="nav-menu">
+                <a href="#dashboard" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Dashboard</span>
+                </a>
+                <a href="#registration" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/914281251111c48bbb45ceb54ee84660c93b7b624e390d0d9f0ee4985913d692?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Registration</span>
+                </a>
+                <a href="{% url 'usersData' %}" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/86184e038a7647fc42fa716208a0f37c701e13b2b4ed3f3d3bb780f80a2e6972?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>View Members</span>
+                </a>
+                <a href="{% url 'coachesData' %}" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>View Coaches</span>
+                </a>
+                <a href="#report" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8460cc8bd9034659fef3083f272f7eef42ed26000fa8674904531f0608029fc7?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Report</span>
+                </a>
+              </nav>
+          {% elif user.account_type == "trainee" %}
+              <!-- Trainee-specific sidebar buttons -->
+              <nav class="nav-menu">
+                <a href="#plan" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Plan</span>
+                </a>
+              </nav>
+          {% elif user.account_type == "coach" %}
+              <!-- Coach-specific sidebar buttons -->
+              <nav class="nav-menu">
+                <a href="#plan" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Plan</span>
+                </a>
+                  <a href="#payment" class="nav-item" aria-current="false">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                    <span>Payment</span>
+                  </a>
+              </nav>
+          {% elif user.account_type == "nutritionist" %}
+              <!-- Nutritionist-specific sidebar buttons -->
+              <nav class="nav-menu">
+                <a href="#plan" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Plan</span>
+                </a>
+                <a href="#payment" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Payment</span>
+                </a>
+              </nav>
+          {% endif %}
+          
+            </nav>
+            <a href="{% url 'logout' %}" class="logout-item">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4cad94fa613a5e3b0efb34fb63a8e60d1822f60ac798bace92f8985b36f0b887?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+              <span>Logout</span>
             </a>
-            
-            <a href="#admin-profile" class="nav-item" aria-current="false">
-              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c787861335dbc9c1626ea7cbbc4a47ff84032e0daa4b20a952a56cba95f22faf?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-              <span>Admin Profile</span>
-            </a>
-            
-            <a href="#registration" class="nav-item" aria-current="false">
-              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/914281251111c48bbb45ceb54ee84660c93b7b624e390d0d9f0ee4985913d692?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-              <span>Registration</span>
-            </a>
-            
-            <a href="#plan" class="nav-item" aria-current="false">
-              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-              <span>Plan</span>
-            </a>
-            
-            <a href="#payment" class="nav-item" aria-current="false">
-              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-              <span>Payment</span>
-            </a>
-            
-            <a href="#inventory" class="nav-item" aria-current="false">
-              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/6e37d24962b4f6fa75b6e2ef7bdc7c966c7846fb1b069a9f8d2de6f3b9021bb1?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-              <span>Inventory</span>
-            </a>
-            
-            <a href="#view-members" class="nav-item nav-active" aria-current="true">
-              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/efe2f5ce212c19e643b94c8fa550fbb6fed7695c36844823be10d044c6b78778?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-              <span>View Members</span>
-            </a>
-            
-            <a href="#coaches" class="nav-item" aria-current="false">
-              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-              <span>Coaches</span>
-            </a>
-            
-            <a href="#report" class="nav-item" aria-current="false">
-              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8460cc8bd9034659fef3083f272f7eef42ed26000fa8674904531f0608029fc7?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-              <span>Report</span>
-            </a>
-          </nav>
           </aside>
     
           <main class="main-content">
             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/ea58de615482b6fbb8bdb9990c83b114973529133782fdc8e652424da510dbaf?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="Company Logo" class="header-logo" />
             
             <section class="content-section">
-              <h1 class="section-title">Admin Information</h1>
+              <h1 class="section-title">{{user.account_type}} Information</h1>
               
               <div class="container">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-6" style="flex: 0 0 40%; max-width: 65%; padding-right: 10px; margin-right: -70;">
                     <div class="profile-info">
                       <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc906fe44f28c322561baca9a7c8a1c7af4a4efa4b6ce53967143d421e45d05c?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="Admin Avatar" class="profile-photo" />
                       
-                      <div class="edit-profile">
+                      <br>
+                      <br>
+                      <!-- <div class="edit-profile">
                         <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7b91e7210d0e54770cff9350631cec610c7995660752242ebdb7d620e33c20fb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="edit-icon" />
                         <span>Update Profile</span>
-                      </div>
+                      </div> -->
                       
                       <div class="info-grid">
                         <div class="info-labels">
+                          
+                          
                           <span>Username</span>
                           <span>Contact no.</span>
                         </div>
+                        
                         <div class="info-values">
-                          <span>JuanDelaCruz</span>
-                          <span>09123456789</span>
+                          
+                          <span>{{user.name}}</span>
+                          <span>{{user.phone_number}}</span>
+                          
                         </div>
                       </div>
                       
                       <label class="form-label">Email Address:</label>
-                      <span>juan.delacruz@gmail.com</span>
+                      <span>{{user.email}}</span>
+                    </div>
+                    <!-- {%endif%}
+                    {%endfor%} -->
                     </div>
                   
-                    <button class="register-btn">Register New Admin Account</button>
-                  </div>
-                  
                   <div class="col-md-6">
+                    <div class="form-wrapper">
                     <form class="form-section">
+                      <h2>Update Information</h2>
                       <label for="username" class="form-label">Username</label>
                       <input type="text" id="username" class="form-input" />
                       
@@ -422,7 +566,7 @@
                       <input type="email" id="email" class="form-input" />
                       
                       <div class="btn-group">
-                        <button type="submit" class="btn-primary">Save</button>
+                        <button type="button" class="btn-primary" onclick="changeData()">Save</button>
                         <button type="reset" class="btn-secondary">Cancel</button>
                       </div>
                     </form>
@@ -442,12 +586,13 @@
                       <input type="password" id="confirm-password" class="form-input" />
                       
                       <div class="btn-group">
-                        <button type="submit" class="btn-primary">Change</button>
+                        <button type="button" class="btn-primary" onclick="changePassword()">Change</button>
                         <button type="reset" class="btn-secondary">Clear</button>
                       
                       
                     </form>
               </div>
+            </div>
                   </div>
                 
               </div>
@@ -458,6 +603,7 @@
       </div>
     </div>
   </div>
+</div>
   </body>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
