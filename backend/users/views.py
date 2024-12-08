@@ -18,6 +18,9 @@ from databaseApi.views import logout_required
 def home(request):
     return render(request, "test.html")
 
+def dashboard(request):
+    return render(request, "../templates/Dashboard/Dashboard.html")
+
 @login_required 
 def logout_view(request):
     request.session.flush()
