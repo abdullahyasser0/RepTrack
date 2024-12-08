@@ -3,7 +3,7 @@ from . import views
 from databaseApi.views import signup, login
 from databaseApi.views import profile_view
 from databaseApi.views import signup,get_Users,get_Profiles,change_data,change_Password,get_Coaches
-from users.views import signup_view,users,admins,coaches
+from users.views import signup_view,users,admins,coaches,dashboard
 
 urlpatterns = [path('login/', views.login, name='login'),
                 path('logout/', views.logout_view, name='logout'),
@@ -19,4 +19,5 @@ urlpatterns = [path('login/', views.login, name='login'),
                 path('profilesData/',admins,name='profiles'),
                 path('changeDataForm/',change_data, name = 'changeDataForm'),
                 path('changePasswordForm/',change_Password, name = 'changePasswordForm'),
+                path('Dashoard/',dashboard, name = 'Dashboard'),
                 ]

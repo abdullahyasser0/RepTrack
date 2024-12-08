@@ -136,22 +136,20 @@ def logout_view(request):
 def change_Password(request):
     id = request.session.get('user_id')  
     response = supabase.table('users').select('*').eq('user_id', id).execute()
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&7aaaaaaaaaaaaaaaaaaaaaa")
+    
     
     if request.method == 'POST':
         data = json.loads(request.body)
         old = data.get('password')
         new = data.get('new_password')
-        # print("old",old)
-        # print("new",new)
+        
 
         
         if response.data:
             user = response.data[0]
             stored_password = user['password']
 
-            print(stored_password)
-            print(old)
+            
             if check_password(old, stored_password):
                 hashed_new_password = make_password(new)
                 update_response = supabase.table('users').update({'password': hashed_new_password}).eq('user_id', id).execute()
