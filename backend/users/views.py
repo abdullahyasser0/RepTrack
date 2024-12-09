@@ -17,7 +17,7 @@ from databaseApi.views import logout_required
 
 def home(request):
     return render(request, "test.html")
-
+@login_required
 def dashboard(request):
     return render(request, "../templates/Dashboard/Dashboard.html")
 

@@ -1,0 +1,384 @@
+<style>
+    .body{
+        width: 100%;
+        height: 100%;
+    }
+    .equipment-inventory {
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      align-items: end;
+      justify-content: center;
+      padding: 66px 70px;
+    }
+    
+    .inventory-container {
+      border-radius: 18px;
+      background: #ECE9E9;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      width: 100%;
+      max-width: 100%;
+      height: 40%;
+      padding: 1px 67px 1px 0;
+    }
+    
+    .content-wrapper {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .sidebar {
+      border-radius: 18px 0 0 18px;
+      background: #1A1363;
+      display: flex;
+      width: 20%;
+      flex-direction: column;
+      align-items: start;
+      color: #fff;
+      padding: 47px 0 29px 29px;
+      font: 400 10px Poppins, sans-serif;
+    }
+    
+    .profile-image {
+      aspect-ratio: 1;
+      object-fit: contain;
+      width: 51px;
+      align-self: center;
+    }
+    
+    .admin-name {
+      font-size: 15px;
+      font-weight: 700;
+      align-self: center;
+      margin-top: 10px;
+    }
+    
+    .admin-email {
+      text-align: center;
+      align-self: center;
+      margin-top: 9px;
+    }
+    
+    .nav-item {
+      display: flex;
+      gap: 15px;
+      font-size: 12px;
+      margin: 18px 0 0 13px;
+    }
+    
+    .nav-icon {
+      aspect-ratio: 1;
+      object-fit: contain;
+      width: 20px;
+    }
+    
+    .nav-text {
+      margin: auto 0;
+    }
+    
+    .active-nav {
+      border-radius: 10px 0 0 10px;
+      background: #ECE9E9;
+      box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
+      color: #1A1363;
+      font-weight: 700;
+      padding: 8px 15px;
+    }
+    
+    .logout-nav {
+      margin-top: 251px;
+    }
+    
+    .main-content {
+      display: flex;
+      margin-top: 6px;
+      width: 100%;
+      flex-direction: column;
+      height: 50%;
+    }
+    
+    .header {
+      display: flex;
+      width: 100%;
+      gap: 20px;
+      font-family: Poppins, sans-serif;
+      color: #1A1363;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    
+    .add-equipment-btn {
+      border-radius: 100px;
+      background: #fff;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      font-size: 20px;
+      font-weight: 700;
+      padding: 0 23px;
+    }
+    
+    .feedback-section {
+      display: flex;
+      gap: 40px;
+      font-size: 14px;
+      margin: auto 0;
+    }
+    
+    .equipment-table {
+      border-radius: 20px;
+      background: #77749B;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      margin-top: 31px;
+      size: 50%;
+      max-width: 100%;
+      padding: 20px 35px;
+    }
+    
+    .table-header {
+      color: #FFFADF;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    
+    .table-controls {
+      display: flex;
+      margin-top: 25px;
+      gap: 7px;
+    }
+    
+    .entities-dropdown {
+      border-radius: 12px;
+      background: #5D57A3;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      padding: 3px 9px;
+    }
+    
+    .search-box {
+      border-radius: 12px;
+      background: #5D57A3;
+      padding: 3px 21px;
+      color: #fff;
+    }
+    
+    .equipment-list {
+      margin-top: 25px;
+      color: #fff;
+    }
+    
+    .equipment-item {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 13px;
+    }
+    
+    .edit-btn {
+      border-radius: 10px;
+      background: #fff;
+      color: #2B2B2B;
+      font-size: 10px;
+      padding: 3px 10px;
+    }
+    
+    .pagination {
+      display: flex;
+      margin-top: 32px;
+      gap: 5px;
+      justify-content: flex-end;
+    }
+    
+    .page-btn {
+      border-radius: 10px;
+      background: #666385;
+      color: #2B2B2B;
+      padding: 3px 15px;
+    }
+    
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+    
+    @media (max-width: 991px) {
+      .equipment-inventory {
+        padding: 0 20px;
+      }
+      
+      .inventory-container {
+        padding-right: 20px;
+      }
+      
+      .content-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+      }
+      
+      .sidebar {
+        margin-top: 9px;
+      }
+      
+      .nav-item {
+        margin: 40px 0 0 10px;
+      }
+      
+      .logout-nav {
+        margin-top: 40px;
+      }
+      
+      .main-content {
+        margin-top: 15px;
+      }
+      
+      .equipment-table {
+        padding: 0 20px;
+      }
+    }
+    </style>
+    
+    <div class="equipment-inventory">
+      <div class="inventory-container">
+        <div class="content-wrapper">
+            <aside class="sidebar" role="navigation">
+                <nav class="nav-menu">
+                  <a href="{% url 'profiles' %}" class="nav-item" aria-current="false">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c787861335dbc9c1626ea7cbbc4a47ff84032e0daa4b20a952a56cba95f22faf?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                    <span>Profile</span>
+                  </a>
+                  {% if user.account_type == "admin" %}
+                  <!-- Admin-specific sidebar buttons -->
+                  <nav class="nav-menu">
+                    <a href="#dashboard" class="nav-item" aria-current="false">
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                      <span>Dashboard</span>
+                    </a>
+                    <a href="#registration" class="nav-item" aria-current="false">
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/914281251111c48bbb45ceb54ee84660c93b7b624e390d0d9f0ee4985913d692?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                      <span>Registration</span>
+                    </a>
+                    <a href="{% url 'usersData' %}" class="nav-item" aria-current="false">
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/86184e038a7647fc42fa716208a0f37c701e13b2b4ed3f3d3bb780f80a2e6972?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                      <span>View Members</span>
+                    </a>
+                    <a href="{% url 'coachesData' %}" class="active-nav-item nav-item" aria-current="false">
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                      <span>View Coaches</span>
+                    </a>
+                    <a href="#report" class="nav-item" aria-current="false">
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8460cc8bd9034659fef3083f272f7eef42ed26000fa8674904531f0608029fc7?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                      <span>Report</span>
+                    </a>
+                  </nav>
+              {% elif user.account_type == "trainee" %}
+                  <!-- Trainee-specific sidebar buttons -->
+                  <nav class="nav-menu">
+                    <a href="#plan" class="nav-item" aria-current="false">
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                      <span>Plan</span>
+                    </a>
+                  </nav>
+              {% elif user.account_type == "coach" %}
+                  <!-- Coach-specific sidebar buttons -->
+                  <nav class="nav-menu">
+                    <a href="#plan" class="nav-item" aria-current="false">
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                      <span>Plan</span>
+                    </a>
+                      <a href="#payment" class="nav-item" aria-current="false">
+                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                        <span>Payment</span>
+                      </a>
+                  </nav>
+              {% elif user.account_type == "nutritionist" %}
+                  <!-- Nutritionist-specific sidebar buttons -->
+                  <nav class="nav-menu">
+                    <a href="#plan" class="nav-item" aria-current="false">
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                      <span>Plan</span>
+                    </a>
+                    <a href="#payment" class="nav-item" aria-current="false">
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                      <span>Payment</span>
+                    </a>
+                  </nav>
+              {% endif %}
+              
+                </nav>
+                <a href="{% url 'logout' %}" class="nav-item">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4cad94fa613a5e3b0efb34fb63a8e60d1822f60ac798bace92f8985b36f0b887?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Logout</span>
+                </a>
+              </aside>
+    
+          <main class="main-content">
+            <header class="header">
+              <div>
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/ba4ab59f0641b689a32b9afc603b7668f927f11a17a2a2eff42c03dcf459e019?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Add equipment icon" />
+                <button class="add-equipment-btn">Add Equipment</button>
+              </div>
+              <div class="feedback-section">
+                <span>Feedback</span>
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5bd3166627a33c9165f820718a12c8db54462cdf6405ae18aa269f9a501b97fc?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Feedback icon" />
+              </div>
+            </header>
+    
+            <section class="equipment-table">
+              <h1 class="table-header">Manage Equipments</h1>
+              
+              <div class="table-controls">
+                <label for="show-entities" class="visually-hidden">Show entities</label>
+                <select id="show-entities" class="entities-dropdown">
+                  <option value="10">10</option>
+                </select>
+                
+                <label for="search-equipment" class="visually-hidden">Search equipment</label>
+                <input type="search" id="search-equipment" class="search-box" placeholder="Search" />
+              </div>
+    
+              <div class="equipment-list">
+                <div class="equipment-item">
+                  <span>Treadmill</span>
+                  <span>1</span>
+                  <span>Active</span>
+                  <button class="edit-btn">Edit</button>
+                </div>
+                
+                <div class="equipment-item">
+                  <span>10 lbs Dumbell</span>
+                  <span>3</span>
+                  <span>Inactive</span>
+                  <button class="edit-btn">Edit</button>
+                </div>
+                
+                <div class="equipment-item">
+                  <span>15 lbs Dumbell</span>
+                  <span>6</span>
+                  <span>Active</span>
+                  <button class="edit-btn">Edit</button>
+                </div>
+                
+                <div class="equipment-item">
+                  <span>20 lbs Dumbell</span>
+                  <span>12</span>
+                  <span>Active</span>
+                  <button class="edit-btn">Edit</button>
+                </div>
+              </div>
+    
+              <div class="pagination">
+                <button class="page-btn">Previous</button>
+                <button class="page-btn">Next</button>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+    </div>
