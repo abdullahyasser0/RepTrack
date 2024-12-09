@@ -36,5 +36,5 @@ urlpatterns = [
     path('profilesData/',admins,name='profiles'),
     path('changeDataForm/',change_data, name = 'changeDataForm'),
     path('changePasswordForm/',change_Password, name = 'changePasswordForm'),
-    path('Dashboard/',dashboard, name = 'changePasswordForm'),
+    path('Dashboard/',dashboard, name = 'Dashboard'),
 ]

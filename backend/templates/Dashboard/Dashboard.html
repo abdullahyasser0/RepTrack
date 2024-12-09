@@ -13,7 +13,7 @@
               {% if user.account_type == "admin" %}
               <!-- Admin-specific sidebar buttons -->
               <nav class="nav-menu">
-                <a href="#dashboard" class="active-nav-item nav-item" aria-current="false">
+                <a href="{%url 'Dashboard' %}" class="active-nav-item nav-item" aria-current="false">
                   <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                   <span>Dashboard</span>
                 </a>
