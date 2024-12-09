@@ -32,6 +32,12 @@ def logout_view(request):
     request.session.flush()
     return redirect('login')
 
+def Equip(request):
+    user_id = request.session.get('user_id')
+    user = get_user1(user_id)[0]
+    return render(request, "../templates/Admin/AddEquipment.html",{'users':users,'id':user_id,'user':user})
+
+
 @login_required 
 def users(request):
     users = get_Users()

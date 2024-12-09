@@ -20,6 +20,7 @@ from django.urls import path, include
 from users.views import signup_view
 from databaseApi.views import profile_view,change_data,change_Password
 from users.views import signup_view,users,admins,coaches,dashboard, userstats
+from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -37,5 +38,8 @@ urlpatterns = [
     path('changeDataForm/',change_data, name = 'changeDataForm'),
     path('changePasswordForm/',change_Password, name = 'changePasswordForm'),
     path('Dashboard/',dashboard, name = 'changePasswordForm'),
-    path('userstats/',userstats, name = 'userstats')
+    path('Dashboard/',dashboard, name = 'Dashboard'),
+    path('userstats/',userstats, name = 'userstats'),
+    path('Equip/',Equip, name = 'Equip')
+
 ]
