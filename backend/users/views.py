@@ -19,7 +19,9 @@ def home(request):
     return render(request, "test.html")
 
 def dashboard(request):
-    return render(request, "../templates/Dashboard/Dashboard.html")
+    user_id = request.session.get('user_id')
+    user = get_user1(user_id)[0]
+    return render(request, "../templates/Dashboard/Dashboard.html", {'user':user})
 
 def userstats(request):
     user_id = request.session.get('user_id')
