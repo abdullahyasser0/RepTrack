@@ -345,7 +345,7 @@
             {% if user.account_type == "admin" %}
             <!-- Admin-specific sidebar buttons -->
             <nav class="nav-menu">
-              <a href="{% url 'Dashboard' %}" class="nav-item" aria-current="false">
+              <a href="#dashboard" class="nav-item" aria-current="false">
                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                 <span>Dashboard</span>
               </a>
@@ -367,13 +367,19 @@
               </a>
             </nav>
         {% elif user.account_type == "trainee" %}
-            <!-- Trainee-specific sidebar buttons -->
-            <nav class="nav-menu">
-              <a href="#plan" class="nav-item" aria-current="false">
-                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                <span>Plan</span>
-              </a>
-            </nav>
+              <!-- Trainee-specific sidebar buttons -->
+              <nav class="nav-menu">
+                <a href="#plan" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Plan</span>
+                </a>
+              </nav>
+              <nav class="nav-menu">
+                <a href="{% url 'userstats' %}" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Statistics</span>
+                </a>
+              </nav>
         {% elif user.account_type == "coach" %}
             <!-- Coach-specific sidebar buttons -->
             <nav class="nav-menu">

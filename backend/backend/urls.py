@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from users.views import signup_view
 from databaseApi.views import profile_view,change_data,change_Password
-from users.views import signup_view,users,admins,coaches,dashboard
+from users.views import signup_view,users,admins,coaches,dashboard, userstats
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -36,5 +36,6 @@ urlpatterns = [
     path('profilesData/',admins,name='profiles'),
     path('changeDataForm/',change_data, name = 'changeDataForm'),
     path('changePasswordForm/',change_Password, name = 'changePasswordForm'),
-    path('Dashboard/',dashboard, name = 'Dashboard'),
+    path('Dashboard/',dashboard, name = 'changePasswordForm'),
+    path('userstats/',userstats, name = 'userstats')
 ]

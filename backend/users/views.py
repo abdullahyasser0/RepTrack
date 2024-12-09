@@ -17,15 +17,19 @@ from databaseApi.views import logout_required
 
 def home(request):
     return render(request, "test.html")
-@login_required
+
 def dashboard(request):
     return render(request, "../templates/Dashboard/Dashboard.html")
 
+def userstats(request):
+    user_id = request.session.get('user_id')
+    user = get_user1(user_id)[0]
+    return render(request, "../templates/Dashboard/UserStatistics.html", {'user':user})
 @login_required 
 def logout_view(request):
     request.session.flush()
-    print("User logged out")
     return redirect('login')
+
 @login_required 
 def users(request):
     users = get_Users()
