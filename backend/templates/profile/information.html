@@ -83,7 +83,75 @@ function changePassword(){
 
 
 }
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Processing token from URL...");
 
+    // Function to parse URL fragments
+    function getFragmentParams() {
+        const fragmentString = window.location.hash.substring(1); // Get the fragment after '#'
+        const params = {};
+        fragmentString.split("&").forEach((param) => {
+            const [key, value] = param.split("=");
+            params[decodeURIComponent(key)] = decodeURIComponent(value || "");
+        });
+        return params;
+    }
+
+    // Extract the access token from the URL fragment
+    const fragmentParams = getFragmentParams();
+    const accessToken = fragmentParams["access_token"];
+
+    if (accessToken) {
+        console.log("Access token captured:", accessToken);
+
+        // Store the token in sessionStorage (or send to backend for verification)
+        sessionStorage.setItem("auth_token", accessToken);
+
+        // Optionally, remove the fragment from the URL to clean it up
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Send the token to the backend for verification
+        fetch("/verify-token/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"), // Include CSRF token for security
+            },
+            body: JSON.stringify({ token: accessToken }),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    console.log("Token verification successful.");
+                    window.location.href = "/dashboard/"; // Redirect to a protected page
+                } else {
+                    console.error("Token verification failed:", response);
+                    alert("Authentication failed. Please try again.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error verifying token:", error);
+                alert("An error occurred. Please try again.");
+            });
+    } else {
+        console.log("No access token found in the URL.");
+    }
+
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + "=") {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
 </script>
 
 <!-- <link href="information.css" rel="stylesheet"> -->

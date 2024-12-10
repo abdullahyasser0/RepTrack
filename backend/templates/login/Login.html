@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Supabase Client Creation</title>
+    <!-- Link to Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js"></script>
+
+  </head>
+
+
 <style>
     .login-container {
       display: flex;
@@ -260,7 +273,7 @@
         <div class="divider-line divider-line-right"></div>
       </div>
 
-      <button type="button" class="social-login-button google-button">
+      <button id="google-login-btn" type="button" class="social-login-button google-button">
         <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ae4273c5a573ab7930804958d0b59c0432b59af31c59f89db1b79b981a4d58ab?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" width="37" height="37" />
         Login with Google
       </button>
@@ -306,41 +319,156 @@
 
 // Function to handle login form submission
 document.getElementById('loginForm').addEventListener('submit', function(event) {
-  event.preventDefault(); // Prevent form's default submission behavior
+    event.preventDefault(); // Prevent form's default submission behavior
 
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-  const loginUrl = "{% url 'loginform' %}"; 
-  const loginData = {
-    email: email,
-    password: password,
-  };
+    const loginUrl = "{% url 'loginform' %}"; // Django's URL for login processing
+    const loginData = {
+      email: email,
+      password: password,
+    };
+
 
   
   fetch(loginUrl, {
     method: 'POST',
     headers: {
+
         'Content-Type': 'application/json',
         'X-CSRFToken': getCookie('csrftoken'),
-    },
-    body: JSON.stringify(loginData),
-})
-.then(response => response.json())
-.then(data => {
-    if (data.success) {
-        console.log("Login successful. Redirecting to profile...");
-        window.location.href = data.redirect_url;
-    } else {
-        alert(data.error || "Invalid email or password. Please try again.");
-        window.location.href = "/signup/login/";
+      },
+      body: JSON.stringify(loginData),
+    })
+    .then(response => {
+      if (response.ok) {
+        // Redirect to profile on successful login
+        //window.location.href = "/profile/information.html";
+        
+      } else if (response.status === 401) {
+        // Unauthorized error
+        alert("Invalid email or password. Please try again.");
+      } else {
+        // General error
+        alert("An error occurred. Please try again.");
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("An error occurred. Please try again.");
+    });
+  });
+
+  // Function to check session and redirect accordingly
+  function checkSession() {
+    const session = document.cookie.includes("session_id="); 
+
+    if (session) {
+      console.log("Session exists. Redirecting to profile page...");
+      window.location.href = '/profile/information.html'; 
     }
-})
-.catch(error => {
-    console.error('Error:', error);
-    alert("An error occurred. Please try again.");
+  }
+
+  // Check session on page load
+  window.onload = function() {
+    checkSession();
+  };
+
+  document.addEventListener("DOMContentLoaded", function() {
+            try {
+                console.log("Initializing Supabase client...");
+
+                // Initialize Supabase with your project URL and public API key
+                const supabaseUrl = 'https://sodghnhticinsggmbber.supabase.co';  // Replace with your Supabase URL
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvZGdobmh0aWNpbnNnZ21iYmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyODY5MzMsImV4cCI6MjA0Nzg2MjkzM30.dCfS98X9PFoZpBohhf0UdgSvvcwByOlAPki7-BPlExg';  // Replace with your public anon key from the Supabase dashboard
+                
+                console.log('Supabase URL:', supabaseUrl);  // Log URL to ensure it's correct
+                console.log('Supabase Key:', supabaseKey);  // Be cautious, do not expose the key in production
+
+                // Check if supabase object exists before calling createClient
+                if (typeof supabase === 'undefined') {
+                    console.error('Supabase SDK is not loaded correctly.');
+                    return;
+                }
+
+                // Create the Supabase client object
+                const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+                console.log('Supabase client successfully created:', supabaseClient);
+
+                // Check if supabase.auth is available
+                if (supabaseClient && supabaseClient.auth) {
+                    console.log('Supabase auth is available:', supabaseClient.auth);
+                } else {
+                    console.error('Supabase auth object is not available. Something went wrong with the client creation.');
+                }
+
+                // Optionally, you can also check the version of the Supabase SDK for debugging purposes
+                console.log('Supabase SDK version:', supabase.VERSION);
+
+                // Google login button logic
+      document.getElementById("google-login-btn").onclick = async () => {
+      try {
+        console.log("Google login initiated...");
+
+        // Trigger Google login via Supabase OAuth
+        const { user, session, error } = await supabaseClient.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+        redirectTo: window.location.origin, // Ensure proper redirect after login
+        },
+        });
+
+        if (error) {
+          console.error("Error during Google login:", error.message);
+          alert("Google login failed. Please try again.");
+          return;
+        }
+      } catch (error) {
+        console.error("Error during Google login:", error);
+        alert("An error occurred. Please try again.");
+      }
+    };
+  } catch (error) {
+    console.error("Error during Supabase client initialization:", error);
+  }
 });
 
-});
+supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        console.log("Auth state changed:", event, session);
+
+        if (event === "SIGNED_IN" && session) {
+            console.log("User signed in successfully. Sending token to backend...");
+
+            const accessToken = session.access_token;
+
+            try {
+                // Send the token to the Django backend
+                const response = await fetch("/verify-token/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": getCookie("csrftoken"), // CSRF token for Django
+                    },
+                    body: JSON.stringify({ token: accessToken }),
+                });
+
+                if (response.ok) {
+                    console.log("Backend verification successful.");
+                    window.location.href = "/dashboard/"; // Redirect to your protected page
+                } else {
+                    console.error("Backend verification failed:", await response.json());
+                    alert("Authentication failed on the server.");
+                }
+            } catch (error) {
+                console.error("Error sending token to backend:", error);
+                alert("An error occurred while communicating with the server.");
+            }
+        } else if (event === "SIGNED_OUT") {
+            console.log("User signed out.");
+        }
+    });
+
+
 </script>
-
