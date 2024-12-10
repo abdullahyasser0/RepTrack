@@ -81,3 +81,4 @@ def signup_view(request):
         form = SignupForm()  # Create a new form instance for GET request
 
     return render(request, 'signup/signup.html', {'form': form})
+

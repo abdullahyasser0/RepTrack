@@ -68,6 +68,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    # 'databaseApi.middleware.SupabaseSessionMiddleware',
 ]
 
 ROOT_URLCONF = "backend.urls"

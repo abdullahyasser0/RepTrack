@@ -18,7 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from users.views import signup_view
-from databaseApi.views import profile_view,change_data,change_Password
+from databaseApi.views import profile_view,change_data,change_Password,verify_token
 from users.views import signup_view,users,admins,coaches
 
 urlpatterns = [
@@ -36,4 +36,6 @@ urlpatterns = [
     path('profilesData/',admins,name='profiles'),
     path('changeDataForm/',change_data, name = 'changeDataForm'),
     path('changePasswordForm/',change_Password, name = 'changePasswordForm'),
+    path('verify-token/', verify_token, name='verify_token'),
+
 ]
