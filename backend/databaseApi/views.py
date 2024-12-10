@@ -82,7 +82,6 @@ def login(request):
             response = supabase.table('users').select('*').eq('email', email).execute()
             if response.data:
                 user_data = response.data[0]
-                print(user_data)
                 stored_password = user_data['password']
 
                 if check_password(password, stored_password):
@@ -100,8 +99,6 @@ def login(request):
                     # Log the user in
                     auth_login(request, user)
                     
-                    print('I LOGGED IN')
-
                     return JsonResponse({'success': True, 'redirect_url': reverse('profiles')})
                 else:
                     return JsonResponse({'success': False, 'error': 'Invalid credentials'}, status=401)
@@ -200,5 +197,4 @@ def change_data(request):
 @login_required 
 def logout_view(request):
     request.session.flush()
-    print("User logged out")
     return redirect('login')
