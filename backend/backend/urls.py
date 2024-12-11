@@ -22,7 +22,7 @@ from databaseApi.views import profile_view,change_data,change_Password,verify_to
 from users.views import signup_view,users,admins,coaches
 from databaseApi.views import profile_view,change_data,change_Password
 from users.views import signup_view,users,admins,coaches,dashboard, userstats
-from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip
+from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip,Payment
 
 
 urlpatterns = [
@@ -42,9 +42,10 @@ urlpatterns = [
     path('changePasswordForm/',change_Password, name = 'changePasswordForm'),
     path('verify-token/', verify_token, name='verify_token'),
 
-    path('Dashboard/',dashboard, name = 'changePasswordForm'),
+    
     path('Dashboard/',dashboard, name = 'Dashboard'),
     path('userstats/',userstats, name = 'userstats'),
-    path('Equip/',Equip, name = 'Equip')
+    path('Equip/',Equip, name = 'Equip'),
+    path('payment/',Payment, name = 'payment')
 
 ]

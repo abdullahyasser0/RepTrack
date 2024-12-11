@@ -466,14 +466,14 @@
 <!-- <script>
   function changeData(){
   const username = document.getElementById("name").value
-  const contact = document.getElementById("quantity").value
-  const email = document.getElementById("status").value
+  const quantity = document.getElementById("quantity").value
+  const status = document.getElementById("status").value
   const changedData = {
-    email: email,
+    quantity: quantity,
     username: username,
-    contactinfo :contact
+    status :status
   };
-  const changedataurl = "{% url 'changeDataForm' %}";
+  const changedataurl = "{% url 'Equip' %}";
   console.log("gg" , changedData)
   fetch(changedataurl,{
     method: 'POST',
