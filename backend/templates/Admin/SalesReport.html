@@ -1,0 +1,432 @@
+<style>
+    .admin-profile-container {
+      border-radius: 18px;
+      background-color: rgba(236, 233, 233, 1);
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      padding: 0 80px 0 0;
+    }
+    
+    .layout-wrapper {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .sidebar {
+      width: 26%;
+      border-radius: 18px 0 0 18px;
+      background-color: rgba(26, 19, 99, 1);
+      padding: 50px 0 30px 51px;
+      color: #fff;
+      font: 400 10px Poppins, sans-serif;
+    }
+    
+    .profile-image {
+      width: 82px;
+      margin: 0 auto;
+    }
+    
+    .admin-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 10px 0;
+      text-align: center;
+    }
+    
+    .admin-email {
+      text-align: center;
+      margin: 10px 0;
+    }
+    
+    .nav-item {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      margin: 18px 0 0 21px;
+      font-size: 12px;
+    }
+    
+    .nav-icon {
+      width: 32px;
+    }
+    
+    .nav-text {
+      margin: auto 0;
+    }
+    
+    .active-nav-item {
+      background-color: rgba(236, 233, 233, 1);
+      border-radius: 10px 0 0 10px;
+      color: rgba(26, 19, 99, 1);
+      font-weight: 700;
+      padding: 8px 24px;
+      margin: 9px 0;
+    }
+    
+    .main-content {
+      width: 74%;
+      padding: 0 20px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: rgba(26, 19, 99, 1);
+      font-family: Poppins, sans-serif;
+    }
+    
+    .page-title {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 1.6px;
+    }
+    
+    .header-icon {
+      width: 124px;
+      box-shadow: 0 50px 28px rgba(0, 0, 0, 0.25);
+    }
+    
+    .user-actions {
+      display: flex;
+      gap: 40px;
+      font-size: 14px;
+      align-items: center;
+    }
+    
+    .date-filters {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      padding: 23px 65px 50px;
+      margin: 27px 0 0 25px;
+      display: flex;
+      gap: 20px;
+    }
+    
+    .date-input {
+      display: flex;
+      flex-direction: column;
+      gap: 19px;
+    }
+    
+    .date-label {
+      color: #2b2b2b;
+      font: 700 16px Poppins, sans-serif;
+    }
+    
+    .date-field {
+      background-color: #e9e9e9;
+      border-radius: 12px;
+      padding: 7px 56px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .payment-history {
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      padding: 29px 39px;
+      margin: 44px 0 0 27px;
+      font-family: Poppins, sans-serif;
+    }
+    
+    .history-title {
+      color: #2b2b2b;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    
+    .history-content {
+      display: flex;
+      margin-top: 24px;
+      gap: 26px;
+    }
+    
+    .member-list {
+      margin-top: 5px;
+    }
+    
+    .member-header {
+      color: #2b2b2b;
+      font-size: 12px;
+      font-weight: 300;
+    }
+    
+    .member-names {
+      margin-top: 36px;
+      font-size: 14px;
+      color: rgba(26, 19, 99, 1);
+      padding: 0 4px;
+    }
+    
+    .member-name {
+      margin: 16px 0;
+      font-weight: 700;
+    }
+    
+    .payment-details {
+      flex-grow: 1;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      margin-bottom: 14px;
+    }
+    
+    .show-entries {
+      background-color: rgba(160, 157, 189, 1);
+      border-radius: 12px;
+      padding: 4px 21px 4px 9px;
+      color: rgba(26, 19, 99, 1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .search-box {
+      display: flex;
+      gap: 14px;
+      color: #fff;
+    }
+    
+    .search-input {
+      background-color: rgba(160, 157, 189, 1);
+      border-radius: 12px;
+      padding: 6px 21px;
+    }
+    
+    .payment-grid {
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+      color: rgba(26, 19, 99, 1);
+      margin-right: 22px;
+    }
+    
+    .grid-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .column-header {
+      font-weight: 700;
+    }
+    
+    @media (max-width: 991px) {
+      .layout-wrapper {
+        flex-direction: column;
+      }
+      
+      .sidebar,
+      .main-content {
+        width: 100%;
+      }
+      
+      .admin-profile-container {
+        padding-right: 20px;
+      }
+      
+      .date-filters,
+      .payment-history {
+        margin-left: 0;
+        padding: 20px;
+      }
+      
+      .payment-grid {
+        margin-right: 10px;
+        flex-wrap: wrap;
+      }
+    }
+    </style>
+    
+    <div class="admin-profile-container">
+      <div class="layout-wrapper">
+        <aside class="sidebar" role="navigation" style="width: 15%;">
+            <nav class="nav-menu">
+              <!-- {%for user in users %}
+                        
+              {%if user.user_id == id%}  -->
+              <a href="#admin-profile" class="active-nav-item nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c787861335dbc9c1626ea7cbbc4a47ff84032e0daa4b20a952a56cba95f22faf?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Profile</span>
+              </a>
+              {% if user.account_type == "admin" %}
+              <!-- Admin-specific sidebar buttons -->
+              <nav class="nav-menu">
+                <a href="{% url 'Dashboard' %}" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Dashboard</span>
+                </a>
+                <a href="#registration" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/914281251111c48bbb45ceb54ee84660c93b7b624e390d0d9f0ee4985913d692?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Registration</span>
+                </a>
+                <a href="{% url 'usersData' %}" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/86184e038a7647fc42fa716208a0f37c701e13b2b4ed3f3d3bb780f80a2e6972?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>View Members</span>
+                </a>
+                <a href="{% url 'coachesData' %}" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>View Coaches</span>
+                </a>
+                <a href="#report" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8460cc8bd9034659fef3083f272f7eef42ed26000fa8674904531f0608029fc7?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Report</span>
+                </a>
+              </nav>
+          {% elif user.account_type == "trainee" %}
+              <!-- Trainee-specific sidebar buttons -->
+              <nav class="nav-menu">
+                <a href="#plan" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Plan</span>
+                </a>
+              </nav>
+              <nav class="nav-menu">
+                <a href="{% url 'userstats' %}" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Statistics</span>
+                </a>
+              </nav>
+          {% elif user.account_type == "coach" %}
+              <!-- Coach-specific sidebar buttons -->
+              <nav class="nav-menu">
+                <a href="#plan" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Plan</span>
+                </a>
+                  <a href="{% url 'payment' %}" class="nav-item" aria-current="false">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                    <span>Payment</span>
+                  </a>
+              </nav>
+          {% elif user.account_type == "nutritionist" %}
+              <!-- Nutritionist-specific sidebar buttons -->
+              <nav class="nav-menu">
+                <a href="#plan" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Plan</span>
+                </a>
+                <a href="{% url 'payment' %}" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Payment</span>
+                </a>
+              </nav>
+          {% endif %}
+          
+            </nav>
+            <a href="{% url 'logout' %}" class="logout-item">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4cad94fa613a5e3b0efb34fb63a8e60d1822f60ac798bace92f8985b36f0b887?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+              <span>Logout</span>
+            </a>
+          </aside>
+    
+        <main class="main-content">
+          <header class="header">
+            <div>
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/228fe351dc511332268478edd6788f4a47d281fb549dadff445121c6bb4bddcd?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Sales Report Icon" class="header-icon" />
+              <h2 class="page-title">Sales Report</h2>
+            </div>
+            <div class="user-actions">
+              <span>Feedback</span>
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8757cada9869ee461c23a973ebb31b7f45e24e0cb1d9312cfab6733edf851799?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" class="nav-icon" />
+            </div>
+          </header>
+    
+          <section class="date-filters">
+            <div class="date-input">
+              <label for="from-date" class="date-label">From Date</label>
+              <div class="date-field">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/9197dab1e8b78543730e36681ecdefc2b907a574366abe785d3d2df4e261dc6d?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Calendar Icon" class="nav-icon" />
+              </div>
+            </div>
+            
+            <div class="date-input">
+              <label for="to-date" class="date-label">To Date</label>
+              <div class="date-field">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/441dd00f92969b93d9ea5e380b66415054b8bde9b8196c3d3ec57fac474381b8?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Calendar Icon" class="nav-icon" />
+              </div>
+            </div>
+          </section>
+    
+          <section class="payment-history">
+            <h3 class="history-title">Payment History</h3>
+            
+            <div class="history-content">
+              <div class="member-list">
+                <div class="member-header">Show Entities</div>
+                <div class="member-names">
+                  <div class="member-name">Member Name</div>
+                  {%for name in report.memberName}
+                    
+                        <div>name</div>
+                    {%endfor%}
+                </div>
+              </div>
+    
+              <div class="payment-details">
+                <div class="controls">
+                  <div class="show-entries">
+                    <span>10</span>
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/08c48b95819abc85280d98fb453c5c0c71030cb5c288a7604864c3d71fd346ab?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" class="nav-icon" />
+                  </div>
+                  
+                  <div class="search-box">
+                    <div class="search-input">Search</div>
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/0453b159ff98b03fad4373e84bcd7d264889d06d26684f9be07063e0ce8a1c86?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Search Icon" class="nav-icon" />
+                  </div>
+                </div>
+    
+                <div class="payment-grid">
+                  <div class="grid-column">
+                    <div class="column-header">Member ID</div>
+                    {%for id in report.memberID}
+                    
+                        <div>id</div>
+                    {%endfor%}
+                  </div>
+                  
+                  <div class="grid-column">
+                    <div class="column-header">Plan</div>
+                    {%for plan in report.plan}
+                    
+                        <div>plan</div>
+                    {%endfor%}
+                  </div>
+                  
+                  <div class="grid-column">
+                    <div class="column-header">Month</div>
+                    {%for duration in report.duration}
+                    
+                        <div>duration</div>
+                    {%endfor%}
+                  </div>
+                  
+                  <div class="grid-column">
+                    <div class="column-header">Date Paid</div>
+                    {%for date in report.datePaid}
+                    
+                        <div>date</div>
+                    {%endfor%}
+                  </div>
+                  
+                  <div class="grid-column">
+                    <div class="column-header">Amount</div>
+                    {%for amount in report.amount}
+                    
+                        <div>amount</div>
+                    {%endfor%}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+  
