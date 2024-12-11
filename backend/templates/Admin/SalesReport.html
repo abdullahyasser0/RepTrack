@@ -4,6 +4,7 @@
       background-color: rgba(236, 233, 233, 1);
       box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
       padding: 0 80px 0 0;
+      height: 100%;
     }
     
     .layout-wrapper {
@@ -247,9 +248,7 @@
       <div class="layout-wrapper">
         <aside class="sidebar" role="navigation" style="width: 15%;">
             <nav class="nav-menu">
-              <!-- {%for user in users %}
-                        
-              {%if user.user_id == id%}  -->
+              
               <a href="#admin-profile" class="nav-item" aria-current="false">
                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c787861335dbc9c1626ea7cbbc4a47ff84032e0daa4b20a952a56cba95f22faf?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                 <span>Profile</span>
@@ -361,10 +360,10 @@
                 <div class="member-header">Show Entities</div>
                 <div class="member-names">
                   <div class="member-name">Member Name</div>
-                  {%for name in report.memberName}
+                  {%for name in report.memberName%}
                     
                         <div>name</div>
-                    {%endfor%}
+                    {% endfor %}
                 </div>
               </div>
     
@@ -384,42 +383,42 @@
                 <div class="payment-grid">
                   <div class="grid-column">
                     <div class="column-header">Member ID</div>
-                    {%for id in report.memberID}
+                    {%for id in report.memberID%}
                     
                         <div>id</div>
-                    {%endfor%}
+                    {% endfor %}
                   </div>
                   
                   <div class="grid-column">
                     <div class="column-header">Plan</div>
-                    {%for plan in report.plan}
+                    {%for plan in report.plan%}
                     
                         <div>plan</div>
-                    {%endfor%}
+                    {% endfor %}
                   </div>
                   
                   <div class="grid-column">
                     <div class="column-header">Month</div>
-                    {%for duration in report.duration}
+                    {%for duration in report.duration%}
                     
                         <div>duration</div>
-                    {%endfor%}
+                    {% endfor %}
                   </div>
                   
                   <div class="grid-column">
                     <div class="column-header">Date Paid</div>
-                    {%for date in report.datePaid}
+                    {%for date in report.datePaid%}
                     
                         <div>date</div>
-                    {%endfor%}
+                    {% endfor %}
                   </div>
                   
                   <div class="grid-column">
                     <div class="column-header">Amount</div>
-                    {%for amount in report.amount}
+                    {%for amount in report.amount%}
                     
                         <div>amount</div>
-                    {%endfor%}
+                    {% endfor %}
                   </div>
                 </div>
               </div>
