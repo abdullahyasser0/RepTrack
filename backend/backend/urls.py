@@ -22,7 +22,7 @@ from databaseApi.views import profile_view,change_data,change_Password,verify_to
 from users.views import signup_view,users,admins,coaches
 from databaseApi.views import profile_view,change_data,change_Password
 from users.views import signup_view,users,admins,coaches,dashboard, userstats
-from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip,Payment
+from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip,Payment,salesReport
 
 
 urlpatterns = [
@@ -46,6 +46,7 @@ urlpatterns = [
     path('Dashboard/',dashboard, name = 'Dashboard'),
     path('userstats/',userstats, name = 'userstats'),
     path('Equip/',Equip, name = 'Equip'),
-    path('payment/',Payment, name = 'payment')
+    path('payment/',Payment, name = 'payment'),
+    path('SalesReport/',salesReport, name = 'SalesReport')
 
 ]
