@@ -37,6 +37,11 @@ def Equip(request):
     user = get_user1(user_id)[0]
     return render(request, "../templates/Admin/AddEquipment.html",{'users':users,'id':user_id,'user':user})
 
+def Payment(request):
+    user_id = request.session.get('user_id')
+    user = get_user1(user_id)[0]
+    return render(request, "../templates/Admin/Payment.html",{'users':users,'id':user_id,'user':user})
+
 
 @login_required 
 def users(request):
