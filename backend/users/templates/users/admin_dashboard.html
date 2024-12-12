@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <div>
+        <h2>Weekly User Registrations</h2>
+        <canvas id="lineChart"></canvas>
+    </div>
+    <div>
+        <h2>Role Distribution</h2>
+        <canvas id="pieChart"></canvas>
+    </div>
+    <div>
+        <h2>Monthly Revenue</h2>
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <script>
+        const data = {{ data|safe }};
+        
+        // Line Chart (Weekly Users)
+        const ctxLine = document.getElementById('lineChart').getContext('2d');
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Weekly Users',
+                    data: data.weekly_users,
+                    borderColor: 'purple',
+                    fill: false,
+                }],
+            },
+        });
+
+        // Pie Chart (Role Distribution)
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(data.role_distribution),
+                datasets: [{
+                    data: Object.values(data.role_distribution),
+                    backgroundColor: ['blue', 'green', 'yellow'],
+                }],
+            },
+        });
+
+        // Bar Chart (Monthly Revenue)
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                datasets: [{
+                    label: 'Monthly Revenue',
+                    data: data.monthly_revenue,
+                    backgroundColor: 'cyan',
+                }],
+            },
+        });
+    </script>
+</body>
+</html>
