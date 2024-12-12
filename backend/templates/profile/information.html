@@ -83,7 +83,75 @@ function changePassword(){
 
 
 }
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Processing token from URL...");
 
+    // Function to parse URL fragments
+    function getFragmentParams() {
+        const fragmentString = window.location.hash.substring(1); // Get the fragment after '#'
+        const params = {};
+        fragmentString.split("&").forEach((param) => {
+            const [key, value] = param.split("=");
+            params[decodeURIComponent(key)] = decodeURIComponent(value || "");
+        });
+        return params;
+    }
+
+    // Extract the access token from the URL fragment
+    const fragmentParams = getFragmentParams();
+    const accessToken = fragmentParams["access_token"];
+
+    if (accessToken) {
+        console.log("Access token captured:", accessToken);
+
+        // Store the token in sessionStorage (or send to backend for verification)
+        sessionStorage.setItem("auth_token", accessToken);
+
+        // Optionally, remove the fragment from the URL to clean it up
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Send the token to the backend for verification
+        fetch("/verify-token/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"), // Include CSRF token for security
+            },
+            body: JSON.stringify({ token: accessToken }),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    console.log("Token verification successful.");
+                    window.location.href = "/dashboard/"; // Redirect to a protected page
+                } else {
+                    console.error("Token verification failed:", response);
+                    alert("Authentication failed. Please try again.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error verifying token:", error);
+                alert("An error occurred. Please try again.");
+            });
+    } else {
+        console.log("No access token found in the URL.");
+    }
+
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + "=") {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
 </script>
 
 <!-- <link href="information.css" rel="stylesheet"> -->
@@ -365,6 +433,7 @@ function changePassword(){
     padding: 2rem;
     margin: 1rem;
     height: 95%;
+    /* aspect-ratio: 16/9 */
   }
   
   .form-wrapper {
@@ -436,7 +505,7 @@ function changePassword(){
     <div style="width: 100%;">
       <div class="profile-container" style="width: 100%; height: 100%">
         <div class="content-wrapper">
-          <aside class="sidebar" role="navigation" style="width: 10.75%;">
+          <aside class="sidebar" role="navigation" style="width: 15%;">
             <nav class="nav-menu">
               <!-- {%for user in users %}
                         
@@ -448,7 +517,7 @@ function changePassword(){
               {% if user.account_type == "admin" %}
               <!-- Admin-specific sidebar buttons -->
               <nav class="nav-menu">
-                <a href="#dashboard" class="nav-item" aria-current="false">
+                <a href="{% url 'Dashboard' %}" class="nav-item" aria-current="false">
                   <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                   <span>Dashboard</span>
                 </a>
@@ -464,7 +533,7 @@ function changePassword(){
                   <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                   <span>View Coaches</span>
                 </a>
-                <a href="#report" class="nav-item" aria-current="false">
+                <a href="{% url 'SalesReport' %}" class="nav-item" aria-current="false">
                   <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8460cc8bd9034659fef3083f272f7eef42ed26000fa8674904531f0608029fc7?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                   <span>Report</span>
                 </a>
@@ -477,6 +546,12 @@ function changePassword(){
                   <span>Plan</span>
                 </a>
               </nav>
+              <nav class="nav-menu">
+                <a href="{% url 'userstats' %}" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Statistics</span>
+                </a>
+              </nav>
           {% elif user.account_type == "coach" %}
               <!-- Coach-specific sidebar buttons -->
               <nav class="nav-menu">
@@ -484,7 +559,7 @@ function changePassword(){
                   <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                   <span>Plan</span>
                 </a>
-                  <a href="#payment" class="nav-item" aria-current="false">
+                  <a href="{% url 'payment' %}" class="nav-item" aria-current="false">
                     <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                     <span>Payment</span>
                   </a>
@@ -496,7 +571,7 @@ function changePassword(){
                   <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                   <span>Plan</span>
                 </a>
-                <a href="#payment" class="nav-item" aria-current="false">
+                <a href="{% url 'payment' %}" class="nav-item" aria-current="false">
                   <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                   <span>Payment</span>
                 </a>
@@ -514,7 +589,7 @@ function changePassword(){
             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/ea58de615482b6fbb8bdb9990c83b114973529133782fdc8e652424da510dbaf?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="Company Logo" class="header-logo" />
             
             <section class="content-section">
-              <h1 class="section-title">{{user.account_type}} Information</h1>
+              <h1 class="section-title">{{user.account_type|title}} Information</h1>
               
               <div class="container">
                 <div class="row">

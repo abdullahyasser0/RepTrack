@@ -19,13 +19,34 @@ def home(request):
     return render(request, "test.html")
 
 def dashboard(request):
-    return render(request, "../templates/Dashboard/Dashboard.html")
+    user_id = request.session.get('user_id')
+    user = get_user1(user_id)[0]
+    return render(request, "../templates/Dashboard/Dashboard.html", {'user':user})
 
+def userstats(request):
+    user_id = request.session.get('user_id')
+    user = get_user1(user_id)[0]
+    return render(request, "../templates/Dashboard/UserStatistics.html", {'user':user})
 @login_required 
 def logout_view(request):
     request.session.flush()
-    print("User logged out")
     return redirect('login')
+
+def Equip(request):
+    user_id = request.session.get('user_id')
+    user = get_user1(user_id)[0]
+    return render(request, "../templates/Admin/AddEquipment.html",{'users':users,'id':user_id,'user':user})
+
+def Payment(request):
+    user_id = request.session.get('user_id')
+    user = get_user1(user_id)[0]
+    return render(request, "../templates/Admin/Payment.html",{'users':users,'id':user_id,'user':user})
+def salesReport(request):
+    user_id = request.session.get('user_id')
+    user = get_user1(user_id)[0]
+    return render(request, "../templates/Admin/SalesReport.html",{'users':users,'id':user_id,'user':user}) #waiting for report to be passed here 
+
+
 @login_required 
 def users(request):
     users = get_Users()

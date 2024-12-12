@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from functools import wraps
-
+import jwt
 
 url: str = "https://sodghnhticinsggmbber.supabase.co"
 key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvZGdobmh0aWNpbnNnZ21iYmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyODY5MzMsImV4cCI6MjA0Nzg2MjkzM30.dCfS98X9PFoZpBohhf0UdgSvvcwByOlAPki7-BPlExg"
@@ -82,7 +82,6 @@ def login(request):
             response = supabase.table('users').select('*').eq('email', email).execute()
             if response.data:
                 user_data = response.data[0]
-                print(user_data)
                 stored_password = user_data['password']
 
                 if check_password(password, stored_password):
@@ -100,8 +99,6 @@ def login(request):
                     # Log the user in
                     auth_login(request, user)
                     
-                    print('I LOGGED IN')
-
                     return JsonResponse({'success': True, 'redirect_url': reverse('profiles')})
                 else:
                     return JsonResponse({'success': False, 'error': 'Invalid credentials'}, status=401)
@@ -202,3 +199,75 @@ def logout_view(request):
     request.session.flush()
     print("User logged out")
     return redirect('login')
+
+
+
+def verify_token(request):
+    print("im hereeee babay")
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            token = data.get("token")
+            if not token:
+                print("Token is missing!")
+                return JsonResponse({"error": "Token is required."}, status=400)
+
+            # Replace with your actual Supabase JWT secret
+            SUPABASE_SECRET = "5z/hwxiHipa12UaymEWVVl/B849CCczv6tx92oazDotlUVZhFVoS7SyY2ER7RKyXKFYPJSIRxvGBFnT2aj6Zjg=="
+
+            # Debugging: Decode token without verification
+            unverified_token = jwt.decode(token, options={"verify_signature": False})
+            print("Decoded Token Payload (Unverified):", unverified_token)
+
+            # Initialize email from the token payload
+            email = unverified_token.get("email")
+            if not email:
+                print("Email is missing in token!")
+                return JsonResponse({"error": "Email not found in token."}, status=400)
+
+            # Query the Supabase table
+            response = supabase.table('users').select('*').eq('email', email).execute()
+            if not response.data:
+                name = unverified_token.get("user_metadata", {}).get("full_name", "Unknown")
+                phone_number = unverified_token.get("phone", "")
+
+                # Prepare user data
+                user_data = {
+                    'name': name,
+                    'email': email,
+                    'phone_number': phone_number,
+                    'account_type': 'trainee',
+                    'password': make_password(email)  # Hash the email as a temporary password
+                }
+
+                # Insert new user into Supabase
+                supabase.table('users').insert(user_data).execute()
+                response = supabase.table('users').select('*').eq('email', email).execute()
+
+            # Store user ID in session
+            request.session['user_id'] = response.data[0]['user_id']
+
+            # Create or retrieve the Django user
+            user, created = User.objects.get_or_create(username=email)
+            if created:
+                user.set_unusable_password()
+                user.save()
+
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+
+            # Log in the user
+            auth_login(request, user)
+
+            return JsonResponse({'success': True, 'redirect_url': reverse('profiles')})
+
+        except jwt.ExpiredSignatureError:
+            print("Token has expired.")
+            return JsonResponse({"error": "Token has expired."}, status=401)
+        except jwt.InvalidTokenError as e:
+            print("Invalid token:", str(e))
+            return JsonResponse({"error": "Invalid token."}, status=401)
+        except Exception as e:
+            print("Unexpected error:", str(e))
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method."}, status=405)
