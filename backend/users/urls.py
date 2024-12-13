@@ -20,9 +20,11 @@ urlpatterns = [path('login/', views.login, name='login'),
 
                 path('verify-token/', verify_token, name='verify_token'),
                 path('Dashoard/',dashboard, name = 'Dashboard'),
-                
                 path('Equip/',Equip, name = 'Equip'),
                 path('payment/',Payment, name = 'payment'),
                 path('salesReport/',salesReport, name = 'salesReport'),
+                path('user-dashboard/', views.user_dashboard, name='user_dashboard'),
+                path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+                path('sales-report/', views.sales_report, name='sales_report'),
 
                 ]

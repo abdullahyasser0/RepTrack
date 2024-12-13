@@ -1,0 +1,23 @@
+<h1>Sales Report</h1>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Payment ID</th>
+            <th>User ID</th>
+            <th>Phone Number</th>
+            <th>Payment Type</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for payment in payment_data %}
+            <tr>
+                <td>{{ payment.payment_id }}</td>
+                <td>{{ payment.user_id }}</td>
+                <td>{{ payment.phone_number }}</td>
+                <td>{{ payment.payment_type }}</td>
+                <td>{{ payment.created_at }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

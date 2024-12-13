@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Style to make the charts smaller and centered */
+        .chart-container {
+            width: 50%;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        h2 {
+            font-family: Arial, sans-serif;
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; font-family: Arial, sans-serif;">User Dashboard</h1>
+    
+    <!-- Weekly Activity Chart -->
+    <div class="chart-container">
+        <h2>Weekly Activity</h2>
+        <canvas id="lineChart"></canvas>
+    </div>
+
+    <!-- Task Status Chart -->
+    <div class="chart-container">
+        <h2>Task Status</h2>
+        <canvas id="pieChart"></canvas>
+    </div>
+
+    <!-- Monthly Performance Chart -->
+    <div class="chart-container">
+        <h2>Monthly Performance</h2>
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <!-- JavaScript to generate the charts -->
+    <script>
+        const data = {{ data|safe }};
+        
+        // Line Chart (Weekly Activity)
+        const ctxLine = document.getElementById('lineChart').getContext('2d');
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Weekly Activity',
+                    data: data.weekly_activity,
+                    borderColor: 'blue',
+                    fill: false,
+                }],
+            },
+        });
+
+        // Pie Chart (Task Status)
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(data.task_status),
+                datasets: [{
+                    data: Object.values(data.task_status),
+                    backgroundColor: ['green', 'red'],
+                }],
+            },
+        });
+
+        // Bar Chart (Monthly Performance)
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                datasets: [{
+                    label: 'Monthly Performance',
+                    data: data.monthly_performance,
+                    backgroundColor: 'orange',
+                }],
+            },
+        });
+    </script>
+</body>
+</html>
