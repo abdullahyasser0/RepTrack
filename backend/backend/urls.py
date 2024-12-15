@@ -20,7 +20,7 @@ from django.urls import path, include
 from users.views import signup_view
 from databaseApi.views import profile_view,change_data,change_Password,verify_token
 from users.views import signup_view,users,admins,coaches
-from databaseApi.views import profile_view,change_data,change_Password
+from databaseApi.views import profile_view,change_data,change_Password,forget_password_view,verify_otp_view,reset_password_view
 from users.views import signup_view,users,admins,coaches,dashboard, userstats
 from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip,Payment,salesReport
 
@@ -41,7 +41,9 @@ urlpatterns = [
     path('changeDataForm/',change_data, name = 'changeDataForm'),
     path('changePasswordForm/',change_Password, name = 'changePasswordForm'),
     path('verify-token/', verify_token, name='verify_token'),
-
+    path('forget-password/', forget_password_view, name='forget_password'),
+    path('verify-otp/', verify_otp_view, name='verify_otp'),
+    path('reset-password/', reset_password_view, name='reset_password'),
     
     path('Dashboard/',dashboard, name = 'Dashboard'),
     path('userstats/',userstats, name = 'userstats'),

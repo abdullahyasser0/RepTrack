@@ -1,16 +1,38 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from supabase import create_client, Client
-from django.contrib.auth.hashers import make_password,check_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import login as auth_login, authenticate, logout
 from django.contrib.auth.models import User
-import json
-from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from functools import wraps
+import json
 import jwt
+from dotenv import load_dotenv
+import os
+import random
+import string
+import smtplib
+import logging
+from email.message import EmailMessage
+from django.views.decorators.csrf import csrf_exempt
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from datetime import datetime, timedelta,timezone
+logger = logging.getLogger(__name__)
+
+
+# Load environment variables
+load_dotenv()
+
+# Initialize Supabase client
+supabase_url = os.getenv("SUPABASE_URL")
+supabase_key = os.getenv("SUPABASE_KEY")
+global SMTP_EMAIL, SMTP_PASSWORD
+SMTP_EMAIL=os.getenv("SMTP_EMAIL")
+SMTP_PASSWORD=os.getenv("SMTP_PASSWORD")
+supabase: Client = create_client(supabase_url, supabase_key)
 
 url: str = "https://sodghnhticinsggmbber.supabase.co"
 key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvZGdobmh0aWNpbnNnZ21iYmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyODY5MzMsImV4cCI6MjA0Nzg2MjkzM30.dCfS98X9PFoZpBohhf0UdgSvvcwByOlAPki7-BPlExg"
@@ -271,3 +293,239 @@ def verify_token(request):
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request method."}, status=405)
+
+
+
+
+
+def generate_otp():
+    
+    return ''.join(random.choices(string.digits, k=6))
+
+def send_otp(email: str, otp: str):
+    sender_name = 'RepTrackAdmin'
+    smtp_host = 'smtp.gmail.com'
+    smtp_port = 587
+
+    msg = EmailMessage()
+    msg['From'] = f"{sender_name} <{SMTP_EMAIL}>"
+    msg['To'] = email
+    msg['Subject'] = "Your OTP Code"
+    msg.set_content(f"Hello,\n\nYour Reset Password OTP code is: {otp}\n\nThank you!")
+
+    try:
+        with smtplib.SMTP(smtp_host, smtp_port) as server:
+            server.starttls()
+            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            server.send_message(msg)
+        print(f"OTP sent to {email}")
+    except Exception as e:
+        print(f"Failed to send OTP to {email}: {e}")
+        raise
+
+def clean__user_otps(email):
+    supabase.table("password_resets").delete().eq('email', email).execute()
+
+# Fetch user data, generate OTP, and save to the database
+def forget_password(email):
+    # Fetch user data from the Supabase table based on the email
+    response = supabase.table("users").select("*").eq('email', email).execute()
+    clean__user_otps(email)
+    
+
+    if not response.data:
+        return {"status": "error", "message": "No user found"}  # No user found
+    else:
+        # Generate OTP
+        
+        otp = generate_otp()
+        # Calculate expiration time (e.g., 15 minutes from now)
+        expires_at = datetime.utcnow() + timedelta(minutes=15)
+        # Save OTP to password_resets table
+        supabase.table("password_resets").insert({
+            "email": email,
+            "otp": otp,
+            "created_at": "now",  # Ensure your table has this field
+            "expires_at": expires_at.isoformat()  # Ensure this field exists in your table
+        }).execute()
+        # Send OTP via email
+        send_otp(email, otp)
+        return {"status": "success", "message": "OTP generated and saved successfully"}
+
+@csrf_exempt
+def forget_password_view(request):
+    """
+    Handle password reset requests by generating and sending an OTP to the user's email.
+    """
+    try:
+        # Parse JSON body
+        try:
+            data = json.loads(request.body)
+            email = data.get('email')
+            
+        except json.JSONDecodeError:
+            print("Invalid JSON received in forget_password_view")
+            return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
+
+        # Validate email presence
+        if not email:
+            print("Email not provided in forget_password_view")
+            return JsonResponse({'success': False, 'error': 'Email is required'}, status=400)
+
+        # Validate email format
+        try:
+            validate_email(email)
+        except ValidationError:
+            print(f"Invalid email format received: {email}")
+            return JsonResponse({'success': False, 'error': 'Invalid email format'}, status=400)
+
+        # Call forget_password function
+        result = forget_password(email)
+
+        if result['status'] == 'error':
+            # To prevent email enumeration, return a generic success message
+            print(f"a user tried to reset a password but he is not in the database: {email}")
+            return JsonResponse({'erorr': False, 'message': 'Password reset requested for non-existent email: {email}'}, status=400)
+
+        # OTP successfully generated and sent
+        return JsonResponse({
+            'success': True,
+            'message': result['message']
+        }, status=200)
+
+    except Exception as e:
+        print(f"Unexpected error in forget_password_view: {e}")
+        return JsonResponse({'success': False, 'error': 'An unexpected error occurred'}, status=500)
+
+@csrf_exempt
+def verify_otp_view(request):
+    """
+    Verify the OTP entered by the user.
+    """
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        email = data.get('email')
+        otp = data.get('otp')
+
+        # Validate inputs
+        if not email or not otp:
+            logger.warning("Email or OTP not provided in verify_otp_view")
+            return JsonResponse({'success': False, 'error': 'Email and OTP are required.'}, status=400)
+
+        # Validate email format
+        try:
+            validate_email(email)
+        except ValidationError:
+            logger.warning(f"Invalid email format received: {email}")
+            return JsonResponse({'success': False, 'error': 'Invalid email format.'}, status=400)
+
+        # Fetch OTP record from password_resets table
+        response = supabase.table("password_resets").select("*").eq('email', email).eq('otp', otp).execute()
+        if not response.data:
+            logger.warning(f"Invalid OTP for email: {email}")
+            return JsonResponse({'success': False, 'error': 'Invalid OTP.'}, status=400)
+
+        otp_record = response.data[0]
+        expires_at_str = otp_record.get('expires_at')
+        if not expires_at_str:
+            logger.warning(f"Expiration time missing for OTP: {otp} and email: {email}")
+            return JsonResponse({'success': False, 'error': 'Invalid OTP record.'}, status=400)
+
+        expires_at = datetime.fromisoformat(expires_at_str).replace(tzinfo=timezone.utc)
+        current_time = datetime.now(timezone.utc)
+
+        if current_time > expires_at:
+            logger.warning(f"OTP expired for email: {email}")
+            return JsonResponse({'success': False, 'error': 'OTP has expired.'}, status=400)
+
+        # Optionally, delete or invalidate the OTP after verification to ensure single use
+        
+        logger.info(f"OTP verified successfully for email: {email}")
+
+        return JsonResponse({'success': True, 'message': 'OTP verified successfully.'}, status=200)
+
+    except json.JSONDecodeError:
+        logger.warning("Invalid JSON received in verify_otp_view")
+        return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        logger.error(f"Unexpected error in verify_otp_view: {e}")
+        return JsonResponse({'success': False, 'error': 'An unexpected error occurred.'}, status=500)
+
+@csrf_exempt
+def reset_password_view(request):
+    """
+    Handle password reset by updating the user's password using the OTP.
+    """
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
+    
+    try:
+        data = json.loads(request.body)
+        logger.info(f"Received data in reset_password_view: {data}")  # Log received data
+        
+        email = data.get('email')
+        otp = data.get('otp')
+        new_password = data.get('new_password')
+        confirm_password = data.get('confirm_password')
+
+        # Validate inputs
+        if not all([email, otp, new_password, confirm_password]):
+            print ("Missing fields in reset_password_view is " + str(email) + str(otp) + str(new_password) + str(confirm_password))
+            logger.warning("Missing fields in reset_password_view")
+            return JsonResponse({'success': False, 'error': 'All fields are required.'}, status=400)
+
+        # Validate email format
+        try:
+            validate_email(email)
+        except ValidationError:
+            logger.warning(f"Invalid email format received: {email}")
+            return JsonResponse({'success': False, 'error': 'Invalid email format.'}, status=400)
+
+        # Password strength validation
+        if len(new_password) < 8:
+            return JsonResponse({'success': False, 'error': 'Password must be at least 8 characters long.'}, status=400)
+
+        if new_password != confirm_password:
+            return JsonResponse({'success': False, 'error': 'Passwords do not match.'}, status=400)
+
+        # Fetch the password_resets record using email and otp
+        response = supabase.table("password_resets").select("*").eq('email', email).eq('otp', otp).execute()
+        if not response.data:
+            logger.warning(f"Invalid OTP or email for reset_password_view: {email}")
+            return JsonResponse({'success': False, 'error': 'Invalid OTP or email.'}, status=400)
+
+        otp_record = response.data[0]
+        expires_at_str = otp_record.get('expires_at')
+        if not expires_at_str:
+            logger.warning(f"Expiration time missing for OTP: {otp} and email: {email}")
+            return JsonResponse({'success': False, 'error': 'Invalid OTP record.'}, status=400)
+
+        expires_at = datetime.fromisoformat(expires_at_str).replace(tzinfo=timezone.utc)
+        current_time = datetime.now(timezone.utc)
+
+        if current_time > expires_at:
+            logger.warning(f"OTP expired for email: {email}")
+            return JsonResponse({'success': False, 'error': 'OTP has expired.'}, status=400)
+
+        # Hash the new password
+        hashed_password = make_password(new_password)
+
+        # Update the user's password in the users table
+        update_response = supabase.table("users").update({
+            "password": hashed_password,
+            "updated_at": current_time.isoformat()
+        }).eq('email', email).execute()
+
+        clean__user_otps(email)
+        return JsonResponse({'success': True, 'message': 'Password has been reset successfully.'}, status=200)
+
+    except json.JSONDecodeError:
+        logger.warning("Invalid JSON received in reset_password_view")
+        return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        logger.error(f"Unexpected error in reset_password_view: {e}")
+        return JsonResponse({'success': False, 'error': 'An unexpected error occurred.'}, status=500)
+
