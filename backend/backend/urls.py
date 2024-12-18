@@ -22,8 +22,7 @@ from databaseApi.views import profile_view,change_data,change_Password,verify_to
 from users.views import signup_view,users,admins,coaches
 from databaseApi.views import profile_view,change_data,change_Password,forget_password_view,verify_otp_view,reset_password_view
 from users.views import signup_view,users,admins,coaches,dashboard, userstats
-from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip,Payment,salesReport
-
+from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip,Payment,salesReport,posts
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -49,6 +48,7 @@ urlpatterns = [
     path('userstats/',userstats, name = 'userstats'),
     path('Equip/',Equip, name = 'Equip'),
     path('payment/',Payment, name = 'payment'),
-    path('SalesReport/',salesReport, name = 'SalesReport')
+    path('SalesReport/',salesReport, name = 'SalesReport'),
+    path('Posts/',posts, name = 'Posts')
 
 ]

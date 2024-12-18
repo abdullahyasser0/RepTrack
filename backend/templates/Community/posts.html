@@ -321,7 +321,7 @@
           </div>
   
           <div class="community-item">
-            <img class="community-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/77ce63a6506fc48d3a6a2519a5d7dea28504b485a400574b772dfa0eb5d11360?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Enactus Shivaji community" />
+            <img class="community-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/490a3cda14abc3aa26ec87893d8a5d5e589c6a71f3742fbe4d32be67a4b3148b?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Enactus Shivaji community" />
             <div class="community-info">
               <div class="community-name">Enactus Shivaji</div>
               <div class="member-count">804 members</div>
@@ -350,15 +350,16 @@
     </div>
     <div class="col-md-8">
     <div class="feed-container">
+      {% for post in posts%}
       <div class="feed-wrapper">
         
     
         <main class="post-content">
           <div class="post-header">
-            <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f46a16319649cba29131934dab9b3da4eb4865987c3bad575a9acdcf9b45163b?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Post author profile picture" />
+            <img class="profile-image" src="" alt="Post author profile picture" />
             <div class="post-meta">
               <div class="post-author">
-                <div>You</div>
+                <!-- <div>{{post.name}}</div> -->
                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7cae07b89eb30c733df9ffcc6b57e52ce68642e70c485a2eaf9af24c7bd809d2?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="11" />
                 <div>Websters Shivaji</div>
               </div>
@@ -367,17 +368,14 @@
           </div>
     
           <p class="post-text">
-            Top GitHub repositories to learn modern React development. Open source is great for
-            many things. One of them is learning new skills. In this article, we'll look at some of the best
-            Open Source React projects on GitHub that you can use to quickly boost your hands-on React
-            learning and coding experience.
+            {{post.text}}
           </p>
     
-          <img class="post-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/13d9664def7d52c5cc000c92c6776d0f5f0ee030920429f4ec1b180f156c5b8a?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="React development article preview" />
+          <img class="post-image" src="{{% post.imageURL%}}" alt="React development article preview" />
     
           <div class="likes-section">
             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/37e3e3b2d2e26da52a43a183b947a854ac681a85740207dd68e1e4c77e038f65?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="36" />
-            <div>Joe, Shaan & 3 others like this</div>
+            <div>{{post.no_likes}}</div>
           </div>
     
           <section class="comments-section">
@@ -385,33 +383,24 @@
             
             <div class="comment">
               <div class="comment-author">
-                <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b19890d6b5607f43668480217d8ca06a34f69ba797f1c3fe51c9a4fb547c1c97?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Elon Musk profile picture" />
+                <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/490a3cda14abc3aa26ec87893d8a5d5e589c6a71f3742fbe4d32be67a4b3148b?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Elon Musk profile picture" />
                 <div>Elon Musk</div>
               </div>
-              <p class="comment-text">Nice idea!! keep up the great work!</p>
+              <p class="comment-text">{{post.comment}}</p>
               <div class="comment-actions">
                 <div>32 Likes</div>
                 <button>Like</button>
-                <button>Reply</button>
+                
               </div>
             </div>
     
-            <div class="comment">
-              <div class="comment-author">
-                <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b46fad8ad0b52061dd4bbab2e7c0fba1a5191531441f87c7a2ab5276ec4389bc?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Shaan Alam profile picture" />
-                <div>Shaan Alam</div>
-              </div>
-              <p class="comment-text">Thannkz!!</p>
-              <div class="comment-actions">
-                <button>Like</button>
-                <button>Reply</button>
-              </div>
-            </div>
+            
           </section>
         </main>
     
         
       </div>
+      {%endfor%}
     </div>
 </div>
 </div>
