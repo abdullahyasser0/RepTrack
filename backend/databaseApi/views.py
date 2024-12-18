@@ -44,6 +44,8 @@ def get_Memberships():
 #for admin
 def get_Profiles():
     return supabase.table("profiles").select("*").execute().data
+def get_Posts():
+    return supabase.table("posts").select("*").execute().data
 
 def get_Users():
     return supabase.table("users").select("*").execute().data
