@@ -22,7 +22,7 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      min-height: 950px;
+      /* min-height: 950px; */
       width: 100%;
       overflow: hidden;
       align-items: start;
@@ -308,8 +308,13 @@
 
 <div class="login-container">
   <div class="login-wrapper">
+    <div class="row">
+
+      <div class="col-md-6">
     <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/73859a4080c54497641fa264d99c94f756e5713418b21e17db00286aa16c3403?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" class="background-image" alt="" />
-    <form class="login-form-container" id="loginForm">
+  </div>
+  <div class="col-md-6">  
+  <form class="login-form-container" id="loginForm">
       {% csrf_token %}
       <h1 class="welcome-text">Hi, Welcome Back! 👋</h1>
       
@@ -355,6 +360,8 @@
         <a href="{% url 'signup' %}" class="signup-link">Sign up here</a>
       </div>
     </form>
+  </div>
+  </div>
   </div>
 </div>
 

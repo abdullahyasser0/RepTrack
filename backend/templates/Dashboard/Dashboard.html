@@ -1,79 +1,90 @@
+<head>   
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+</head>
 <body id="page-top">
-
+  <div class="row">
+    <div class="col-md-2">
+  <aside class="sidebar" role="navigation">
+    <nav class="nav-menu">
+      <a href="{% url 'profiles' %}" class="nav-item" aria-current="false">
+        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c787861335dbc9c1626ea7cbbc4a47ff84032e0daa4b20a952a56cba95f22faf?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+        <span>Profile</span>
+      </a>
+      {% if user.account_type == "admin" %}
+      <!-- Admin-specific sidebar buttons -->
+      <nav class="nav-menu">
+        <a href="{% url 'Dashboard' %}" class="active-nav-item nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Dashboard</span>
+        </a>
+        <a href="#registration" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/914281251111c48bbb45ceb54ee84660c93b7b624e390d0d9f0ee4985913d692?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Registration</span>
+        </a>
+        <a href="{% url 'usersData' %}" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/86184e038a7647fc42fa716208a0f37c701e13b2b4ed3f3d3bb780f80a2e6972?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>View Members</span>
+        </a>
+        <a href="{% url 'coachesData' %}" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>View Coaches</span>
+        </a>
+        <a href="#report" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8460cc8bd9034659fef3083f272f7eef42ed26000fa8674904531f0608029fc7?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Report</span>
+        </a>
+      </nav>
+  {% elif user.account_type == "trainee" %}
+      <!-- Trainee-specific sidebar buttons -->
+      <nav class="nav-menu">
+        <a href="#plan" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Plan</span>
+        </a>
+      </nav>
+  {% elif user.account_type == "coach" %}
+      <!-- Coach-specific sidebar buttons -->
+      <nav class="nav-menu">
+        <a href="#plan" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Plan</span>
+        </a>
+          <a href="#payment" class="nav-item" aria-current="false">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+            <span>Payment</span>
+          </a>
+      </nav>
+  {% elif user.account_type == "nutritionist" %}
+      <!-- Nutritionist-specific sidebar buttons -->
+      <nav class="nav-menu">
+        <a href="#plan" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Plan</span>
+        </a>
+        <a href="#payment" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Payment</span>
+        </a>
+      </nav>
+  {% endif %}
+  
+    </nav>
+    <a href="{% url 'logout' %}" class="nav-item">
+      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4cad94fa613a5e3b0efb34fb63a8e60d1822f60ac798bace92f8985b36f0b887?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+      <span>Logout</span>
+    </a>
+  </aside>
+  </div>
+    <div class="col-md-10">
     <!-- Page Wrapper -->
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <aside class="sidebar" role="navigation">
-            <nav class="nav-menu">
-              <a href="{% url 'profiles' %}" class="nav-item" aria-current="false">
-                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c787861335dbc9c1626ea7cbbc4a47ff84032e0daa4b20a952a56cba95f22faf?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                <span>Profile</span>
-              </a>
-              {% if user.account_type == "admin" %}
-              <!-- Admin-specific sidebar buttons -->
-              <nav class="nav-menu">
-                <a href="{% url 'Dashboard' %}" class="active-nav-item nav-item" aria-current="false">
-                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                  <span>Dashboard</span>
-                </a>
-                <a href="#registration" class="nav-item" aria-current="false">
-                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/914281251111c48bbb45ceb54ee84660c93b7b624e390d0d9f0ee4985913d692?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                  <span>Registration</span>
-                </a>
-                <a href="{% url 'usersData' %}" class="nav-item" aria-current="false">
-                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/86184e038a7647fc42fa716208a0f37c701e13b2b4ed3f3d3bb780f80a2e6972?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                  <span>View Members</span>
-                </a>
-                <a href="{% url 'coachesData' %}" class="nav-item" aria-current="false">
-                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                  <span>View Coaches</span>
-                </a>
-                <a href="#report" class="nav-item" aria-current="false">
-                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8460cc8bd9034659fef3083f272f7eef42ed26000fa8674904531f0608029fc7?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                  <span>Report</span>
-                </a>
-              </nav>
-          {% elif user.account_type == "trainee" %}
-              <!-- Trainee-specific sidebar buttons -->
-              <nav class="nav-menu">
-                <a href="#plan" class="nav-item" aria-current="false">
-                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                  <span>Plan</span>
-                </a>
-              </nav>
-          {% elif user.account_type == "coach" %}
-              <!-- Coach-specific sidebar buttons -->
-              <nav class="nav-menu">
-                <a href="#plan" class="nav-item" aria-current="false">
-                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                  <span>Plan</span>
-                </a>
-                  <a href="#payment" class="nav-item" aria-current="false">
-                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                    <span>Payment</span>
-                  </a>
-              </nav>
-          {% elif user.account_type == "nutritionist" %}
-              <!-- Nutritionist-specific sidebar buttons -->
-              <nav class="nav-menu">
-                <a href="#plan" class="nav-item" aria-current="false">
-                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                  <span>Plan</span>
-                </a>
-                <a href="#payment" class="nav-item" aria-current="false">
-                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                  <span>Payment</span>
-                </a>
-              </nav>
-          {% endif %}
-          
-            </nav>
-            <a href="{% url 'logout' %}" class="nav-item">
-              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4cad94fa613a5e3b0efb34fb63a8e60d1822f60ac798bace92f8985b36f0b887?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-              <span>Logout</span>
-            </a>
-          </aside>
+        
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -276,6 +287,9 @@
         <!-- End of Content Wrapper -->
 
     </div>
+    </div>
+    </div>
+    
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
@@ -323,12 +337,23 @@
 }
 
 .sidebar {
-    background: #1A1363;
-    border-radius: 18px 0 0 18px;
-    padding: 2rem 1.5rem;
-    color: #fff;
-    min-height: calc(99vh - 4rem);
-  }
+z-index: 5; 
+position: fixed;
+/* top: 120px; Matches the header height */
+left: 0;
+width: 20%; 
+height: 100%;
+box-sizing: border-box; 
+border-radius: 19px;
+background-color: #1A1363; 
+color: #fff;
+padding: 30px 27px;
+border: 2px solid #e2e2e2; 
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+font: 400 10px Poppins, sans-serif;
+}
 
 .profile-image {
     aspect-ratio: 1;
