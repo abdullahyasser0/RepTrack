@@ -1,0 +1,420 @@
+<style>
+    .feed-container {
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+      margin-top: 200px;
+    }
+    
+    .feed-wrapper {
+      background-color: #f0f0f0;
+      box-shadow: 38px 190px 476px rgba(0, 0, 0, 0.16);
+      display: flex;
+      width: 70%;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    .header-nav {
+      border-radius: 30px;
+      background-color: #fff;
+      display: flex;
+      gap: 20px;
+      color: #1a1363;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 37px 70px 37px 32px;
+      border: 2px solid #e2e2e2;
+      position: fixed;
+      /* top: 0; Sticks to the top of the screen */
+      left: 0; /* Aligns to the left of the viewport */
+      width: 100%; /* Ensures it spans the full screen width */
+      box-sizing: border-box; /* Includes padding and border in width calculation */
+      /* overflow-y: hidden; */
+      z-index: 10;
+      height: 120px;
+    }
+    
+    .nav-links {
+      display: flex;
+      min-height: 51px;
+      align-items: start;
+      gap: 30px;
+      white-space: nowrap;
+      text-transform: uppercase;
+      justify-content: start;
+      margin: auto 0;
+      font: 700 32px Saira Condensed, sans-serif;
+    }
+    
+    .user-profile {
+      display: flex;
+      align-items: start;
+      gap: 40px 49px;
+      flex-wrap: wrap;
+      font: 400 25px Poppins, sans-serif;
+    }
+    
+    .profile-image {
+      aspect-ratio: 1;
+      object-fit: contain;
+      width: 70px;
+      border-radius: 50%;
+    }
+    
+    .profile-name {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .post-content {
+      border-radius: 19px;
+      background-color: #fff;
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      align-items: start;
+      font: 20px Poppins, sans-serif;
+      padding: 68px 48px 31px;
+      border: 2px solid rgba(0, 0, 0, 0.08);
+    }
+    
+    .post-header {
+      display: flex;
+      gap: 13px;
+    }
+    
+    .post-meta {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      flex-basis: 0;
+    }
+    
+    .post-author {
+      display: flex;
+      gap: 16px;
+    }
+    
+    .post-time {
+      color: rgba(0, 0, 0, 0.29);
+      font-weight: 400;
+    }
+    
+    .post-text {
+      color: #000;
+      font-size: 22px;
+      font-weight: 400;
+      margin: 25px 43px 0 0;
+    }
+    
+    .post-image {
+      aspect-ratio: 2.38;
+      object-fit: contain;
+      width: 70%;
+      align-self: center;
+      border-radius: 19px;
+      margin-top: 41px;
+    }
+    
+    .likes-section {
+      display: flex;
+      margin-top: 30px;
+      gap: 9px;
+      color: #000;
+      font-weight: 400;
+    }
+    
+    .comments-section {
+      width: 100%;
+    }
+    
+    .comment {
+      border-radius: 19px;
+      background-color: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      padding: 22px 80px 22px 15px;
+      margin-top: 21px;
+    }
+    
+    .comment-author {
+      display: flex;
+      gap: 6px;
+      color: #1a1363;
+      font-weight: 600;
+    }
+    
+    .comment-text {
+      margin-left: 36px;
+    }
+    
+    .comment-actions {
+      display: flex;
+      gap: 10px;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.44);
+      margin: 5px 0 0 36px;
+    }
+    
+    .chat-container {
+  z-index: 5; /* Layers below the header-nav */
+  position: fixed;
+  top: 120px; /* Matches the header height */
+  left: 0;
+  width: 20%; /* Sidebar width */
+  height: calc(100% - 120px); /* Fills remaining height */
+  box-sizing: border-box; /* Ensures proper layout */
+  border-radius: 19px;
+      background-color: #1a1363;
+      color: #fff;
+      padding: 30px 27px;
+      border: 2px solid #e2e2e2;
+      
+}
+
+
+    
+    .chat-header {
+      border-radius: 16px;
+      background-color: #f1f1f1;
+      display: flex;
+      gap: 9px;
+      color: #1a1363;
+      padding: 24px 39px;
+    }
+    
+    .chat-nav {
+      display: flex;
+      gap: 10px;
+      font-size: 26px;
+      margin: 54px 0 0 41px;
+    }
+    
+    .communities-section {
+      margin-top: 53px;
+    }
+    
+    .community-item {
+      display: flex;
+      gap: 13px;
+      margin: 34px 0 0 40px;
+    }
+    
+    .community-image {
+      aspect-ratio: 1;
+      object-fit: contain;
+      width: 78px;
+      border-radius: 50%;
+    }
+    
+    .community-info {
+      display: flex;
+      flex-direction: column;
+      margin: auto 0;
+    }
+    
+    .community-name {
+      font-size: 19px;
+      font-weight: 500;
+    }
+    
+    .member-count {
+      font-size: 14px;
+      font-weight: 300;
+      margin-top: 7px;
+    }
+    
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+    
+    @media (max-width: 991px) {
+      .header-nav {
+        padding: 0 20px;
+      }
+      
+      .post-content {
+        max-width: 100%;
+        margin-top: 17px;
+        padding: 0 20px;
+      }
+      
+      .post-text {
+        max-width: 100%;
+        margin-right: 10px;
+      }
+      
+      .post-image {
+        max-width: 100%;
+        margin-top: 40px;
+      }
+      
+      .comment {
+        max-width: 100%;
+        margin-right: 10px;
+        padding-right: 20px;
+      }
+      
+      .chat-container {
+        margin-top: -200px;
+        padding: 0 20px 100px;
+      }
+      
+      .chat-header {
+        padding: 0 20px;
+      }
+      
+      .chat-nav {
+        margin: 40px 0 0 10px;
+      }
+      
+      .community-item {
+        margin-left: 10px;
+      }
+    }
+    </style>
+    <nav class="header-nav">
+        <div class="nav-links">
+          <div>About</div>
+          <div>Contact</div>
+        </div>
+        <div class="user-profile">
+          <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0cd30addb40561dc50395e3b22dad0e9978c7eabd875b15bc628038e2204ec2e?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="User profile" />
+          <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/05229837cc58a5da944d256a84bead11172783df2ad4deeac2b4052a0af1e016?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="User profile" />
+          <div class="profile-name">
+            <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/490a3cda14abc3aa26ec87893d8a5d5e589c6a71f3742fbe4d32be67a4b3148b?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Ahmed Bayoumi profile picture" />
+            <div>{{% user.name % Ahmed Bayoumi}}</div>
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/789cb086288498ecbcaea46c72312daecdc039757bc4fbbb600a00f6fec5b60e?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="23" />
+          </div>
+        </div>
+      </nav>
+      <div class="row">
+        <div class="col-md-4">
+      <aside class="chat-container">
+        <div class="chat-header">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b845c5e8ad9ba8027e97acdaa0776012ffdd83f4c8ab0e2e1d54c2eb1caf558f?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="31" />
+          <div>Home</div>
+        </div>
+  
+        <nav class="chat-nav">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8c4bfd7626ff8e3bf2d8a8c8d5e2fce362f2e6464b554c6bdc2a0cd610234af4?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="28" />
+          <div>Profile</div>
+        </nav>
+  
+        <section class="communities-section">
+          <h2>My Communities</h2>
+          <div class="community-item">
+            <img class="community-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/19c471b03be98129b4c332c42822911060b0d5a0e1584bcf7244d5484fda2cf7?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Websters Shivaji community" />
+            <div class="community-info">
+              <div class="community-name">Websters Shivaji</div>
+              <div class="member-count">764 members</div>
+            </div>
+          </div>
+  
+          <div class="community-item">
+            <img class="community-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/77ce63a6506fc48d3a6a2519a5d7dea28504b485a400574b772dfa0eb5d11360?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Enactus Shivaji community" />
+            <div class="community-info">
+              <div class="community-name">Enactus Shivaji</div>
+              <div class="member-count">804 members</div>
+            </div>
+          </div>
+  
+          <div class="community-item">
+            <img class="community-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b6be71480926b22bcbfede2588ec7a3ad0295bc534d7c69da8427a4239ad9b58?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Women Development community" />
+            <div class="community-info">
+              <div class="community-name">Women Development</div>
+              <div class="member-count">804 members</div>
+            </div>
+          </div>
+  
+          <div class="community-item">
+            <img class="community-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/53b1b3c1bc1f55d9cb16b1f75ac28a0c25235512a9559286d52e2338610567bd?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Alumni Relations community" />
+            <div class="community-info">
+              <div class="community-name">Alumni Relations</div>
+              <div class="member-count">804 members</div>
+            </div>
+          </div>
+  
+          <button class="see-all">See All</button>
+        </section>
+      </aside>
+    </div>
+    <div class="col-md-8">
+    <div class="feed-container">
+      <div class="feed-wrapper">
+        
+    
+        <main class="post-content">
+          <div class="post-header">
+            <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f46a16319649cba29131934dab9b3da4eb4865987c3bad575a9acdcf9b45163b?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Post author profile picture" />
+            <div class="post-meta">
+              <div class="post-author">
+                <div>You</div>
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7cae07b89eb30c733df9ffcc6b57e52ce68642e70c485a2eaf9af24c7bd809d2?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="11" />
+                <div>Websters Shivaji</div>
+              </div>
+              <div class="post-time">12 mins ago</div>
+            </div>
+          </div>
+    
+          <p class="post-text">
+            Top GitHub repositories to learn modern React development. Open source is great for
+            many things. One of them is learning new skills. In this article, we'll look at some of the best
+            Open Source React projects on GitHub that you can use to quickly boost your hands-on React
+            learning and coding experience.
+          </p>
+    
+          <img class="post-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/13d9664def7d52c5cc000c92c6776d0f5f0ee030920429f4ec1b180f156c5b8a?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="React development article preview" />
+    
+          <div class="likes-section">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/37e3e3b2d2e26da52a43a183b947a854ac681a85740207dd68e1e4c77e038f65?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="36" />
+            <div>Joe, Shaan & 3 others like this</div>
+          </div>
+    
+          <section class="comments-section">
+            <h2>Comments:</h2>
+            
+            <div class="comment">
+              <div class="comment-author">
+                <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b19890d6b5607f43668480217d8ca06a34f69ba797f1c3fe51c9a4fb547c1c97?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Elon Musk profile picture" />
+                <div>Elon Musk</div>
+              </div>
+              <p class="comment-text">Nice idea!! keep up the great work!</p>
+              <div class="comment-actions">
+                <div>32 Likes</div>
+                <button>Like</button>
+                <button>Reply</button>
+              </div>
+            </div>
+    
+            <div class="comment">
+              <div class="comment-author">
+                <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b46fad8ad0b52061dd4bbab2e7c0fba1a5191531441f87c7a2ab5276ec4389bc?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Shaan Alam profile picture" />
+                <div>Shaan Alam</div>
+              </div>
+              <p class="comment-text">Thannkz!!</p>
+              <div class="comment-actions">
+                <button>Like</button>
+                <button>Reply</button>
+              </div>
+            </div>
+          </section>
+        </main>
+    
+        
+      </div>
+    </div>
+</div>
+</div>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
