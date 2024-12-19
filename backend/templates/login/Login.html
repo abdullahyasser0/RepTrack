@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check Supabase Client Creation</title>
+    <title>Welcome to Reptrack</title>
     <!-- Link to Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js"></script>
@@ -22,7 +22,7 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      min-height: 950px;
+      /* min-height: 950px; */
       width: 100%;
       overflow: hidden;
       align-items: start;
@@ -233,12 +233,89 @@
         margin-top: 40px;
       }
     }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .modal-content span.close {
+      color: #aaa;
+      float: right;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-content form {
+      margin-top: 20px;
+    }
+
+    .modal-content form label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .modal-content form input[type="email"], .modal-content form input[type="text"] {
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: calc(100% - 22px);
+    }
+
+    .modal-content form button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .modal-content form button:hover {
+      background-color: #45a049;
+    }
+
+    .modal-content p.error-message {
+      color: red;
+      font-size: 14px;
+      margin: 10px 0 0 0;
+    }
+
+
 </style>
 
 <div class="login-container">
   <div class="login-wrapper">
+    <div class="row">
+
+      <div class="col-md-6">
     <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/73859a4080c54497641fa264d99c94f756e5713418b21e17db00286aa16c3403?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" class="background-image" alt="" />
-    <form class="login-form-container" id="loginForm">
+  </div>
+  <div class="col-md-6">  
+  <form class="login-form-container" id="loginForm">
+      {% csrf_token %}
       <h1 class="welcome-text">Hi, Welcome Back! 👋</h1>
       
       <div class="form-group">
@@ -262,7 +339,7 @@
           <span class="checkbox-custom"></span>
           Remember Me
         </label>
-        <a href="#" class="forgot-password">Forgot Password?</a>
+        <a href="#" class="forgot-password" onclick="openModal('forgotPasswordModal')">Forgot Password?</a>
       </div>
 
       <button type="submit" class="login-button">Login</button>
@@ -284,7 +361,267 @@
       </div>
     </form>
   </div>
+  </div>
+  </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Forgot Password Modal -->
+<div id="forgotPasswordModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('forgotPasswordModal')">&times;</span>
+    <h2>Forgot Password</h2>
+    <p>Enter your email and we'll send you an OTP to reset your password.</p>
+    <form id="forgotPasswordForm">
+      <label for="forgotEmail">Email:</label>
+      <input type="email" id="forgotEmail" required>
+      <div id="otpInputContainer" style="display: none; margin-top: 20px;">
+        <label for="otp">Enter OTP:</label>
+        <input type="text" id="otp" placeholder="Enter OTP" required>
+      </div>
+      <button type="button" id="sendOtpButton" onclick="sendOtpHandler()">Send OTP</button>
+    </form>
+  </div>
+</div>
+
+<div id="resetPasswordModal" class="modal">
+  <div class="modal-content">
+      <span class="close" onclick="closeModal('resetPasswordModal')">&times;</span>
+      <h2>Reset Password</h2>
+      <form id="resetPasswordForm">
+          <!-- Hidden Fields to Store Email and OTP -->
+          <input type="hidden" id="resetEmail" value="">
+          <input type="hidden" id="resetOtp" value="">
+          
+          <label for="newPassword">New Password:</label>
+          <input type="password" id="newPassword" required>
+          <label for="confirmPassword">Confirm Password:</label>
+          <input type="password" id="confirmPassword" required>
+          <p id="passwordMessage" class="error-message"></p>
+          <button type="button" onclick="resetPasswordHandler()">Reset</button>
+      </form>
+  </div>
+</div>
+
+<script> 
+  // Function to open a modal
+function openModal(modalId) {
+  document.getElementById(modalId).style.display = 'block';
+}
+
+// Function to close a modal
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = 'none';
+  // Reset forms and messages when closing
+  if (modalId === 'forgotPasswordModal') {
+      document.getElementById('forgotPasswordForm').reset();
+      document.getElementById('otpInputContainer').style.display = 'none';
+      const sendOtpButton = document.getElementById('sendOtpButton');
+      sendOtpButton.textContent = 'Send OTP';
+      sendOtpButton.onclick = sendOtpHandler;
+  } else if (modalId === 'resetPasswordModal') {
+      document.getElementById('resetPasswordForm').reset();
+      document.getElementById('passwordMessage').textContent = '';
+  }
+}
+
+// Function to handle sending OTP
+function sendOtpHandler() {
+  const email = document.getElementById('forgotEmail').value;
+
+  if (email === '') {
+      alert('Please enter your email address.');
+      return;
+  }
+
+  // Send OTP to backend
+  fetch('/forget-password/', { // Ensure this URL is correctly mapped in Django
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken'),
+      },
+      body: JSON.stringify({ email: email }),
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.success) {
+          alert('OTP has been sent to ' + email +' please check your email ');
+          // Show the OTP input container
+          const otpInputContainer = document.getElementById('otpInputContainer');
+          otpInputContainer.style.display = 'block'; // Make OTP box visible
+
+          // Update the button text to "Verify OTP"
+          const sendOtpButton = document.getElementById('sendOtpButton');
+          sendOtpButton.textContent = 'Verify OTP';
+          sendOtpButton.onclick = verifyOtpHandler;
+      } else {
+          // To prevent email enumeration, show generic message
+          alert('user with this email does not exist, you can signup');
+          // Optionally, hide the modal
+          closeModal('forgotPasswordModal');
+          window.location.href = '/';
+
+      }
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      alert("An error occurred while sending OTP. Please try again.");
+  });
+}
+
+// Function to handle verifying OTP
+function verifyOtpHandler() {
+  const email = document.getElementById('forgotEmail').value;
+  const otp = document.getElementById('otp').value;
+  
+  if (otp === '') {
+      alert('Please enter the OTP.');
+      return;
+  }
+
+  // Verify OTP with backend
+  fetch('/verify-otp/', { // Ensure this URL is correctly mapped in Django
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken'),
+      },
+      body: JSON.stringify({ email: email, otp: otp }),
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.success) {
+          alert('OTP verified successfully!');
+          closeModal('forgotPasswordModal'); // Close the modal after verification
+          // Open the reset password modal
+          openModal('resetPasswordModal');
+          
+          // Populate the hidden fields in resetPasswordForm
+          document.getElementById('resetEmail').value = email;
+          document.getElementById('resetOtp').value = otp;
+      } else {
+          // Show error message
+          alert(data.error);
+      }
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      alert("An error occurred while verifying OTP. Please try again.");
+  });
+}
+
+// Function to handle resetting the password
+function resetPasswordHandler() {
+  const email = document.getElementById('resetEmail').value; // Updated to get from hidden field
+  const otp = document.getElementById('resetOtp').value; // Updated to get from hidden field
+  const newPassword = document.getElementById('newPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  const passwordMessage = document.getElementById('passwordMessage');
+
+  if (!newPassword || !confirmPassword) {
+      passwordMessage.style.color = 'red';
+      passwordMessage.textContent = 'Please fill in both fields.';
+      return;
+  }
+
+  if (newPassword.length < 8) {
+      passwordMessage.style.color = 'red';
+      passwordMessage.textContent = 'Password must be at least 8 characters long.';
+      return;
+  }
+
+  if (newPassword !== confirmPassword) {
+      passwordMessage.style.color = 'red';
+      passwordMessage.textContent = 'Passwords do not match.';
+      return;
+  }
+
+  // Reset password via backend
+  fetch('/reset-password/', { // Ensure this URL is correctly mapped in Django
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken'),
+      },
+      body: JSON.stringify({
+          email: email,
+          otp: otp,
+          new_password: newPassword,
+          confirm_password: confirmPassword,
+      }),
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.success) {
+          passwordMessage.style.color = 'green';
+          passwordMessage.textContent = 'Password successfully reset!';
+          // Optionally, close the modal after a short delay
+          setTimeout(() => {
+              closeModal('resetPasswordModal');
+              alert('Your password has been reset. Please log in with your new password.');
+              window.location.href = '/signup/login/'; // Redirect to login page
+          }, 2000);
+      } else {
+          passwordMessage.style.color = 'red';
+          passwordMessage.textContent = data.error;
+      }
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      passwordMessage.style.color = 'red';
+      passwordMessage.textContent = 'An error occurred while resetting your password.';
+  });
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script>
   // Function to toggle password visibility

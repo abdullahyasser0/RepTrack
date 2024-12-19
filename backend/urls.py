@@ -22,7 +22,8 @@ from databaseApi.views import profile_view,change_data,change_Password,verify_to
 from users.views import signup_view,users,admins,coaches
 from databaseApi.views import profile_view,change_data,change_Password,forget_password_view,verify_otp_view,reset_password_view
 from users.views import signup_view,users,admins,coaches,dashboard, userstats
-from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip,Payment,salesReport,posts
+from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -40,15 +41,13 @@ urlpatterns = [
     path('changeDataForm/',change_data, name = 'changeDataForm'),
     path('changePasswordForm/',change_Password, name = 'changePasswordForm'),
     path('verify-token/', verify_token, name='verify_token'),
-    path('forget-password/', forget_password_view, name='forget_password'),
+     path('forget-password/', forget_password_view, name='forget_password'),
     path('verify-otp/', verify_otp_view, name='verify_otp'),
     path('reset-password/', reset_password_view, name='reset_password'),
-    
+
+    path('Dashboard/',dashboard, name = 'changePasswordForm'),
     path('Dashboard/',dashboard, name = 'Dashboard'),
     path('userstats/',userstats, name = 'userstats'),
-    path('Equip/',Equip, name = 'Equip'),
-    path('payment/',Payment, name = 'payment'),
-    path('SalesReport/',salesReport, name = 'SalesReport'),
-    path('Posts/',posts, name = 'Posts')
+    path('Equip/',Equip, name = 'Equip')
 
 ]
