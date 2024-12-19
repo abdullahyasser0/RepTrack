@@ -1,37 +1,86 @@
 trigger:
-- main
+  branches:
+    include:
+      - main
 
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.10'
+variables:
+  azureServiceConnection: 'AzureWebAppConnection'
+  stagingWebAppName: 'Reptrack-app-testing'
+  productionWebAppName: 'Reptrack-app-production'
+  buildConfiguration: 'Release'
+  # Adjust as needed for your project's build artifacts
+  buildOutput: 'dist' 
 
-- script: |
-    python -m pip install --upgrade pip setuptools wheel
-    pip install pipenv
-  displayName: 'Install pipenv'
+stages:
+- stage: Build_and_Deploy_Staging
+  displayName: "Build and Deploy to Staging"
+  jobs:
+    - job: Build
+      displayName: "Build and Test"
+      steps:
+        # Use Node.js, adjust version as needed
+        - task: NodeTool@0
+          inputs:
+            versionSpec: '16.x'
+          displayName: 'Use Node.js 16.x'
 
-- script: |
-    pipenv install --system --deploy
-  displayName: 'Install dependencies from Pipfile.lock'
+        - script: |
+            npm install
+            npm run build
+          displayName: "Install Dependencies and Build"
 
-- script: |
-    python manage.py test
-  displayName: 'Run Django tests'
+        - script: |
+            npm test
+          displayName: "Run Tests"
+      
+      # You can add tasks to publish build artifacts if needed
+      # For example:
+      # - task: ArchiveFiles@2
+      #   inputs:
+      #     rootFolderOrFile: '$(build.sourcesDirectory)/$(buildOutput)'
+      #     includeRootFolder: false
+      #     archiveType: 'zip'
+      #     archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+      #     replaceExistingArchive: true
 
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/build.zip'
-    replaceExistingArchive: true
+    - deployment: Deploy_Staging
+      displayName: "Deploy to Staging"
+      environment: 'staging'
+      dependsOn: Build
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              # If you used ArchiveFiles task above, package = '$(Build.ArtifactStagingDirectory)/app.zip'
+              # Otherwise, if your build outputs directly to a directory,
+              # you can zip it or specify that directory.
+              
+              - task: AzureWebApp@1
+                inputs:
+                  azureSubscription: $(azureServiceConnection)
+                  appName: $(stagingWebAppName)
+                  package: '$(Build.SourcesDirectory)/$(buildOutput)'
+                displayName: "Deploy to Staging WebApp"
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)/build.zip'
-    artifactName: 'drop'
-    publishLocation: 'Container'
+- stage: Deploy_Production
+  displayName: "Deploy to Production"
+  dependsOn: Build_and_Deploy_Staging
+  jobs:
+    - deployment: Deploy_Prod
+      displayName: "Deploy to Production"
+      environment: 'production'
+      # You must set up the production environment in Azure DevOps
+      # to require manual approval through the UI.
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - task: AzureWebApp@1
+                inputs:
+                  azureSubscription: $(azureServiceConnection)
+                  appName: $(productionWebAppName)
+                  package: '$(Build.SourcesDirectory)/$(buildOutput)'
+                displayName: "Deploy to Production WebApp"
