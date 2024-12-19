@@ -1,0 +1,37 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.10'
+
+- script: |
+    python -m pip install --upgrade pip setuptools wheel
+    pip install pipenv
+  displayName: 'Install pipenv'
+
+- script: |
+    pipenv install --system --deploy
+  displayName: 'Install dependencies from Pipfile.lock'
+
+- script: |
+    python manage.py test
+  displayName: 'Run Django tests'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/build.zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/build.zip'
+    artifactName: 'drop'
+    publishLocation: 'Container'
