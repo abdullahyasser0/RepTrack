@@ -1,51 +1,94 @@
 trigger:
-- main
+  branches:
+    include:
+      - main
 
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  azureServiceConnection: 'AzureWebAppConnection'
+  acrServiceConnection: 'ACRServiceConnection'
+  containerRegistry: 'myregistry.azurecr.io'  # Your ACR name
+  containerRepository: 'reptrack'             # Your image repository name in ACR
+  imageTag: '$(Build.BuildId)'                # Unique tag for the image
+  stagingWebAppName: 'Reptrack-app-testing'
+  productionWebAppName: 'Reptrack-app-production'
+
 stages:
-- stage: BuildAndTest
-  displayName: Build and Test
+- stage: Build_and_Test
+  displayName: "Build and Test Python/Django App"
   jobs:
-  - job: Build
-    displayName: Build and Test Django Application
-    steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '3.12'  
-        addToPath: true
-
-    - script: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install --dev
-        pipenv run python manage.py test
-      displayName: Install Dependencies and Run Tests
-
-- stage: DeployToDev
-  displayName: Deploy to Development Environment
-  dependsOn: BuildAndTest
-  condition: succeeded()
+    - job: Test
+      displayName: "Install Dependencies and Run Tests"
+      steps:
+        - task: UsePythonVersion@0
+          inputs:
+            versionSpec: '3.9'   # Specify your desired Python version
+          displayName: "Use Python 3.9"
+        
+        # Install dependencies
+        - script: pip install --upgrade pip
+          displayName: "Upgrade pip"
+        
+        - script: pip install -r requirements.txt
+          displayName: "Install Python Dependencies"
+        
+        # Run Django tests
+        - script: python manage.py test
+          displayName: "Run Django Tests"
+          
+- stage: Build_and_Push_Image
+  displayName: "Build and Push Docker Image"
+  dependsOn: Build_and_Test
   jobs:
-  - deployment: DeployDev
-    displayName: Deploy to Dev
-    environment: 'Reptrack-Dev'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '3.12'
-              addToPath: true
+    - job: Build_Push
+      displayName: "Build and Push Docker Image to ACR"
+      steps:
+        - task: Docker@2
+          displayName: "Build and Push Image to ACR"
+          inputs:
+            containerRegistry: $(acrServiceConnection)
+            repository: $(containerRepository)
+            command: buildAndPush
+            Dockerfile: '**/Dockerfile'   # Adjust if your Dockerfile is not at root
+            tags: |
+              $(imageTag)
+            arguments: --no-cache
 
-          - script: |
-              python -m pip install pipenv
-              pipenv install --system --deploy
-          - task: AzureWebApp@1
-            inputs:
-              azureSubscription: 'YourServiceConnection'
-              appName: 'Reptrack-app-testing'
-              package: '$(Pipeline.Workspace)'
-              startUpCommand: 'pipenv run gunicorn reptrack.wsgi --bind 0.0.0.0:8000'
+- stage: Deploy_Staging
+  displayName: "Deploy to Staging Environment"
+  dependsOn: Build_and_Push_Image
+  jobs:
+    - deployment: Deploy_Staging
+      displayName: "Deploy to Staging WebApp"
+      environment: 'staging'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - task: AzureWebApp@1
+                displayName: "Deploy Container to Staging WebApp"
+                inputs:
+                  azureSubscription: $(azureServiceConnection)
+                  appName: $(stagingWebAppName)
+                  packageForLinux: $(containerRegistry)/$(containerRepository):$(imageTag)
+
+- stage: Deploy_Production
+  displayName: "Deploy to Production Environment"
+  dependsOn: Deploy_Staging
+  jobs:
+    - deployment: Deploy_Production
+      displayName: "Deploy to Production WebApp"
+      environment: 'production'
+      # Configure this environment in Azure DevOps to require manual approval before deployment
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - task: AzureWebApp@1
+                displayName: "Deploy Container to Production WebApp"
+                inputs:
+                  azureSubscription: $(azureServiceConnection)
+                  appName: $(productionWebAppName)
+                  packageForLinux: $(containerRegistry)/$(containerRepository):$(imageTag)
