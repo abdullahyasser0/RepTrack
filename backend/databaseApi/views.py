@@ -34,9 +34,6 @@ SMTP_EMAIL=os.getenv("SMTP_EMAIL")
 SMTP_PASSWORD=os.getenv("SMTP_PASSWORD")
 supabase: Client = create_client(supabase_url, supabase_key)
 
-url: str = "https://sodghnhticinsggmbber.supabase.co"
-key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvZGdobmh0aWNpbnNnZ21iYmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyODY5MzMsImV4cCI6MjA0Nzg2MjkzM30.dCfS98X9PFoZpBohhf0UdgSvvcwByOlAPki7-BPlExg"
-supabase: Client = create_client(url, key)
 #for admin
 def get_Memberships():
     return supabase.table("memberships").select("*").execute().data
