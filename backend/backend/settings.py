@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     "backend",  # If this contains logic or models
     "userCreation",
      "databaseApi",
-     "api",
+     #"api",
 
 ]
 
