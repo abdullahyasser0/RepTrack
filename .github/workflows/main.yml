@@ -82,6 +82,7 @@ jobs:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     - name: Run Django tests
       working-directory: backend
       run: |
@@ -97,6 +98,14 @@ jobs:
 >>>>>>> 476067a (Update main.yml)
 =======
 =======
+=======
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+>>>>>>> d003232 (Update main.yml)
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
