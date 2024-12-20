@@ -16,7 +16,7 @@ jobs:
       SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
       
-      # Add other environment variables here if needed
+     
 
     steps:
     - name: Checkout code
@@ -25,7 +25,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.12'  # Specify your Python version
+        python-version: '3.12'  
 
     - name: Install dependencies
       run: |
@@ -33,6 +33,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run migrations
+      working-directory: backend
       run: |
         python manage.py migrate
 
