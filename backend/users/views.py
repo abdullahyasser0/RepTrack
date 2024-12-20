@@ -100,7 +100,6 @@ def protected_page(request):
 def login(request):
     return render(request,"login/Login.html")
 
-#none
 def form_view(request):
     if request.method == 'POST':
         form = SimpleForm(request.POST)
