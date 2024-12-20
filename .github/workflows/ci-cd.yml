@@ -43,33 +43,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install pipenv
           pipenv install --deploy --ignore-pipfile
+        working-directory: ./backend  # Set working directory to backend
 
       # 5. Run Django tests
       - name: Run Tests
         run: pipenv run python manage.py test
+        working-directory: ./backend  # Set working directory to backend
 
       # 6. Collect static files
       - name: Collect Static Files
         run: pipenv run python manage.py collectstatic --noinput
-        working-directory: ./backend 
+        working-directory: ./backend  # Set working directory to backend
 
-      # 7. Upload Test Results (Optional)
-      - name: Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: '**/TEST-*.xml'
-
-      # 8. Deploy to Azure Web App
+      # 7. Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ secrets.AZURE_WEBAPP_NAME }}  # Name of your Azure Web App
           publish-profile: ${{ secrets.AZURE_WEBAPP }}  # Publish profile stored as a secret
-          package: .  # Path to your application package (current directory)
+          package: ./backend  # Path to your application package
 
-      # 9. Optional: Notify Deployment Status
+      # 8. Optional: Notify Deployment Status
       - name: Notify Deployment Status
         if: success()
         run: echo "Deployment to Azure Web App succeeded!"
