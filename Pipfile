@@ -1,7 +1,7 @@
 [[source]]
+name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
-name = "pypi"
 
 [packages]
 aiohttp = "==3.11.10"
@@ -110,6 +110,7 @@ wheel = "==0.45.1"
 wsproto = "==1.2.0"
 yarl = "==1.18.3"
 zope.interface = "==7.2"
+
 [dev-packages]
 
 [requires]
