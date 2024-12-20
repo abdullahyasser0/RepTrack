@@ -84,6 +84,7 @@ jobs:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     - name: Run Django tests
       working-directory: backend
       run: |
@@ -107,6 +108,9 @@ jobs:
         python manage.py collectstatic --noinput
 
 >>>>>>> 5ffe741 (Update main.yml)
+=======
+  
+>>>>>>> 8f1d8a7 (Update main.yml)
 
     - name: Login to Azure
       uses: azure/login@v1
