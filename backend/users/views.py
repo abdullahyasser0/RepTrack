@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import User 
 from databaseApi.views import get_Users,get_user1,get_Coaches,get_Posts
 from databaseApi.views import logout_required
-
+from databaseApi.views import get_user_preferred_days
 
 # Create your views here.
 
@@ -31,6 +31,15 @@ def userstats(request):
 def logout_view(request):
     request.session.flush()
     return redirect('login')
+
+
+@login_required
+def get_user_days(request):
+    user_id = request.session.get('user_id')
+    user = get_user1(user_id)[0]
+    days = get_user_preferred_days(user_id)
+    days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    return render(request, "../templates/profile/schedule.html", {'user':user, 'days':days,'days_of_week': days_of_week})
 
 def Equip(request):
     user_id = request.session.get('user_id')
