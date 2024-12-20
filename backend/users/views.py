@@ -14,38 +14,48 @@ from databaseApi.views import logout_required
 
 # Create your views here.
 
-
+#wala haga
 def home(request):
     return render(request, "test.html")
 
+#stas
 def dashboard(request):
     user_id = request.session.get('user_id')
     user = get_user1(user_id)[0]
     return render(request, "../templates/Dashboard/Dashboard.html", {'user':user})
 
+#user
 def userstats(request):
     user_id = request.session.get('user_id')
     user = get_user1(user_id)[0]
     return render(request, "../templates/Dashboard/UserStatistics.html", {'user':user})
+
+#wala haga iguess
 @login_required 
 def logout_view(request):
     request.session.flush()
     return redirect('login')
 
+#gym
 def Equip(request):
     user_id = request.session.get('user_id')
     user = get_user1(user_id)[0]
     return render(request, "../templates/Admin/AddEquipment.html",{'users':users,'id':user_id,'user':user})
 
+#global to gyms
 def Payment(request):
     user_id = request.session.get('user_id')
     user = get_user1(user_id)[0]
     return render(request, "../templates/Admin/Payment.html",{'users':users,'id':user_id,'user':user})
+
+#global to gyms
 def salesReport(request):
     user_id = request.session.get('user_id')
     user = get_user1(user_id)[0]
     return render(request, "../templates/Admin/SalesReport.html",{'users':users,'id':user_id,'user':user}) #waiting for report to be passed here 
 
+
+#to feed
 def posts(request):
     posts = get_Posts()
     user_id = request.session.get('user_id')
@@ -54,19 +64,23 @@ def posts(request):
     #print(posts['user_id'])
     return render(request, "../templates/Community/posts.html",{'users':users,'id':user_id,'user':user,'posts':posts}) #waiting for report to be passed here 
 
-
+#users 
 @login_required 
 def users(request):
     users = get_Users()
     user_id = request.session.get('user_id')
     user = get_user1(user_id)[0]
     return render(request, '../templates/profile/ActiveMembers.html', {'users': users, 'id':user_id, 'user':user})
+
+#Coaches
 @login_required 
 def coaches(request):
     users = get_Coaches()    
     user_id = request.session.get('user_id')
     user = get_user1(user_id)[0]
     return render(request, '../templates/profile/ActiveCoaches.html', {'users': users , 'id':user_id, 'user':user})
+
+#Admins
 @login_required 
 def admins(request):
     
@@ -74,14 +88,17 @@ def admins(request):
     users = get_user1(user_id)
     return render(request, '../templates/profile/information.html', {'users': users,'id':user_id})
 
+#none
 @login_required
 def protected_page(request):
     return render(request, "protected_page.html")
 
+#none
 @logout_required
 def login(request):
     return render(request,"login/Login.html")
 
+#none
 def form_view(request):
     if request.method == 'POST':
         form = SimpleForm(request.POST)
@@ -93,9 +110,13 @@ def form_view(request):
         form = SimpleForm()
     
     return render(request, 'myform/form.html', {'form': form})
+
+# to be reviewd
 @logout_required
 def signup(request):
     return render(request, "signup/signup.html")
+
+
 @logout_required
 def signup_view(request):
     if request.method == 'POST':
