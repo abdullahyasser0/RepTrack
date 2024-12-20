@@ -13,6 +13,9 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      
       # Add other environment variables here if needed
 
     steps:
