@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from .models import User 
-from databaseApi.views import get_Users,get_user1,get_Coaches,get_Posts
+from databaseApi.views import get_Users,get_user1,get_Coaches,get_Posts,get_Comments
 from databaseApi.views import logout_required
 
 
@@ -48,12 +48,12 @@ def salesReport(request):
 
 def posts(request):
     posts = get_Posts()
+    c = get_Comments()
     user_id = request.session.get('user_id')
     user = get_user1(user_id)[0]
     print(user)
     #print(posts['user_id'])
-    return render(request, "../templates/Community/posts.html",{'users':users,'id':user_id,'user':user,'posts':posts}) #waiting for report to be passed here 
-
+    return render(request, "../templates/Community/posts.html",{'users':users,'id':user_id,'user':user,'posts':posts,"comments":c}) #waiting for report to be passed here 
 
 @login_required 
 def users(request):

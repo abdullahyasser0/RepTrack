@@ -1,6 +1,6 @@
 from django.urls import path,include
 from . import views
-from databaseApi.views import signup,get_Users,get_Profiles,change_data,change_Password,get_Coaches,verify_token,profile_view,signup, login
+from databaseApi.views import signup,get_Users,get_Profiles,change_data,change_Password,get_Coaches,verify_token,profile_view,signup, login,addPost
 from users.views import signup_view,users,admins,coaches,dashboard,Equip,Payment,salesReport
 
 urlpatterns = [path('login/', views.login, name='login'),
@@ -22,6 +22,7 @@ urlpatterns = [path('login/', views.login, name='login'),
                 path('Dashoard/',dashboard, name = 'Dashboard'),
                 path('Equip/',Equip, name = 'Equip'),
                 path('payment/',Payment, name = 'payment'),
+                path('addPost/',addPost, name = 'addPost'),
                 path('salesReport/',salesReport, name = 'salesReport'),
                 path('user-dashboard/', views.user_dashboard, name='user_dashboard'),
                 path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
