@@ -80,12 +80,16 @@ jobs:
       run: |
         python manage.py migrate
 
-    - name: Run tests
+    - name: Run Django tests
       working-directory: backend
       run: |
+<<<<<<< HEAD
 <<<<<<< HEAD
         python manage.py test
 >>>>>>> 4903288 (Create main.yml)
 =======
          py manage.py runserver
 >>>>>>> 96ee6a4 (Update main.yml)
+=======
+        python manage.py test --verbosity=2
+>>>>>>> 476067a (Update main.yml)
