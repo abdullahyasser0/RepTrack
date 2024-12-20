@@ -47,6 +47,9 @@ def get_Profiles():
 def get_Posts():
     
     return supabase.table("posts").select("*").execute().data
+def get_Comments():
+    
+    return supabase.table("comments").select("*").execute().data
 
 def get_Users():
     return supabase.table("users").select("*").execute().data
@@ -203,6 +206,37 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+def addPost(request):
+    id = request.session.get('user_id')
+    name = supabase.table('users').select('name').eq('user_id',id).execute().data
+    # print(,"ksgod")
+    data = json.loads(request.body)
+    description = data.get("description")
+    photoUrl = data.get("photoURL")
+    # name = data.get("posterName")
+    update_response = supabase.table('posts').insert({'description': description,"photoUrl":photoUrl,"no_likes":0,"posterName":name[0]["name"]}).execute()
+    if update_response:
+                    
+                    return JsonResponse({'success': True })
+    else:
+                    return JsonResponse({'success': False, 'error': 'cant update password'}, status=500)
+            
+def addComment(request):
+    id = request.session.get('user_id')
+    name = supabase.table('users').select('name').eq('user_id',id).execute().data
+    print(name[0]["name"],"jj")
+    data = json.loads(request.body)
+    description = data.get("comment")
+    postID = data.get("postID")
+    print(postID,"efhghghh")
+    # name = data.get("posterName")
+    update_response = supabase.table('comments').insert({'comment': description,"commentorName":name[0]["name"],"post_id":postID}).execute()
+    if update_response:
+                    
+                    return JsonResponse({'success': True })
+    else:
+                    return JsonResponse({'success': False, 'error': 'cant update password'}, status=500)
+            
 
 def change_Password(request):
     id = request.session.get('user_id')  
