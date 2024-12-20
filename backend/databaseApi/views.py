@@ -32,7 +32,7 @@ supabase_key = os.getenv("SUPABASE_KEY")
 global SMTP_EMAIL, SMTP_PASSWORD
 SMTP_EMAIL=os.getenv("SMTP_EMAIL")
 SMTP_PASSWORD=os.getenv("SMTP_PASSWORD")
-# supabase: Client = create_client(supabase_url, supabase_key)
+supabase: Client = create_client(supabase_url, supabase_key)
 
 #for admin
 def get_Memberships():
