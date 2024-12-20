@@ -51,6 +51,7 @@ jobs:
       # 6. Collect static files
       - name: Collect Static Files
         run: pipenv run python manage.py collectstatic --noinput
+        working-directory: ./backend 
 
       # 7. Upload Test Results (Optional)
       - name: Upload Test Results
