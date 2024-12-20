@@ -51,6 +51,11 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "rest_framework",
     "users",
+    "backend",  # If this contains logic or models
+    "userCreation",
+     "databaseApi",
+     "api",
+
 ]
 
 
