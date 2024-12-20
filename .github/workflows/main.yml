@@ -37,11 +37,7 @@ jobs:
       run: |
         python manage.py migrate
 
-    - name: Collect static files
-      working-directory: backend
-      run: |
-        python manage.py collectstatic --noinput
-
+  
 
     - name: Login to Azure
       uses: azure/login@v1
