@@ -50,6 +50,8 @@ def posts(request):
     posts = get_Posts()
     user_id = request.session.get('user_id')
     user = get_user1(user_id)[0]
+    print(user)
+    #print(posts['user_id'])
     return render(request, "../templates/Community/posts.html",{'users':users,'id':user_id,'user':user,'posts':posts}) #waiting for report to be passed here 
 
 
