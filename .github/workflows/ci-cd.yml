@@ -24,7 +24,7 @@ jobs:
       - name: Set Up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'  # Specify your Python version
+          python-version: '3.12'  # Ensure this matches your Pipfile
 
       # 3. Cache Pipenv dependencies to speed up builds
       - name: Cache Pipenv Dependencies
@@ -33,7 +33,7 @@ jobs:
           path: |
             ~/.cache/pip
             ~/.local/share/virtualenvs
-          key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          key: ${{ runner.os }}-pipenv-${{ hashFiles('**/backend/Pipfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pipenv-
 
@@ -59,7 +59,7 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}  # Name of your Azure Web App
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}  # Ensure this secret is set
           publish-profile: ${{ secrets.AZURE_WEBAPP }}  # Publish profile stored as a secret
           package: ./backend  # Path to your application package
 
