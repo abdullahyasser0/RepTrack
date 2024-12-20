@@ -32,7 +32,7 @@ supabase_key = os.getenv("SUPABASE_KEY")
 global SMTP_EMAIL, SMTP_PASSWORD
 SMTP_EMAIL=os.getenv("SMTP_EMAIL")
 SMTP_PASSWORD=os.getenv("SMTP_PASSWORD")
-supabase: Client = create_client(supabase_url, supabase_key)
+# supabase: Client = create_client(supabase_url, supabase_key)
 
 url: str = "https://sodghnhticinsggmbber.supabase.co"
 key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvZGdobmh0aWNpbnNnZ21iYmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyODY5MzMsImV4cCI6MjA0Nzg2MjkzM30.dCfS98X9PFoZpBohhf0UdgSvvcwByOlAPki7-BPlExg"
@@ -113,7 +113,9 @@ def login(request):
                     print('User ID inside login function: ', user_data['user_id'])
                     # Create or retrieve the Django user object
                     user, created = User.objects.get_or_create(username=user_data['email'])
+                    print('User: ', user)
                     if created:
+                        print('its created')
                         user.set_unusable_password()
                         user.save()
 
@@ -135,6 +137,39 @@ def login(request):
         return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
     
 
+def save_user_days(request):
+    if request.method == 'POST':
+        try:
+            # Parse the request body
+            data = json.loads(request.body)
+            selected_days = data.get('days', [])
+
+            if not selected_days:
+                return JsonResponse({'error': 'No days provided'}, status=400)
+
+            user_id = request.session.get('user_id')
+
+            # Remove existing preferred days for the user
+            supabase.table('user_preferred_days').delete().eq('Uid', user_id).execute()
+            print('Delete succesful')
+
+            # Insert the new preferred days
+            day_records = [{'Uid': user_id, 'day': day} for day in selected_days]
+            response = supabase.table('user_preferred_days').insert(day_records).execute()
+
+            if response:
+                return JsonResponse({'message': 'Days saved successfully!'}, status=201)
+            else:
+                return JsonResponse({'error': 'Failed to save days'}, status=500)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        except Exception as e:
+            logger.error(f"Error saving user days: {e}")
+            return JsonResponse({'error': 'An error occurred'}, status=500)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
 def get_user(userid):
     response = supabase.table("countries").select("id, name, cities(name)").\
     join("cities", "countries.id", "cities.country_id").execute()
@@ -148,6 +183,19 @@ def profile_view(request):
         return render(request, 'profile/information.html')  
     else:
         return redirect('login')
+
+
+def get_user_preferred_days(user_id):
+    try:
+        response = supabase.table('user_preferred_days').select('day').eq('Uid', user_id).execute()
+
+        return [row['day'] for row in response.data]
+
+    except Exception as e:
+        print(f"Error fetching preferred days: {e}")
+        raise
+
+
 
 def logout_view(request):
     logout(request)
