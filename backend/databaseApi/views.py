@@ -32,7 +32,7 @@ supabase_key = os.getenv("SUPABASE_KEY")
 global SMTP_EMAIL, SMTP_PASSWORD
 SMTP_EMAIL=os.getenv("SMTP_EMAIL")
 SMTP_PASSWORD=os.getenv("SMTP_PASSWORD")
-supabase: Client = create_client(supabase_url, supabase_key)
+# supabase: Client = create_client(supabase_url, supabase_key)
 
 url: str = "https://sodghnhticinsggmbber.supabase.co"
 key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvZGdobmh0aWNpbnNnZ21iYmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyODY5MzMsImV4cCI6MjA0Nzg2MjkzM30.dCfS98X9PFoZpBohhf0UdgSvvcwByOlAPki7-BPlExg"
@@ -45,11 +45,13 @@ def get_Memberships():
 def get_Profiles():
     return supabase.table("profiles").select("*").execute().data
 def get_Posts():
+    
     return supabase.table("posts").select("*").execute().data
 
 def get_Users():
     return supabase.table("users").select("*").execute().data
 def get_Coaches():
+    # print(supabase.table("users").select("*").eq('account_type','coach').execute().data)
     return supabase.table("users").select("*").eq('account_type','coach').execute().data
 def get_user1(userid):
     response = supabase.table("users").select("*").eq('user_id', userid).execute().data

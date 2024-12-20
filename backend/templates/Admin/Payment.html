@@ -665,6 +665,10 @@
                     <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                     <span>Dashboard</span>
                   </a>
+                  <a href="{% url 'Posts' %}" class="nav-item" aria-current="false">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                    <span>Feed</span>
+                  </a>
                   <a href="#registration" class="nav-item" aria-current="false">
                     <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/914281251111c48bbb45ceb54ee84660c93b7b624e390d0d9f0ee4985913d692?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                     <span>Registration</span>
@@ -695,6 +699,10 @@
                     <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                     <span>Statistics</span>
                   </a>
+                  <a href="{% url 'Posts' %}" class="nav-item" aria-current="false">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                    <span>Feed</span>
+                  </a>
                 </nav>
             {% elif user.account_type == "coach" %}
                 <!-- Coach-specific sidebar buttons -->
@@ -707,6 +715,10 @@
                       <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                       <span>Payment</span>
                     </a>
+                    <a href="{% url 'Posts' %}" class="nav-item" aria-current="false">
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                      <span>Feed</span>
+                    </a>
                 </nav>
             {% elif user.account_type == "nutritionist" %}
                 <!-- Nutritionist-specific sidebar buttons -->
@@ -718,6 +730,10 @@
                   <a href="#payment" class="nav-item" aria-current="false">
                     <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                     <span>Payment</span>
+                  </a>
+                  <a href="{% url 'Posts' %}" class="nav-item" aria-current="false">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                    <span>Feed</span>
                   </a>
                 </nav>
             {% endif %}

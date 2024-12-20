@@ -1,6 +1,60 @@
 <style>
-    .feed-container {
+
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .nav-item {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    margin: 18px 0 0 13px;
+    padding: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border-radius: 10px 0 0 10px;
+}
+.logout-item {
+      margin-top: auto;
       display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      color: #fff;
+      text-decoration: none;
+    }
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-icon {
+    aspect-ratio: 1;
+    object-fit: contain;
+    width: 20px;
+}
+
+.nav-text {
+    margin: auto 0;
+}
+
+.active-nav-item {
+    background: #ece9e9;
+    box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
+    color: #1a1363;
+    font-weight: 700;
+    width: 150px;
+}
+
+
+
+
+    .feed-container {
+      display: block;
       flex-direction: row;
       overflow: hidden;
       margin-top: 200px;
@@ -9,7 +63,7 @@
     .feed-wrapper {
       background-color: #f0f0f0;
       box-shadow: 38px 190px 476px rgba(0, 0, 0, 0.16);
-      display: flex;
+      display: block;
       width: 70%;
       flex-direction: column;
       overflow: hidden;
@@ -22,7 +76,7 @@
       gap: 20px;
       color: #1a1363;
       flex-wrap: wrap;
-      justify-content: space-between;
+      /* justify-content: space-between; */
       padding: 37px 70px 37px 32px;
       border: 2px solid #e2e2e2;
       position: fixed;
@@ -48,11 +102,13 @@
     }
     
     .user-profile {
-      display: flex;
-      align-items: start;
-      gap: 40px 49px;
-      flex-wrap: wrap;
+      display:flexbox;
+      align-items:center;
+      /* background-color: #000; */
+      /* gap: 40px 49px;
+      flex-wrap: wrap; */
       font: 400 25px Poppins, sans-serif;
+      /*  */
     }
     
     .profile-image {
@@ -65,6 +121,7 @@
     .profile-name {
       display: flex;
       align-items: center;
+      float: right;
       gap: 12px;
     }
     
@@ -159,13 +216,13 @@
     }
     
     .chat-container {
-  z-index: 5; /* Layers below the header-nav */
+  z-index: 5; 
   position: fixed;
-  top: 120px; /* Matches the header height */
+  top: 90px; 
   left: 0;
-  width: 20%; /* Sidebar width */
-  height: calc(100% - 120px); /* Fills remaining height */
-  box-sizing: border-box; /* Ensures proper layout */
+  width: 20%; 
+  height: fit-content;
+  box-sizing: border-box; 
   border-radius: 19px;
       background-color: #1a1363;
       color: #fff;
@@ -186,11 +243,18 @@
     }
     
     .chat-nav {
-      display: flex;
-      gap: 10px;
-      font-size: 26px;
-      margin: 54px 0 0 41px;
-    }
+  display: flex;
+  gap: 10px;
+  font-size: 26px;
+  position: fixed;
+  top: 0; 
+  left: 0; 
+  width: 100%;
+  background-color: white; 
+  z-index: 1000; 
+  padding: 10px 41px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
     
     .communities-section {
       margin-top: 53px;
@@ -236,6 +300,30 @@
       clip: rect(0, 0, 0, 0);
       border: 0;
     }
+    .sidebar {
+      margin-top: 12px;
+    }
+
+    .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+  }
+  .nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    width: 150px;
+}
+.active-nav-item {
+    background: #ece9e9;
+    box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
+    color: #1a1363;
+    font-weight: 700;
+}
     
     @media (max-width: 991px) {
       .header-nav {
@@ -282,7 +370,7 @@
       }
     }
     </style>
-    <nav class="header-nav">
+    <nav class="chat-nav">
         <div class="nav-links">
           <div>About</div>
           <div>Contact</div>
@@ -292,7 +380,7 @@
           <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/05229837cc58a5da944d256a84bead11172783df2ad4deeac2b4052a0af1e016?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="User profile" />
           <div class="profile-name">
             <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/490a3cda14abc3aa26ec87893d8a5d5e589c6a71f3742fbe4d32be67a4b3148b?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Ahmed Bayoumi profile picture" />
-            <div>{{% user.name % Ahmed Bayoumi}}</div>
+            <div>{{user.name}}</div>
             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/789cb086288498ecbcaea46c72312daecdc039757bc4fbbb600a00f6fec5b60e?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="23" />
           </div>
         </div>
@@ -300,17 +388,106 @@
       <div class="row">
         <div class="col-md-4">
       <aside class="chat-container">
-        <div class="chat-header">
+        <!-- <div class="chat-header">
           <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b845c5e8ad9ba8027e97acdaa0776012ffdd83f4c8ab0e2e1d54c2eb1caf558f?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="31" />
           <div>Home</div>
-        </div>
+        </div> -->
   
-        <nav class="chat-nav">
-          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8c4bfd7626ff8e3bf2d8a8c8d5e2fce362f2e6464b554c6bdc2a0cd610234af4?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="28" />
-          <div>Profile</div>
-        </nav>
+        <aside class="sidebar" role="navigation" style="width: 15%;">
+          <nav class="nav-menu">
+            
+            <a href="#admin-profile" class="nav-item" aria-current="false">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c787861335dbc9c1626ea7cbbc4a47ff84032e0daa4b20a952a56cba95f22faf?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+              <span>Profile</span>
+            </a>
+            {% if user.account_type == "admin" %}
+            <!-- Admin-specific sidebar buttons -->
+            <nav class="nav-menu">
+              <a href="{% url 'Dashboard' %}" class="nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Dashboard</span>
+              </a>
+              <a href="{% url 'Posts' %}" class="active-nav-item nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Feed</span>
+              </a>
+              <a href="#registration" class="nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/914281251111c48bbb45ceb54ee84660c93b7b624e390d0d9f0ee4985913d692?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Registration</span>
+              </a>
+              <a href="{% url 'usersData' %}" class="nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/86184e038a7647fc42fa716208a0f37c701e13b2b4ed3f3d3bb780f80a2e6972?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>View Members</span>
+              </a>
+              <a href="{% url 'coachesData' %}" class="nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>View Coaches</span>
+              </a>
+              <a href="{% url 'SalesReport' %}" class="nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8460cc8bd9034659fef3083f272f7eef42ed26000fa8674904531f0608029fc7?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Report</span>
+              </a>
+            </nav>
+        {% elif user.account_type == "trainee" %}
+            <!-- Trainee-specific sidebar buttons -->
+            <nav class="nav-menu">
+              <a href="#plan" class="nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Plan</span>
+              </a>
+            </nav>
+            <nav class="nav-menu">
+              <a href="{% url 'userstats' %}" class="nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Statistics</span>
+              </a>
+              <a href="{% url 'Posts' %}" class="active-nav-item nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Feed</span>
+              </a>
+            </nav>
+        {% elif user.account_type == "coach" %}
+            <!-- Coach-specific sidebar buttons -->
+            <nav class="nav-menu">
+              <a href="#plan" class="nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Plan</span>
+              </a>
+                <a href="{% url 'payment' %}" class="nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Payment</span>
+                </a>
+                <a href="{% url 'Posts' %}" class="active-nav-item nav-item" aria-current="false">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                  <span>Feed</span>
+                </a>
+            </nav>
+        {% elif user.account_type == "nutritionist" %}
+            <!-- Nutritionist-specific sidebar buttons -->
+            <nav class="nav-menu">
+              <a href="#plan" class="nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Plan</span>
+              </a>
+              <a href="{% url 'payment' %}" class="nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Payment</span>
+              </a>
+              <a href="{% url 'Posts' %}" class="active-nav-item nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Feed</span>
+              </a>
+            </nav>
+        {% endif %}
+        
+          </nav>
+          <a href="{% url 'logout' %}" class="nav-item">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4cad94fa613a5e3b0efb34fb63a8e60d1822f60ac798bace92f8985b36f0b887?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+            <span>Logout</span>
+          </a>
+        </aside>
   
-        <section class="communities-section">
+        <!-- <section class="communities-section">
           <h2>My Communities</h2>
           <div class="community-item">
             <img class="community-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/19c471b03be98129b4c332c42822911060b0d5a0e1584bcf7244d5484fda2cf7?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Websters Shivaji community" />
@@ -345,7 +522,7 @@
           </div>
   
           <button class="see-all">See All</button>
-        </section>
+        </section> -->
       </aside>
     </div>
     <div class="col-md-8">
@@ -359,19 +536,23 @@
             <img class="profile-image" src="" alt="Post author profile picture" />
             <div class="post-meta">
               <div class="post-author">
-                <!-- <div>{{post.name}}</div> -->
+                <div>{{post.name}}</div>
                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7cae07b89eb30c733df9ffcc6b57e52ce68642e70c485a2eaf9af24c7bd809d2?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="11" />
-                <div>Websters Shivaji</div>
+                {% if post.posterName == user.name%}
+                  <div>You</div>
+                {% else %}
+                <div>{{post.posterName}}</div>
+                {% endif %}
               </div>
               <div class="post-time">12 mins ago</div>
             </div>
           </div>
     
           <p class="post-text">
-            {{post.text}}
+            {{post.description}}
           </p>
     
-          <img class="post-image" src="{{% post.imageURL%}}" alt="React development article preview" />
+          <img class="post-image" src="{{post.photoUrl}}" alt="React development article preview" />
     
           <div class="likes-section">
             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/37e3e3b2d2e26da52a43a183b947a854ac681a85740207dd68e1e4c77e038f65?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="36" />
@@ -384,7 +565,11 @@
             <div class="comment">
               <div class="comment-author">
                 <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/490a3cda14abc3aa26ec87893d8a5d5e589c6a71f3742fbe4d32be67a4b3148b?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Elon Musk profile picture" />
-                <div>Elon Musk</div>
+                {% if post.commentorName == user.name%}
+                  <div>You</div>
+                {% else %}
+                <div>{{post.commentorName}}</div>
+                {% endif %}
               </div>
               <p class="comment-text">{{post.comment}}</p>
               <div class="comment-actions">
