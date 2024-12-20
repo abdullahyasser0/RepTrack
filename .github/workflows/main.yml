@@ -83,5 +83,9 @@ jobs:
     - name: Run tests
       working-directory: backend
       run: |
+<<<<<<< HEAD
         python manage.py test
 >>>>>>> 4903288 (Create main.yml)
+=======
+         py manage.py runserver
+>>>>>>> 96ee6a4 (Update main.yml)
