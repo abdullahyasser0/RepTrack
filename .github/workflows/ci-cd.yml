@@ -67,3 +67,8 @@ jobs:
       - name: Notify Deployment Status
         if: success()
         run: echo "Deployment to Azure Web App succeeded!"
+
+      # 9. Optional: List Installed Packages for Debugging
+      - name: List Installed Packages
+        run: pipenv run pip list
+        working-directory: ./backend
