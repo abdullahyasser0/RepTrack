@@ -6,17 +6,17 @@ on:
   pull_request:
     branches: [ 53-restructure-backend-code ]
 
+
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     env:
+      DJANGO_SETTINGS_MODULE: backend.settings
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-      
-     
 
     steps:
     - name: Checkout code
@@ -25,7 +25,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.12'  
+        python-version: '3.12'
 
     - name: Install dependencies
       run: |
@@ -33,9 +33,12 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run migrations
-      working-directory: backend
       run: |
         python manage.py migrate
+
+    - name: Collect static files
+      run: |
+        python manage.py collectstatic --noinput
 
 
     - name: Login to Azure
@@ -46,7 +49,6 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: Reptrack
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PASSWORD }}
+        app-name: AZURE_WEBAPP
+        slot-name: production
         package: .
-
