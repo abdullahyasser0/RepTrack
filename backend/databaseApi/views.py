@@ -1,61 +1,39 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from supabase import create_client, Client
-from django.contrib.auth.hashers import make_password, check_password
-from django.http import JsonResponse
-from django.contrib.auth import login as auth_login, authenticate, logout
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
-from functools import wraps
-import json
-import jwt
-from dotenv import load_dotenv
 import os
-import random
+import jwt
+import sys
+import json
 import string
+import random
 import smtplib
 import logging
+from functools import wraps
+from dotenv import load_dotenv
+from django.urls import reverse
+from django.http import JsonResponse
 from email.message import EmailMessage
-from django.views.decorators.csrf import csrf_exempt
-from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
+from supabase import create_client, Client
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
 from datetime import datetime, timedelta,timezone
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth import login as auth_login, authenticate, logout
+
 logger = logging.getLogger(__name__)
-
-
-# Load environment variables
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from Database.DatabaseCreation import DataBase
 load_dotenv()
 
-# Initialize Supabase client
-supabase_url = os.getenv("SUPABASE_URL")
-supabase_key = os.getenv("SUPABASE_KEY")
-global SMTP_EMAIL, SMTP_PASSWORD
-SMTP_EMAIL=os.getenv("SMTP_EMAIL")
-SMTP_PASSWORD=os.getenv("SMTP_PASSWORD")
-supabase: Client = create_client(supabase_url, supabase_key)
 
-#for admin
-def get_Memberships():
-    return supabase.table("memberships").select("*").execute().data
 
-#for admin
-def get_Profiles():
-    return supabase.table("profiles").select("*").execute().data
-def get_Posts():
-    
-    return supabase.table("posts").select("*").execute().data
-def get_Comments():
-    
-    return supabase.table("comments").select("*").execute().data
 
-def get_Users():
-    return supabase.table("users").select("*").execute().data
-def get_Coaches():
-    # print(supabase.table("users").select("*").eq('account_type','coach').execute().data)
-    return supabase.table("users").select("*").eq('account_type','coach').execute().data
-def get_user1(userid):
-    response = supabase.table("users").select("*").eq('user_id', userid).execute().data
-    return response
+DB = DataBase()
+
+
+
 
 def logout_required(view_func):
     @wraps(view_func)
@@ -67,8 +45,6 @@ def logout_required(view_func):
 
 @logout_required
 def signup(request):
-    print('I AM IN THE SIGN UPUPUPUP')
-    print(json.loads(request.body))
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -85,10 +61,8 @@ def signup(request):
                 'account_type': account_type,
                 'password': make_password(password)
             }
-            print('User data: ', user_data)
             
-            supabase.table('users').insert(user_data).execute()
-
+            DB.insert_user(user_data)
             return JsonResponse({'message': 'User registered successfully!'})
 
         except json.JSONDecodeError:
@@ -104,8 +78,7 @@ def login(request):
             email = data.get('email')
             password = data.get('password')
 
-            # Check user in Supabase
-            response = supabase.table('users').select('*').eq('email', email).execute()
+            response = DB.get_user_byEmail(email)
             if response.data:
                 user_data = response.data[0]
                 stored_password = user_data['password']
@@ -137,9 +110,6 @@ def login(request):
         return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
     
 
-def get_user(userid):
-    response = supabase.table("countries").select("id, name, cities(name)").\
-    join("cities", "countries.id", "cities.country_id").execute()
 
 @login_required
 def profile_view(request):
@@ -157,22 +127,21 @@ def logout_view(request):
 
 def addPost(request):
     id = request.session.get('user_id')
-    name = supabase.table('users').select('name').eq('user_id',id).execute().data
-    # print(,"ksgod")
+    name = DB.get_userName(id)
     data = json.loads(request.body)
     description = data.get("description")
     photoUrl = data.get("photoURL")
     # name = data.get("posterName")
-    update_response = supabase.table('posts').insert({'description': description,"photoUrl":photoUrl,"no_likes":0,"posterName":name[0]["name"]}).execute()
+
+    update_response = DB.add_post(description,photoUrl,name )
     if update_response:
-                    
-                    return JsonResponse({'success': True })
+        return JsonResponse({'success': True })
     else:
-                    return JsonResponse({'success': False, 'error': 'cant update password'}, status=500)
+        return JsonResponse({'success': False, 'error': 'cant update password'}, status=500)
             
 def change_Password(request):
     id = request.session.get('user_id')  
-    response = supabase.table('users').select('*').eq('user_id', id).execute()
+    response = DB.get_user(id)
     
     
     if request.method == 'POST':
@@ -189,7 +158,7 @@ def change_Password(request):
             
             if check_password(old, stored_password):
                 hashed_new_password = make_password(new)
-                update_response = supabase.table('users').update({'password': hashed_new_password}).eq('user_id', id).execute()
+                update_response = DB.update_password(hashed_new_password,id)
 
                 if update_response:
                     return JsonResponse({'success': True })
@@ -205,7 +174,7 @@ def change_data(request):
     data = json.loads(request.body)
     
     # Fetch the user data from the database
-    response = supabase.table('users').select('*').eq('user_id', id).execute()
+    response = DB.get_user(id)
     
     user_data = response.data[0] if response.data else None
 
@@ -217,11 +186,7 @@ def change_data(request):
             email = data.get('email') if data.get('email') else user_data["email"]
             
             # Perform the update operation
-            update_response = supabase.table('users').update({
-                'name': userName,
-                'phone_number': contactInfo,
-                'email': email
-            }).eq('user_id', id).execute()
+            update_response = DB.update_userData(userName,contactInfo,email)
             
             # Check the status of the update operation
             if update_response:
@@ -252,7 +217,6 @@ def verify_token(request):
                 print("Token is missing!")
                 return JsonResponse({"error": "Token is required."}, status=400)
 
-            # Replace with your actual Supabase JWT secret
             SUPABASE_SECRET = "5z/hwxiHipa12UaymEWVVl/B849CCczv6tx92oazDotlUVZhFVoS7SyY2ER7RKyXKFYPJSIRxvGBFnT2aj6Zjg=="
 
             # Debugging: Decode token without verification
@@ -266,7 +230,7 @@ def verify_token(request):
                 return JsonResponse({"error": "Email not found in token."}, status=400)
 
             # Query the Supabase table
-            response = supabase.table('users').select('*').eq('email', email).execute()
+            response = DB.get_user_byEmail(email)
             if not response.data:
                 name = unverified_token.get("user_metadata", {}).get("full_name", "Unknown")
                 phone_number = unverified_token.get("phone", "")
@@ -281,8 +245,8 @@ def verify_token(request):
                 }
 
                 # Insert new user into Supabase
-                supabase.table('users').insert(user_data).execute()
-                response = supabase.table('users').select('*').eq('email', email).execute()
+                DB.insert_user(user_data)
+                response = DB.get_user_byEmail(email)
 
             # Store user ID in session
             request.session['user_id'] = response.data[0]['user_id']
@@ -326,7 +290,7 @@ def send_otp(email: str, otp: str):
     smtp_port = 587
 
     msg = EmailMessage()
-    msg['From'] = f"{sender_name} <{SMTP_EMAIL}>"
+    msg['From'] = f"{sender_name} <{DB.get_smtp_email()}>"
     msg['To'] = email
     msg['Subject'] = "Your OTP Code"
     msg.set_content(f"Hello,\n\nYour Reset Password OTP code is: {otp}\n\nThank you!")
@@ -334,21 +298,19 @@ def send_otp(email: str, otp: str):
     try:
         with smtplib.SMTP(smtp_host, smtp_port) as server:
             server.starttls()
-            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            server.login(DB.get_smtp_email(), DB.get_smtp_password())
             server.send_message(msg)
         print(f"OTP sent to {email}")
     except Exception as e:
         print(f"Failed to send OTP to {email}: {e}")
         raise
 
-def clean__user_otps(email):
-    supabase.table("password_resets").delete().eq('email', email).execute()
 
 # Fetch user data, generate OTP, and save to the database
 def forget_password(email):
     # Fetch user data from the Supabase table based on the email
-    response = supabase.table("users").select("*").eq('email', email).execute()
-    clean__user_otps(email)
+    response = DB.get_user_byEmail(email)
+    DB.clean__user_otps(email)
     
 
     if not response.data:
@@ -360,12 +322,7 @@ def forget_password(email):
         # Calculate expiration time (e.g., 15 minutes from now)
         expires_at = datetime.utcnow() + timedelta(minutes=15)
         # Save OTP to password_resets table
-        supabase.table("password_resets").insert({
-            "email": email,
-            "otp": otp,
-            "created_at": "now",  # Ensure your table has this field
-            "expires_at": expires_at.isoformat()  # Ensure this field exists in your table
-        }).execute()
+        DB.insert_otp(email,otp,expires_at)
         # Send OTP via email
         send_otp(email, otp)
         return {"status": "success", "message": "OTP generated and saved successfully"}
@@ -441,7 +398,8 @@ def verify_otp_view(request):
             return JsonResponse({'success': False, 'error': 'Invalid email format.'}, status=400)
 
         # Fetch OTP record from password_resets table
-        response = supabase.table("password_resets").select("*").eq('email', email).eq('otp', otp).execute()
+        response = DB.get_otp(email,otp )
+
         if not response.data:
             logger.warning(f"Invalid OTP for email: {email}")
             return JsonResponse({'success': False, 'error': 'Invalid OTP.'}, status=400)
@@ -510,7 +468,7 @@ def reset_password_view(request):
             return JsonResponse({'success': False, 'error': 'Passwords do not match.'}, status=400)
 
         # Fetch the password_resets record using email and otp
-        response = supabase.table("password_resets").select("*").eq('email', email).eq('otp', otp).execute()
+        response = DB.get_otp(email,otp)
         if not response.data:
             logger.warning(f"Invalid OTP or email for reset_password_view: {email}")
             return JsonResponse({'success': False, 'error': 'Invalid OTP or email.'}, status=400)
@@ -532,12 +490,9 @@ def reset_password_view(request):
         hashed_password = make_password(new_password)
 
         # Update the user's password in the users table
-        update_response = supabase.table("users").update({
-            "password": hashed_password,
-            "updated_at": current_time.isoformat()
-        }).eq('email', email).execute()
+        DB.updated_restedPassword(hashed_password,current_time,email)
 
-        clean__user_otps(email)
+        DB.clean__user_otps(email)
         return JsonResponse({'success': True, 'message': 'Password has been reset successfully.'}, status=200)
 
     except json.JSONDecodeError:
