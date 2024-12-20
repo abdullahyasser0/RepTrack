@@ -32,7 +32,7 @@ supabase_key = os.getenv("SUPABASE_KEY")
 global SMTP_EMAIL, SMTP_PASSWORD
 SMTP_EMAIL=os.getenv("SMTP_EMAIL")
 SMTP_PASSWORD=os.getenv("SMTP_PASSWORD")
-# supabase: Client = create_client(supabase_url, supabase_key)
+supabase: Client = create_client(supabase_url, supabase_key)
 
 #for admin
 def get_Memberships():
@@ -170,6 +170,23 @@ def addPost(request):
     else:
                     return JsonResponse({'success': False, 'error': 'cant update password'}, status=500)
             
+def addComment(request):
+    id = request.session.get('user_id')
+    name = supabase.table('users').select('name').eq('user_id',id).execute().data
+    print(name[0]["name"],"jj")
+    data = json.loads(request.body)
+    description = data.get("comment")
+    postID = data.get("postID")
+    print(postID,"efhghghh")
+    # name = data.get("posterName")
+    update_response = supabase.table('comments').insert({'comment': description,"commentorName":name[0]["name"],"post_id":postID}).execute()
+    if update_response:
+                    
+                    return JsonResponse({'success': True })
+    else:
+                    return JsonResponse({'success': False, 'error': 'cant update password'}, status=500)
+            
+
 def change_Password(request):
     id = request.session.get('user_id')  
     response = supabase.table('users').select('*').eq('user_id', id).execute()
