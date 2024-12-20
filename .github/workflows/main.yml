@@ -79,6 +79,12 @@ jobs:
       working-directory: backend
       run: |
         python manage.py migrate
+        
+    - name: Run Django tests
+      working-directory: backend
+      run: |
+        pipenv run python manage.py 
+
 
 <<<<<<< HEAD
 <<<<<<< HEAD
