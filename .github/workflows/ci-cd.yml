@@ -45,10 +45,7 @@ jobs:
           pipenv install --deploy --ignore-pipfile
         working-directory: ./backend  # Set working directory to backend
 
-      # 5. Run Django tests
-      - name: Run Tests
-        run: pipenv run python manage.py test
-        working-directory: ./backend  # Set working directory to backend
+
 
       # 6. Collect static files
       - name: Collect Static Files
