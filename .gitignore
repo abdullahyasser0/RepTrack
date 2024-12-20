@@ -21,7 +21,10 @@ Pipfile
 
 Pipfile.lock
 
+<<<<<<< HEAD
 requirements.txt/
 
+=======
+>>>>>>> 3b089d8 (update .gitignore to include Pipfile.lock and venv/)
 
 venv/
