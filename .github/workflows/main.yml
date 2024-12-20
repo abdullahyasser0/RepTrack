@@ -102,6 +102,7 @@ jobs:
 =======
 =======
     - name: Collect static files
+      working-directory: backend
       run: |
         python manage.py collectstatic --noinput
 
