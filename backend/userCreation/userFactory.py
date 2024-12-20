@@ -1,4 +1,4 @@
-from admin import admin
+from backend.userCreation.theadmin import admin
 from trainee import trainee
 from nutritionist import nutritionist
 from coach import coach
