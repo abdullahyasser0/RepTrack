@@ -29,7 +29,7 @@ jobs:
       # Step 4: Build Docker Image
       - name: Build Docker Image
         run: |
-          docker build \
+          docker buildx build \
           --build-arg SMTP_EMAIL=${{ secrets.SMTP_EMAIL }} \
           --build-arg SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }} \
           --build-arg SUPABASE_KEY=${{ secrets.SUPABASE_KEY }} \
@@ -46,7 +46,7 @@ jobs:
           -e SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
           django-backend
 
-      # Step 6: Verify Web App is Running
+      # Step 6: Verify Web App Status
       - name: Verify Web App Status
         run: |
           echo "Checking if the web app is running..."
