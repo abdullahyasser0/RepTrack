@@ -25,12 +25,11 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build \
-          --build-arg SMTP_EMAIL=${{ secrets.SMTP_EMAIL }} \
-          --build-arg SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }} \
-          --build-arg SUPABASE_KEY=${{ secrets.SUPABASE_KEY }} \
-          --build-arg SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
-          -t reptrack.azurecr.io/django-app:latest .
+          docker build --build-arg SMTP_EMAIL=${{ secrets.SMTP_EMAIL }} \
+                      --build-arg SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }} \
+                      --build-arg SUPABASE_KEY=${{ secrets.SUPABASE_KEY }} \
+                      --build-arg SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+                      -t reptrack.azurecr.io/django-app:latest .
 
       - name: Log in to ACR
         run: echo "${{ secrets.ACR_PASSWORD }}" | docker login reptrack.azurecr.io -u "${{ secrets.ACR_USERNAME }}" --password-stdin
