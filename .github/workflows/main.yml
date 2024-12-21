@@ -55,7 +55,15 @@ jobs:
           echo "Listing directories in the server:"
           ls -la
 
-      # Step 8: Check if web app is running
+      # Step 8: Run Django server from backend directory
+      - name: Run Django server
+        working-directory: ./backend
+        run: |
+          echo "Starting Django server..."
+          python manage.py runserver 0.0.0.0:8000 &
+          sleep 10  # Allow server to start
+
+      # Step 9: Check if the web app is running
       - name: Verify web app status
         run: |
           echo "Checking if the web app is running..."
