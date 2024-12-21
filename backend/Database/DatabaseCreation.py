@@ -87,3 +87,7 @@ class DataBase :
             "password": hashed_password,
             "updated_at": current_time.isoformat()
         }).eq('email', email).execute()
+    
+
+    def add_comment_to_post(self,description,name,postID):
+        return self.supabase.table('comments').insert({'comment': description,"commentorName":name[0]["name"],"post_id":postID}).execute()
