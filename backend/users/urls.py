@@ -19,7 +19,7 @@ urlpatterns = [path('login/', views.login, name='login'),
                 path('changePasswordForm/',change_Password, name = 'changePasswordForm'),
                 
                 path('verify-token/', verify_token, name='verify_token'),
-                path('Dashoard/',dashboard, name = 'Dashboard'),
+                path('Dashoard/',views.user_dashboard, name = 'Dashboard'),
                 path('Equip/',Equip, name = 'Equip'),
                 path('payment/',Payment, name = 'payment'),
                 path('addPost/',addPost, name = 'addPost'),
