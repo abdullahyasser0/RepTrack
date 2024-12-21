@@ -2,6 +2,9 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ea7742bd8e47252289e78a9f851333fe6d2e5f86
 name: Deploy to Azure App Service (Container Mode)
 
 on:
@@ -13,6 +16,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+<<<<<<< HEAD
     steps:
       # Step 1: Check out the code
       - name: Checkout Code
@@ -64,6 +68,8 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+=======
+>>>>>>> ea7742bd8e47252289e78a9f851333fe6d2e5f86
     steps:
       # Step 1: Check out the code
       - name: Checkout Code
@@ -87,6 +93,7 @@ jobs:
           context: .  # Path to the Dockerfile
           push: true
           tags: reptrackcontainer.azurecr.io/reptrackimage:${{ github.sha }}
+<<<<<<< HEAD
 
 <<<<<<< HEAD
     - name: Run migrations
@@ -163,10 +170,16 @@ jobs:
         package: .
 >>>>>>> 37852a0 (Update main.yml)
 =======
+=======
+
+>>>>>>> ea7742bd8e47252289e78a9f851333fe6d2e5f86
       # Step 5: Deploy to Azure App Service
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
           app-name: Reptrack-main-app  # Replace with your Azure App Service name
           images: reptrackcontainer.azurecr.io/reptrackimage:${{ github.sha }}
+<<<<<<< HEAD
 >>>>>>> 8717f98 (Update main.yml)
+=======
+>>>>>>> ea7742bd8e47252289e78a9f851333fe6d2e5f86
