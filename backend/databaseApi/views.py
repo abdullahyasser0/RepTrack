@@ -68,6 +68,81 @@ def logout_required(view_func):
         return view_func(request, *args, **kwargs)
     return wrapper
 
+def get_all_workouts():
+    """
+    Fetches all workouts from the system_workout table.
+    Returns a list of workout records.
+    """
+    try:
+        response = supabase.table('system_workout') \
+                           .select('workout_name, description, duration, difficulty_level, target_muscle_group') \
+                           .execute()
+        return response.data if response else []
+    except Exception as e:
+        print(f"Error fetching workouts: {e}")
+        return []
+
+@login_required
+def get_user_schedule(request):
+    user_id = request.session.get('user_id')
+    user = get_user1(user_id)[0]
+    days = get_user_preferred_days(user_id)
+    days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    print('Days: ', days)
+    
+    # Fetch all workouts
+    all_workouts = get_all_workouts()
+    
+    if not days:
+        return render(
+            request,
+            "../templates/profile/schedule.html",
+            {
+                'user': user,
+                'days': days,
+                'days_of_week': days_of_week,
+                'all_workouts': all_workouts
+            }
+        )
+    
+    workouts_by_day = {}
+    
+    for day in days:
+        # Query trainee_schedule to get workout_ids for the day
+        schedule_response = supabase.table('trainee_schedule') \
+                                     .select('workout_id') \
+                                     .eq('trainee_id', user_id) \
+                                     .eq('day', day) \
+                                     .execute()
+        
+        schedule_data = schedule_response.data if schedule_response else []
+        if schedule_data:
+            workout_ids = [record['workout_id'] for record in schedule_data]
+            
+            # Fetch details of workouts using workout_ids
+            if workout_ids:
+                workout_details_response = supabase.table('system_workout') \
+                                                    .select('system_workout_id, workout_name, description, duration, difficulty_level, target_muscle_group') \
+                                                    .in_('system_workout_id', workout_ids) \
+                                                    .execute()
+                workouts_by_day[day] = workout_details_response.data if workout_details_response else []
+        else:
+            workouts_by_day[day] = []
+
+    return render(
+        request,
+        "../templates/profile/schedule.html",
+        {
+            'user': user,
+            'days': days,
+            'days_of_week': days_of_week,
+            'workouts_by_day': workouts_by_day,
+            'all_workouts': all_workouts
+        }
+    )
+
+
+
 @logout_required
 def signup(request):
     print('I AM IN THE SIGN UPUPUPUP')
@@ -150,30 +225,26 @@ def save_user_days(request):
             selected_days = data.get('days', [])
 
             if not selected_days:
-                return JsonResponse({'error': 'No days provided'}, status=400)
+                return redirect('schedule') 
 
             user_id = request.session.get('user_id')
 
-            # Remove existing preferred days for the user
             supabase.table('user_preferred_days').delete().eq('Uid', user_id).execute()
-            print('Delete succesful')
+            print('Delete successful')
 
-            # Insert the new preferred days
             day_records = [{'Uid': user_id, 'day': day} for day in selected_days]
             response = supabase.table('user_preferred_days').insert(day_records).execute()
 
-            if response:
-                return JsonResponse({'message': 'Days saved successfully!'}, status=201)
-            else:
-                return JsonResponse({'error': 'Failed to save days'}, status=500)
+            return render(request, "../templates/profile/schedule.html")
 
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            logger.error("Invalid JSON in request body")
+            return redirect('schedule') 
         except Exception as e:
             logger.error(f"Error saving user days: {e}")
-            return JsonResponse({'error': 'An error occurred'}, status=500)
+            return redirect('schedule')  
 
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+    return redirect('schedule')  
 
 def get_user(userid):
     response = supabase.table("countries").select("id, name, cities(name)").\

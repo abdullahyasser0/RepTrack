@@ -297,6 +297,26 @@
     flex: 0 0 10%; /* Set the desired width (e.g., 60%) */
     max-width: 30%; /* Ensure the column doesn't grow beyond this width */
   }
+  .schedule-table th, .schedule-table td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.schedule-table th {
+  background-color: #ececec;
+}
+
+#schedule-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#days-selection label {
+  font-weight: 500;
+  color: #2b2b2b;
+}
     @media (max-width: 991px) {
       .admin-profile {
         padding: 0 20px;
@@ -426,26 +446,87 @@
             </aside>
       
             <div class="main-content">
-                <!-- Check if days are empty -->
-                {% if days|length == 0 %}
-                <div id="no-days-message" class="form-section">
-                  <h3>You have not chosen any days yet!</h3>
-                  <p>Please select the days you want to save:</p>
-                  <form id="days-form">
-                    <div id="days-selection">
-                      {% for day in days_of_week %}
-                      <label>
-                        <input type="checkbox" name="days" value="{{ day }}" />
-                        {{ day }}
-                      </label>
-                      <br />
-                      {% endfor %}
-                    </div>
-                    <button type="button" class="btn-primary" onclick="changeUserPreferredDays()">Save Days</button>
-                  </form>
-                </div>
-                {% endif %}
+              {% if days|length == 0 %}
+              <!-- Case: No days are selected -->
+              <div id="no-days-message" class="form-section">
+                <h3>You have not chosen any days yet!</h3>
+                <p>Please select the days you want to save:</p>
+                <form id="days-form">
+                  <div id="days-selection">
+                    {% for day in days_of_week %}
+                    <label>
+                      <input type="checkbox" name="days" value="{{ day }}" />
+                      {{ day }}
+                    </label>
+                    <br />
+                    {% endfor %}
+                  </div>
+                  <button type="button" class="btn-primary" onclick="changeUserPreferredDays()">Save Days</button>
+                </form>
               </div>
+              {% else %}
+              <!-- Case: Days are selected -->
+              <div id="schedule-section" class="form-section">
+                <div style="display: flex; gap: 20px; justify-content: space-between;">
+                  <!-- Weekly Schedule Table -->
+                  <div style="flex: 2;">
+                    <h3>Your Weekly Schedule</h3>
+                    <table class="schedule-table" style="width: 100%; border-collapse: collapse;">
+                      <thead>
+                        <tr style="background-color: #ececec; text-align: left;">
+                          <th style="padding: 10px;">Day</th>
+                          <th style="padding: 10px;">Workouts</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for day, workouts in workouts_by_day.items %}
+                        <tr>
+                          <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ day }}</td>
+                          <td style="padding: 10px; border-bottom: 1px solid #ddd;">
+                            {% if workouts|length > 0 %}
+                            <ul style="margin: 0; padding-left: 20px;">
+                              {% for workout in workouts %}
+                              <li style="margin-bottom: 10px;">
+                                <strong>{{ workout.workout_name }}</strong>
+                                <p>Description: {{ workout.description }}</p>
+                                <p>Duration: {{ workout.duration }} minutes</p>
+                                <p>Difficulty: {{ workout.difficulty_level }}</p>
+                                <p>Target Muscle Group: {{ workout.target_muscle_group }}</p>
+                              </li>
+                              {% endfor %}
+                            </ul>
+                            {% else %}
+                            <p>No workouts scheduled.</p>
+                            {% endif %}
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  
+                  <!-- Change Preferred Days Section -->
+                  <div style="flex: 1; border-left: 1px solid #ddd; padding-left: 20px;">
+                    <h3>Change Preferred Days</h3>
+                    <p>You can update your preferred days below:</p>
+                    <form id="days-form">
+                      <div id="days-selection">
+                        {% for day in days_of_week %}
+                        <label style="display: block; margin-bottom: 8px;">
+                          <input type="checkbox" name="days" value="{{ day }}" {% if day in days %}checked{% endif %} />
+                          {{ day }}
+                        </label>
+                        {% endfor %}
+                      </div>
+                      <button type="button" class="btn-primary" style="margin-top: 10px;" onclick="changeUserPreferredDays()">Save Days</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+            
+            
           </div>
         </div>
       </div>
@@ -481,7 +562,7 @@ function changeUserPreferredDays() {
     .then(response => {
       if (response.ok) {
         alert("Preferred days updated successfully!");
-        // Optionally reload the page or perform other actions
+        window.location.reload();
       } else {
         alert("An error occurred while updating preferred days. Please try again.");
       }
