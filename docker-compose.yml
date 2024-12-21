@@ -5,8 +5,9 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    image: backend:latest  # Ensure this matches
     ports:
-      - "80:8000"  # Map host's port 80 to container's port 8000
+      - "80:8000"
     environment:
       ENVIRONMENT: production
       SMTP_EMAIL: ${SMTP_EMAIL}
