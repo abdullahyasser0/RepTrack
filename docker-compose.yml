@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - 8000:8000
+      - 80:8000
     environment:
       ENVIRONMENT: production
       SMTP_EMAIL: ${SMTP_EMAIL}
