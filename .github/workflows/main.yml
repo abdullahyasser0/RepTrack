@@ -30,7 +30,7 @@ jobs:
         with:
           app-name: Reptrack-production
           slot-name: production
-          images: ${{ secrets.ACR_LOGINSERVER }}/reptrack-production:latest
+          images: ${{ secrets.ACR_LOGINSERVER }}/Reptrack-production:latest
           publish-profile: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Set Environment Variables
