@@ -22,8 +22,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t ${{ secrets.ACR_LOGINSERVER }}/reptrack-production:latest .
-          docker push ${{ secrets.ACR_LOGINSERVER }}/reptrack-production:latest
+          docker build -t ${{ secrets.ACR_LOGINSERVER }}/Reptrack-production:latest .
+          docker push ${{ secrets.ACR_LOGINSERVER }}/Reptrack-production:latest
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
