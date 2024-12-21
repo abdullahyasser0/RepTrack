@@ -78,6 +78,7 @@ font: 400 10px Poppins, sans-serif;
     .main-content {
       width: 100%;
       padding: 0 20px;
+      height: 100%;
     }
     
     .header {
@@ -241,10 +242,12 @@ font: 400 10px Poppins, sans-serif;
       .sidebar,
       .main-content {
         width: 100%;
+        height: 100%;
       }
       
       .admin-profile-container {
         padding-right: 20px;
+        height: 100%;
       }
       
       .date-filters,
@@ -355,6 +358,22 @@ font: 400 10px Poppins, sans-serif;
               <span>Feed</span>
             </a>
           </nav>
+          {% elif user.account_type == "gym_admin" %}
+      <!-- Nutritionist-specific sidebar buttons -->
+      <nav class="nav-menu">
+        <a href="{% url 'Equip' %}" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Add Equipment</span>
+        </a>
+        <a href="{% url 'payment' %}" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Payment</span>
+        </a>
+        <a href="{% url 'salesReport' %}" class="active-nav-item nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>sales Report</span>
+        </a>
+      </nav>
       {% endif %}
       
         </nav>
@@ -366,7 +385,7 @@ font: 400 10px Poppins, sans-serif;
     </div>
     <div class="col-md-10">
     <div class="admin-profile-container">
-      <div class="layout-wrapper">
+      <!-- <div class="layout-wrapper"> -->
         
     
         <main class="main-content">
@@ -404,12 +423,13 @@ font: 400 10px Poppins, sans-serif;
               <div class="member-list">
                 <div class="member-header">Show Entities</div>
                 <div class="member-names">
-                  <div class="member-name">Member Name</div>
-                  {%for name in report.memberName%}
+                  {% for payment in payments %}
+                  <div class="member-name">Payment ID</div>
+                  
+                        <div>{{payment.payment_id}}</div>
                     
-                        <div>name</div>
-                    {% endfor %}
                 </div>
+                
               </div>
     
               <div class="payment-details">
@@ -428,49 +448,46 @@ font: 400 10px Poppins, sans-serif;
                 <div class="payment-grid">
                   <div class="grid-column">
                     <div class="column-header">Member ID</div>
-                    {%for id in report.memberID%}
                     
-                        <div>id</div>
-                    {% endfor %}
+                    
+                        <div>{{payment.user_id}}</div>
+                    
                   </div>
                   
                   <div class="grid-column">
-                    <div class="column-header">Plan</div>
-                    {%for plan in report.plan%}
+                    <div class="column-header">Phone Number</div>
                     
-                        <div>plan</div>
-                    {% endfor %}
+                    
+                        <div>{{payment.phone_number}}</div>
+                    
                   </div>
                   
                   <div class="grid-column">
-                    <div class="column-header">Month</div>
-                    {%for duration in report.duration%}
+                    <div class="column-header">Payment Method</div>
                     
-                        <div>duration</div>
-                    {% endfor %}
+                    
+                        <div>{{payment.payment_type}}</div>
+                    
                   </div>
                   
                   <div class="grid-column">
                     <div class="column-header">Date Paid</div>
-                    {%for date in report.datePaid%}
                     
-                        <div>date</div>
-                    {% endfor %}
+                    
+                        <div>{{payment.created_at}}</div>
+                    
                   </div>
                   
-                  <div class="grid-column">
-                    <div class="column-header">Amount</div>
-                    {%for amount in report.amount%}
+                  
                     
-                        <div>amount</div>
                     {% endfor %}
-                  </div>
+                  
                 </div>
               </div>
             </div>
           </section>
         </main>
-      </div>
+      <!-- </div> -->
     </div>
     </div>
     </div>

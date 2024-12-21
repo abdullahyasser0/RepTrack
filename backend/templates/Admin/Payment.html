@@ -377,7 +377,7 @@
     
     .content-wrapper {
       /* gap: 20px; */
-      display: flex;
+      /* display: flex; */
       width: 100%;
       height: 100%;
       
@@ -744,6 +744,22 @@
                     <span>Feed</span>
                   </a>
                 </nav>
+                {% elif user.account_type == "gym_admin" %}
+      <!-- Nutritionist-specific sidebar buttons -->
+      <nav class="nav-menu">
+        <a href="{% url 'Equip' %}" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Add Equipment</span>
+        </a>
+        <a href="{% url 'payment' %}" class="active-nav-item nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Payment</span>
+        </a>
+        <a href="{% url 'salesReport' %}" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Sales Report</span>
+        </a>
+      </nav>
             {% endif %}
             
               </nav>
@@ -789,13 +805,13 @@
                                   
                                 </div>
                                 <div class="input-group">
-                                  <label for="memberName">Name of Member</label>
-                                  <input type="text" id="memberName" class="member-input" aria-label="Member name">
-                                  <label for="planInput">Plan</label>
+                                  <label for="memberId">Id of Member</label>
+                                  <input type="text" id="memberId" class="member-input">
+                                  <label for="number">Phone Number</label>
                                     
-                                  <input type="text" id="planInput" class="plan-input" aria-label="Plan">
-                                  <label for="priceInput">Price</label>
-                                  <input type="number" id="priceInput" class="price-input" aria-label="Price">
+                                  <input type="text" id="number" class="plan-input">
+                                  <label for="paymentMethod">Payment Method</label>
+                                  <input type="text" id="paymentMethod" class="price-input">
                                 </div>
                                 
                               </div>
@@ -831,18 +847,26 @@
 
 
 
-
-      <!-- <script>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Welcome to Reptrack</title>
+        <!-- Link to Supabase JS SDK -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
+        <script src="https://unpkg.com/@supabase/supabase-js"></script>
+      
+      </head>
+      <script>
   function changeData(){
-  const price = document.getElementById("priceInput").value
-  const plan = document.getElementById("planInput").value
-  const name = document.getElementById("memberName").value
+  const memberId = document.getElementById("memberId").value
+  const number = document.getElementById("number").value
+  const paymentMethod = document.getElementById("paymentMethod").value
   const changedData = {
-    name: name,
-    plan: plan,
-    price :price
+    user_id: memberId,
+    phone_number: number,
+    payment_type :paymentMethod
   };
-  const changedataurl = "{% url 'payment' %}";
+  const changedataurl = "{% url 'addPayment' %}";
   console.log("gg" , changedData)
   fetch(changedataurl,{
     method: 'POST',
@@ -853,7 +877,7 @@
     body: JSON.stringify(changedData),
 }).then(response => {
       if (response.ok) {
-        window.location.href = "{% url 'profiles' %}"; // Redirect on success
+        //window.location.href = "{% url 'profiles' %}"; // Redirect on success
       } else {
         alert("An error occurred, please try again.");
       }
@@ -873,4 +897,4 @@
 
 }
 
-</script> -->
+</script>

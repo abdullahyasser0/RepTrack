@@ -320,15 +320,26 @@ font: 400 10px Poppins, sans-serif;
           </a>
       </nav>
 
+        <a href="{% url 'Equip' %}" class="active-nav-item nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Add Equipment</span>
+        </a>
+        <a href="#registration" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/914281251111c48bbb45ceb54ee84660c93b7b624e390d0d9f0ee4985913d692?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Registration</span>
+        </a>
         <a href="{% url 'usersData' %}" class="nav-item" aria-current="false">
           <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/86184e038a7647fc42fa716208a0f37c701e13b2b4ed3f3d3bb780f80a2e6972?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
           <span>View Members</span>
         </a>
-        <a href="{% url 'coachesData' %}" class="active-nav-item nav-item" aria-current="false">
+        <a href="{% url 'coachesData' %}" class="nav-item" aria-current="false">
           <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
           <span>View Coaches</span>
         </a>
-
+        <a href="#report" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8460cc8bd9034659fef3083f272f7eef42ed26000fa8674904531f0608029fc7?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Report</span>
+        </a>
       </nav>
   {% elif user.account_type == "trainee" %}
       <!-- Trainee-specific sidebar buttons -->
@@ -341,17 +352,7 @@ font: 400 10px Poppins, sans-serif;
           <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
           <span>Feed</span>
         </a>
-        <a href="{% url 'registerCoach' %}" class="nav-item" aria-current="false">
-          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-          <span>Register Coach</span>
-        </a>
       </nav>
-      <nav class="nav-menu">
-        <a href="{% url 'registerNutritionist' %}" class="nav-item" aria-current="false">
-          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-          <span>Register Nutritionist</span>
-        </a>
-    </nav>
   {% elif user.account_type == "coach" %}
       <!-- Coach-specific sidebar buttons -->
       <nav class="nav-menu">
@@ -382,6 +383,22 @@ font: 400 10px Poppins, sans-serif;
         <a href="{% url 'Posts' %}" class="nav-item" aria-current="false">
           <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
           <span>Feed</span>
+        </a>
+      </nav>
+  {% elif user.account_type == "gym_admin" %}
+      <!-- Nutritionist-specific sidebar buttons -->
+      <nav class="nav-menu">
+        <a href="{% url 'Equip' %}" class="active-nav-item nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Add Equipment</span>
+        </a>
+        <a href="{% url 'payment' %}" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Payment</span>
+        </a>
+        <a href="{% url 'salesReport' %}" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Sales Report</span>
         </a>
       </nav>
   {% endif %}
@@ -429,33 +446,20 @@ font: 400 10px Poppins, sans-serif;
             </div>
   
             <div class="equipment-list">
+              {% for equip in equipments %}
               <div class="equipment-item">
-                <span>Treadmill</span>
-                <span>1</span>
-                <span>Active</span>
+                <span>{{equip.equipment_name}}</span>
+                <span>{{equip.equipment_quantity}}</span>
+                <span>{{equip.status}}</span>
                 <button class="edit-btn" data-toggle="modal" data-target="#exampleModal">Edit</button>
               </div>
+              {% endfor %}
               
-              <div class="equipment-item">
-                <span>10 lbs Dumbell</span>
-                <span>3</span>
-                <span>Inactive</span>
-                <button class="edit-btn" data-toggle="modal" data-target="#exampleModal">Edit</button>
-              </div>
               
-              <div class="equipment-item">
-                <span>15 lbs Dumbell</span>
-                <span>6</span>
-                <span>Active</span>
-                <button class="edit-btn" data-toggle="modal" data-target="#exampleModal">Edit</button>
-              </div>
               
-              <div class="equipment-item">
-                <span>20 lbs Dumbell</span>
-                <span>12</span>
-                <span>Active</span>
-                <button class="edit-btn" data-toggle="modal" data-target="#exampleModal">Edit</button>
-              </div>
+              
+              
+              
             </div>
   
             
@@ -502,4 +506,44 @@ font: 400 10px Poppins, sans-serif;
   </div>
 </div>
 </div>
+<script>
+    function changeData(){
+  const name = document.getElementById("name").value
+  const quantity = document.getElementById("quantity").value
+  const status = document.getElementById("status").value
+  const changedData = {
+    equipment_name: name,
+    equipment_quantity :quantity,
+    status: status,
+  };
+  const changedataurl = "{% url 'addEquippment' %}";
+  console.log("gg" , changedData)
+  fetch(changedataurl,{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken'),
+    },
+    body: JSON.stringify(changedData),
+}).then(response => {
+      if (response.ok) {
+        window.location.href = "{% url 'profiles' %}"; // Redirect on success
+      } else {
+        alert("An error occurred, please try again.");
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("An error occurred, please try again.");
+    });
+    function getCookie(name) {
+    const cookieValue = document.cookie
+      .split('; ')
+      .find(row => row.startsWith(name + '='))
+      .split('=')[1];
+    return decodeURIComponent(cookieValue);
+  }
 
+
+}
+</script>
