@@ -10,23 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the code
       - name: Check out code
         uses: actions/checkout@v3
 
-      # Step 2: Log in to Azure
       - name: Log in to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Step 3: Install Docker Compose
       - name: Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | jq -r .tag_name)/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
 
-      # Step 4: Build Docker Image
       - name: Build Docker Image
         run: |
           docker build \
@@ -36,35 +32,30 @@ jobs:
           --build-arg SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
           -t reptrack.azurecr.io/django-app:latest .
 
+      - name: Log in to ACR
+        run: echo "${{ secrets.ACR_PASSWORD }}" | docker login reptrack.azurecr.io -u "${{ secrets.ACR_USERNAME }}" --password-stdin
 
-      # Step 7: Deploy to Azure Web App
+      - name: Push Docker image
+        run: docker push reptrack.azurecr.io/django-app:latest
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: Reptrack-production
-          images: ${{ secrets.ACR_LOGIN_SERVER }}/reptrack.azurecr.io/django-app:latest
+          images: reptrack.azurecr.io/django-app:latest
+
       - name: Run Docker container to test
-        env:
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }} \
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }} \
-         
-          
         run: |
           docker run -d -p 8000:8000 --name django-backend \
-                     -e SUPABASE_KEY=$SUPABASE_KEY \
-                     -e SUPABASE_URL=$SUPABASE_URL \
+                     -e SUPABASE_KEY=${{ secrets.SUPABASE_KEY }} \
+                     -e SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
                      -e SMTP_EMAIL=${{ secrets.SMTP_EMAIL }} \
                      -e SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }} \
-                     
-          # Wait for the container to start
+                     reptrack.azurecr.io/django-app:latest
           sleep 30
-          # Check if the web application is running
-          curl --fail http://localhost:8000/ || (docker logs Reptrack && exit 1)
-          # Stop and remove the test container
+          curl --fail http://localhost:8000/ || (docker logs django-backend && exit 1)
           docker stop django-backend
           docker rm django-backend
-      - name: Push Docker image
-        run: docker push reptrack.azurecr.io/django-app:latest
 
+      - name: Clean up Docker
+        run: docker system prune -af
