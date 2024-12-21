@@ -2,9 +2,9 @@ name: Deploy Django App to Azure
 
 on:
   push:
-    branches: [main]
+    branches: [53-restructure-backend-code]
   pull_request:
-    branches: [main]
+    branches: [53-restructure-backend-code]
 
 jobs:
   build-and-deploy:
