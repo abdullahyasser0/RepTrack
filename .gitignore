@@ -21,7 +21,10 @@ Pipfile
 
 Pipfile.lock
 
+<<<<<<< HEAD
 requirements.txt/
 
+=======
+>>>>>>> 96ec74ba695b9d966aeefe87761c7ad2d9f50fb1
 
 venv/
