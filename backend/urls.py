@@ -20,7 +20,7 @@ from django.urls import path, include
 from users.views import signup_view
 from databaseApi.views import profile_view,change_data,change_Password,verify_token
 from users.views import signup_view,users,admins,coaches
-from databaseApi.views import profile_view,change_data,change_Password,forget_password_view,verify_otp_view,reset_password_view
+from databaseApi.views import profile_view,change_data,change_Password,forget_password_view,verify_otp_view,reset_password_view,Payment
 from users.views import signup_view,users,admins,coaches,dashboard, userstats
 from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip
 
@@ -45,9 +45,9 @@ urlpatterns = [
     path('verify-otp/', verify_otp_view, name='verify_otp'),
     path('reset-password/', reset_password_view, name='reset_password'),
 
-    path('Dashboard/',dashboard, name = 'changePasswordForm'),
     path('Dashboard/',dashboard, name = 'Dashboard'),
     path('userstats/',userstats, name = 'userstats'),
+    path('payment/',Payment, name = 'payment'),
     path('Equip/',Equip, name = 'Equip')
 
 ]

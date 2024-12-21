@@ -33,6 +33,7 @@ def userstats(request):
 def Payment(request):
     user_id = request.session.get('user_id')
     user = DB.get_user(user_id)[0]
+    
     return render(request, "../templates/Admin/Payment.html",{'id':user_id,'user':user})
 
 
@@ -40,7 +41,9 @@ def Payment(request):
 def salesReport(request):
     user_id = request.session.get('user_id')
     user = DB.get_user(user_id)[0]
-    return render(request, "../templates/Admin/SalesReport.html",{'users':users,'id':user_id,'user':user}) #waiting for report to be passed here 
+    payments = DB.get_payment()
+    print(payments)
+    return render(request, "../templates/Admin/SalesReport.html",{'users':users,'id':user_id,'user':user,'payments':payments}) #waiting for report to be passed here 
 
 
 

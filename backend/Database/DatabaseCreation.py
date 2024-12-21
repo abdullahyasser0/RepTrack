@@ -23,6 +23,8 @@ class DataBase :
     
     def get_Memberships(self):
         return self.supabase.table("memberships").select("*").execute().data
+    def add_Equip(self,data):
+        return self.supabase.table('gym_equipment').insert(data).execute()
 
     def get_Profiles(self):
         return self.supabase.table("profiles").select("*").execute().data
@@ -50,6 +52,9 @@ class DataBase :
                            
     def insert_user(self,data):
         return self.supabase.table('users').insert(data).execute()
+    
+    def insert_payment(self,data):
+        return self.supabase.table('payment').insert(data).execute()
 
     def get_userName(self,id):
         return self.supabase.table('users').select('name').eq('user_id',id).execute().data
