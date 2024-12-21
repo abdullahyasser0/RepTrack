@@ -40,6 +40,7 @@ supabase: Client = create_client(url, key)
 #for admin
 def get_Memberships():
     return supabase.table("memberships").select("*").execute().data
+    
 
 #for admin
 def get_Profiles():
@@ -54,8 +55,159 @@ def get_Comments():
 def get_Users():
     return supabase.table("users").select("*").execute().data
 def get_Coaches():
-    # print(supabase.table("users").select("*").eq('account_type','coach').execute().data)
     return supabase.table("users").select("*").eq('account_type','coach').execute().data
+
+def get_nutritionist():
+    return supabase.table("users").select("*").eq('account_type','nutritionist').execute().data
+
+
+
+@login_required
+def check_registered_nutritionist(request):
+    user_id = request.session.get('user_id')  # Retrieve the logged-in user's ID
+    user = get_user1(user_id)[0]
+    # Check if the user is registered with a nutritionist
+    registered_nutritionist_response = supabase.table('registered_nutritionist') \
+                                         .select('nutritionist_id') \
+                                         .eq('trainee_id', user_id) \
+                                         .execute()
+    registered_nutritionist_data = registered_nutritionist_response.data
+
+    if registered_nutritionist_data and len(registered_nutritionist_data) > 0:
+        # User is registered with a coach
+        nutritionist_id = registered_nutritionist_data[0]['nutritionist_id']
+
+        # Retrieve coach details from the users table
+        nutritionist_response = supabase.table('users') \
+                                  .select('name') \
+                                  .eq('user_id', nutritionist_id) \
+                                  .execute()
+        nutritionist_data = nutritionist_response.data[0] if nutritionist_response.data else {}
+
+        if nutritionist_data:
+            nutritionist_name = f"{nutritionist_data['name']}"
+            return render(request, "../templates/profile/registernutritionist.html", {
+                'has_coach': True,
+                'coach_id': nutritionist_id,
+                'coach_name': nutritionist_name,
+                'user': user
+            })
+        else:
+            # Handle the case where coach details cannot be retrieved
+            return render(request, "../templates/profile/registernutritionist.html", {
+                'has_coach': True,
+                'coach_id': nutritionist_id,
+                'coach_name': "Unknown Coach"
+            })
+    else:
+        # User is not registered with a coach
+        # Fetch all available coaches
+        nutritionists = get_nutritionist()
+
+        return render(request, "../templates/profile/registernutritionist.html", {
+            'has_coach': False,
+            'coaches': nutritionists
+        })
+@login_required
+def register_nutritionist(request):
+    print('I AM INSIDE NUTRINISNo REGISTER FUNCITONNO')
+    trainee_id = request.session.get('user_id')  
+
+    if request.method == 'POST':
+        nutritionist_id = request.POST.get('coach_id') 
+
+        if nutritionist_id:
+            response = supabase.table('registered_nutritionist').insert({
+                'trainee_id': trainee_id,
+                'nutritionist_id': nutritionist_id 
+            }).execute()
+
+            if response: 
+                return render(request, "../templates/profile/registernutritionist.html")
+            else:
+                return render(request, "../templates/profile/registernutritionist.html")  #
+        else:
+            return render(request, "../templates/profile/registernutritionist.html")  
+
+    return render(request, "../templates/profile/registernutritionist.html") 
+
+
+
+@login_required
+def check_registered_coach(request):
+    user_id = request.session.get('user_id')  # Retrieve the logged-in user's ID
+    user = get_user1(user_id)[0]
+    # Check if the user is registered with a coach
+    registered_coach_response = supabase.table('registered_coach') \
+                                         .select('coach_id') \
+                                         .eq('trainee_id', user_id) \
+                                         .execute()
+    registered_coach_data = registered_coach_response.data
+
+    if registered_coach_data and len(registered_coach_data) > 0:
+        # User is registered with a coach
+        coach_id = registered_coach_data[0]['coach_id']
+
+        # Retrieve coach details from the users table
+        coach_response = supabase.table('users') \
+                                  .select('name') \
+                                  .eq('user_id', coach_id) \
+                                  .execute()
+        coach_data = coach_response.data[0] if coach_response.data else {}
+
+        if coach_data:
+            coach_name = f"{coach_data['name']}"
+            return render(request, "../templates/profile/registercoach.html", {
+                'has_coach': True,
+                'coach_id': coach_id,
+                'coach_name': coach_name,
+                'user': user
+            })
+        else:
+            # Handle the case where coach details cannot be retrieved
+            return render(request, "../templates/profile/registercoach.html", {
+                'has_coach': True,
+                'coach_id': coach_id,
+                'coach_name': "Unknown Coach"
+            })
+    else:
+        # User is not registered with a coach
+        # Fetch all available coaches
+        coaches = get_Coaches()
+
+        return render(request, "../templates/profile/registercoach.html", {
+            'has_coach': False,
+            'coaches': coaches
+        })
+@login_required
+def register_coach(request):
+    print('I AM INSIDE COAHCOID REGISTER FUNCITONNO')
+    # Ensure the user is logged in and has a valid user ID
+    trainee_id = request.session.get('user_id')  # Assume trainee_id is stored in the session
+
+    if request.method == 'POST':
+        coach_id = request.POST.get('coach_id')
+
+        # Check if the coach_id is provided
+        if coach_id:
+            # Register the coach for the trainee
+            response = supabase.table('registered_coach').insert({
+                'trainee_id': trainee_id,
+                'coach_id': coach_id
+            }).execute()
+
+            if response: 
+                # Optional: You can redirect the user to a confirmation page or the same page
+                return render(request, "../templates/profile/registercoach.html")
+            else:
+                # If an error occurs with the registration
+                return render(request, "../templates/profile/registercoach.html")
+        else:
+            # If no coach_id is selected
+            return render(request, "../templates/profile/registercoach.html")
+
+    return render(request, "../templates/profile/registercoach.html")
+
 def get_user1(userid):
     response = supabase.table("users").select("*").eq('user_id', userid).execute().data
     return response
@@ -69,10 +221,6 @@ def logout_required(view_func):
     return wrapper
 
 def get_all_workouts():
-    """
-    Fetches all workouts from the system_workout table.
-    Returns a list of workout records.
-    """
     try:
         response = supabase.table('system_workout') \
                            .select('system_workout_id','workout_name, description, duration, difficulty_level, target_muscle_group') \
@@ -94,9 +242,7 @@ def add_workout(request):
 
             if not user_id or not day or not workout_id:
                 return JsonResponse({'success': False, 'message': 'Missing required parameters.'}, status=400)
-            print("THE USER ID IS ",user_id)
-            print("the workout id is ",workout_id)
-            print('the day is ', day)
+
 
             # Insert the new workout into the trainee_schedule table
             response = supabase.table('trainee_schedule').insert({
