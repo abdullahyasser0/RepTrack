@@ -2,22 +2,14 @@ version: '3.4'
 
 services:
   backend:
-    image: ${ACR_LOGINSERVER}/reptrack-production:latest
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - "8000:8000"
+      - "80:8000"  # Map host's port 80 to container's port 8000
     environment:
       ENVIRONMENT: production
       SMTP_EMAIL: ${SMTP_EMAIL}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SUPABASE_KEY: ${SUPABASE_KEY}
       SUPABASE_URL: ${SUPABASE_URL}
-    deploy:
-      resources:
-        limits:
-          memory: 500M
-          cpus: '0.5'
-      restart_policy:
-        condition: on-failure
