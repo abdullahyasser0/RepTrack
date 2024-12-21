@@ -3,7 +3,7 @@ name: Build and Deploy with Docker Compose
 on:
   push:
     branches:
-      - main
+      - Forgotpassword-and-otp-sending
 
 jobs:
   build-and-deploy:
