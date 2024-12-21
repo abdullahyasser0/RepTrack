@@ -1,7 +1,7 @@
 import sys
 import os
 from django.http import HttpResponse
-from databaseApi.views import logout_required
+from authentication.views import logout_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 import random
@@ -95,7 +95,7 @@ def admins(request):
 def protected_page(request):
     return render(request, "protected_page.html")
 
-#none
+## auth
 @logout_required
 def login(request):
     return render(request,"login/Login.html")
@@ -112,12 +112,12 @@ def form_view(request):
     
     return render(request, 'myform/form.html', {'form': form})
 
-# to be reviewd
+# auth
 @logout_required
 def signup(request):
     return render(request, "signup/signup.html")
 
-
+# auth
 @logout_required
 def signup_view(request):
     if request.method == 'POST':

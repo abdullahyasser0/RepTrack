@@ -18,10 +18,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from users.views import signup_view
-from databaseApi.views import profile_view,change_data,change_Password,verify_token
+from databaseApi.views import profile_view,change_data
 from users.views import signup_view,users,admins,coaches
-from databaseApi.views import profile_view,change_data,change_Password,forget_password_view,verify_otp_view,reset_password_view,addPost
+from databaseApi.views import profile_view,change_data,addPost
 from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip,Payment,salesReport,posts
+
+from authentication.views import change_Password,verify_token,change_Password,forget_password_view,verify_otp_view,reset_password_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
