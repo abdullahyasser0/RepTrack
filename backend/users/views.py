@@ -1,123 +1,74 @@
+import sys
+import os
+from authentication.views import logout_required
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+import random
+from faker import Faker
 from .forms import SimpleForm,SignupForm
-from django.http import HttpResponse
-from django.contrib.auth.models import User
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-from .models import User 
-from databaseApi.views import get_Users,get_user1,get_Coaches,get_Posts,get_Comments
-from databaseApi.views import logout_required
-from databaseApi.views import get_user_preferred_days
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from Database.DatabaseCreation import DataBase
+#Create your views here.
+fake = Faker()
 
-# Create your views here.
+DB = DataBase()
 
+# users,admins,coaches,dashboard, userstats,Equip,admins,coaches,dashboard,Payment,salesReport
 
-def home(request):
-    return render(request, "test.html")
-
+#stas
 def dashboard(request):
     user_id = request.session.get('user_id')
-    user = get_user1(user_id)[0]
+    user = DB.get_user(user_id)[0]
     return render(request, "../templates/Dashboard/Dashboard.html", {'user':user})
 
+
+#user
 def userstats(request):
     user_id = request.session.get('user_id')
-    user = get_user1(user_id)[0]
+    user = DB.get_user(user_id)[0]
     return render(request, "../templates/Dashboard/UserStatistics.html", {'user':user})
-@login_required 
-def logout_view(request):
-    request.session.flush()
-    return redirect('login')
 
-def Equip(request):
-    user_id = request.session.get('user_id')
-    user = get_user1(user_id)[0]
-    return render(request, "../templates/Admin/AddEquipment.html",{'users':users,'id':user_id,'user':user})
 
+#global to gyms
 def Payment(request):
     user_id = request.session.get('user_id')
-    user = get_user1(user_id)[0]
-    return render(request, "../templates/Admin/Payment.html",{'users':users,'id':user_id,'user':user})
+    user = DB.get_user(user_id)[0]
+    return render(request, "../templates/Admin/Payment.html",{'id':user_id,'user':user})
+
+
+#global to gyms
 def salesReport(request):
     user_id = request.session.get('user_id')
-    user = get_user1(user_id)[0]
+    user = DB.get_user(user_id)[0]
     return render(request, "../templates/Admin/SalesReport.html",{'users':users,'id':user_id,'user':user}) #waiting for report to be passed here 
 
-def posts(request):
-    posts = get_Posts()
-    c = get_Comments()
-    user_id = request.session.get('user_id')
-    user = get_user1(user_id)[0]
-    print(user)
-    #print(posts['user_id'])
-    return render(request, "../templates/Community/posts.html",{'users':users,'id':user_id,'user':user,'posts':posts,"comments":c}) #waiting for report to be passed here 
 
+
+#users 
 @login_required 
 def users(request):
-    users = get_Users()
+    users = DB.get_Users()
     user_id = request.session.get('user_id')
-    user = get_user1(user_id)[0]
+    user = DB.get_user(user_id)[0]
     return render(request, '../templates/profile/ActiveMembers.html', {'users': users, 'id':user_id, 'user':user})
+
+#Coaches
 @login_required 
 def coaches(request):
-    users = get_Coaches()    
+    users = DB.get_Coaches()
     user_id = request.session.get('user_id')
-    user = get_user1(user_id)[0]
+    user = DB.get_user(user_id)[0]
     return render(request, '../templates/profile/ActiveCoaches.html', {'users': users , 'id':user_id, 'user':user})
+
+#Admins
 @login_required 
 def admins(request):
-    
     user_id = request.session.get('user_id')
-    users = get_user1(user_id)
+    users = DB.get_user(user_id)
     return render(request, '../templates/profile/information.html', {'users': users,'id':user_id})
 
-@login_required
-def protected_page(request):
-    return render(request, "protected_page.html")
-
-@logout_required
-def login(request):
-    return render(request,"login/Login.html")
-
-def form_view(request):
-    if request.method == 'POST':
-        form = SimpleForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            return HttpResponse(f"Thank you, {name}! Your email is {email}.")
-    else:
-        form = SimpleForm()
-    
-    return render(request, 'myform/form.html', {'form': form})
-@logout_required
-def signup(request):
-    return render(request, "signup/signup.html")
-@logout_required
-def signup_view(request):
-    if request.method == 'POST':
-        form = SignupForm(request.POST)  # Handle form submission
-        if form.is_valid():
-            # Retrieve form data
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            phone = form.cleaned_data['phone']
-            password = form.cleaned_data['password']
-
-            # For now, let's just return a success message
-            return HttpResponse(f"Signup successful! Username: {username}, Email: {email}, Phone: {phone}")
-    else:
-        form = SignupForm()  # Create a new form instance for GET request
-
-    return render(request, 'signup/signup.html', {'form': form})
 
 
-
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def user_dashboard(request):
@@ -141,27 +92,14 @@ def admin_dashboard(request):
     return render(request, 'users/admin_dashboard.html', {'data': data})
 
 
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from supabase import create_client
-import random
-from faker import Faker
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 
 
-# Initialize Supabase client
-supabase_url = "https://sodghnhticinsggmbber.supabase.co"
-supabase_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvZGdobmh0aWNpbnNnZ21iYmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyODY5MzMsImV4cCI6MjA0Nzg2MjkzM30.dCfS98X9PFoZpBohhf0UdgSvvcwByOlAPki7-BPlExg"
-supabase = create_client(supabase_url, supabase_key)
 
-fake = Faker()
 
 
 @login_required
 def sales_report(request):
-    # Fetch payment data from Supabase
-#    payments = supabase.table('payment').select('*').execute().data
+    # payments = DB.get_payment()
     
     # Prepare the payment data (you can filter or order it if necessary)
     # payment_data = []
@@ -190,6 +128,5 @@ def sales_report(request):
             'payment_type': random.choice(['Credit Card', 'PayPal', 'Bank Transfer']),  # Random payment type
             'created_at': fake.date_this_year(),  # Random date within this year
         })
-    
     # Render the report on the sales_report.html template
-    return render(request, 'users/sales_report.html', {'payment_data': payment_data})    
+    return render(request, 'users/sales_report.html', {'payment_data': payment_data})  
