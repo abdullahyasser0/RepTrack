@@ -3,7 +3,7 @@ name: Build and Deploy with Docker Compose
 on:
   push:
     branches:
-      - Forgotpassword-and-otp-sending  # Trigger workflow on push to the main branch
+      - main
 
 jobs:
   build-and-deploy:
@@ -33,6 +33,7 @@ jobs:
       # Step 5: Build and Push Docker Image
       - name: Build and Push Docker Image
         env:
+          ACR_LOGINSERVER: ${{ secrets.ACR_LOGIN_SERVER }}
           SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
