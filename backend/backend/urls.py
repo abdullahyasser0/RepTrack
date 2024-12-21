@@ -53,6 +53,7 @@ urlpatterns = [
     path('SalesReport/',salesReport, name = 'SalesReport'),
     path('Posts/',posts, name = 'Posts'),
     path('schedule/',get_user_schedule, name = 'schedule'),
-    path('updatePreferredDays/',save_user_days, name = 'updatePreferredDays')
+    path('updatePreferredDays/',save_user_days, name = 'updatePreferredDays'),
+    path('add_workout_to_day ',add_workout, name = 'add_workout_to_day')
 
 ]

@@ -370,7 +370,7 @@
           <div class="content-wrapper">
             <aside class="sidebar" role="navigation" style="width: 15%;">
               <nav class="nav-menu">
-                <a href="#admin-profile" class="active-nav-item nav-item" aria-current="false">
+                <a href="{% url 'profiles' %}" class="nav-item" aria-current="false">
                   <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c787861335dbc9c1626ea7cbbc4a47ff84032e0daa4b20a952a56cba95f22faf?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                   <span>Profile</span>
                 </a>
@@ -401,15 +401,21 @@
             {% elif user.account_type == "trainee" %}
                 <!-- Trainee-specific sidebar buttons -->
                 <nav class="nav-menu">
-                  <a href="#plan" class="nav-item" aria-current="false">
+                  <a href="{% url 'schedule' %}" class="active-nav-item nav-item" aria-current="false">
                     <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/94c8e67c82a455a5a6d9e1c2f56289a9c24baf55617f8a36ce239992fb0b5a90?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                    <span>Plan</span>
+                    <span>schedule</span>
                   </a>
                 </nav>
                 <nav class="nav-menu">
                   <a href="{% url 'userstats' %}" class="nav-item" aria-current="false">
                     <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                     <span>Statistics</span>
+                  </a>
+                </nav>
+                <nav class="nav-menu">
+                  <a href="{% url 'Posts' %}" class="nav-item" aria-current="false">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                    <span>Feed</span>
                   </a>
                 </nav>
             {% elif user.account_type == "coach" %}
@@ -445,86 +451,118 @@
               </a>
             </aside>
       
-            <div class="main-content">
-              {% if days|length == 0 %}
-              <!-- Case: No days are selected -->
-              <div id="no-days-message" class="form-section">
-                <h3>You have not chosen any days yet!</h3>
-                <p>Please select the days you want to save:</p>
-                <form id="days-form">
-                  <div id="days-selection">
-                    {% for day in days_of_week %}
-                    <label>
-                      <input type="checkbox" name="days" value="{{ day }}" />
-                      {{ day }}
-                    </label>
-                    <br />
-                    {% endfor %}
-                  </div>
-                  <button type="button" class="btn-primary" onclick="changeUserPreferredDays()">Save Days</button>
-                </form>
-              </div>
-              {% else %}
-              <!-- Case: Days are selected -->
-              <div id="schedule-section" class="form-section">
-                <div style="display: flex; gap: 20px; justify-content: space-between;">
-                  <!-- Weekly Schedule Table -->
-                  <div style="flex: 2;">
-                    <h3>Your Weekly Schedule</h3>
-                    <table class="schedule-table" style="width: 100%; border-collapse: collapse;">
-                      <thead>
-                        <tr style="background-color: #ececec; text-align: left;">
-                          <th style="padding: 10px;">Day</th>
-                          <th style="padding: 10px;">Workouts</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for day, workouts in workouts_by_day.items %}
-                        <tr>
-                          <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ day }}</td>
-                          <td style="padding: 10px; border-bottom: 1px solid #ddd;">
-                            {% if workouts|length > 0 %}
-                            <ul style="margin: 0; padding-left: 20px;">
-                              {% for workout in workouts %}
-                              <li style="margin-bottom: 10px;">
-                                <strong>{{ workout.workout_name }}</strong>
-                                <p>Description: {{ workout.description }}</p>
-                                <p>Duration: {{ workout.duration }} minutes</p>
-                                <p>Difficulty: {{ workout.difficulty_level }}</p>
-                                <p>Target Muscle Group: {{ workout.target_muscle_group }}</p>
-                              </li>
-                              {% endfor %}
-                            </ul>
-                            {% else %}
-                            <p>No workouts scheduled.</p>
-                            {% endif %}
-                          </td>
-                        </tr>
-                        {% endfor %}
-                      </tbody>
-                    </table>
-                  </div>
-                  
-                  <!-- Change Preferred Days Section -->
-                  <div style="flex: 1; border-left: 1px solid #ddd; padding-left: 20px;">
-                    <h3>Change Preferred Days</h3>
-                    <p>You can update your preferred days below:</p>
-                    <form id="days-form">
-                      <div id="days-selection">
-                        {% for day in days_of_week %}
-                        <label style="display: block; margin-bottom: 8px;">
-                          <input type="checkbox" name="days" value="{{ day }}" {% if day in days %}checked{% endif %} />
-                          {{ day }}
-                        </label>
-                        {% endfor %}
-                      </div>
-                      <button type="button" class="btn-primary" style="margin-top: 10px;" onclick="changeUserPreferredDays()">Save Days</button>
-                    </form>
+            <div class="main-content" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+              <div class="container" style="background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                {% if days|length == 0 %}
+                <!-- Case: No days are selected -->
+                <div id="no-days-message" class="form-section">
+                  <h3>You have not chosen any days yet!</h3>
+                  <p>Please select the days you want to save:</p>
+                  <form id="days-form">
+                    <div id="days-selection">
+                      {% for day in days_of_week %}
+                      <label>
+                        <input type="checkbox" name="days" value="{{ day }}" />
+                        {{ day }}
+                      </label>
+                      <br />
+                      {% endfor %}
+                    </div>
+                    <button type="button" class="btn-primary" onclick="changeUserPreferredDays()">Save Days</button>
+                  </form>
+                </div>
+                {% else %}
+                <!-- Case: Days are selected -->
+                <div id="schedule-section" class="form-section">
+                  <div style="display: flex; gap: 20px; justify-content: space-between;">
+                    <!-- Weekly Schedule Table -->
+                    <div style="flex: 2;">
+                      <h3>Your Weekly Schedule</h3>
+                      <table class="schedule-table" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                          <tr style="background-color: #ececec; text-align: left;">
+                            <th style="padding: 10px;">Day</th>
+                            <th style="padding: 10px;">Workouts</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for day, workouts in workouts_by_day.items %}
+                          <tr>
+                            <!-- Day Column -->
+                            <td style="padding: 10px; border-bottom: 1px solid #ddd; vertical-align: top;">
+                              <strong>{{ day }}</strong>
+                              <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
+                                <label for="add-workout-{{ day }}" style="font-weight: bold; color: #333;">Add Workout:</label>
+                                <select id="add-workout-{{ day }}" name="workout" style="padding: 8px 12px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; width: 100%; max-width: 200px; box-sizing: border-box; background-color: #f9f9f9;">
+                                  <option value="" disabled selected>Select a workout</option>
+                                  {% for workout in all_workouts %}
+                                  <option value="{{ workout.system_workout_id }}">{{ workout.workout_name }}</option>
+                                  {% endfor %}
+                                </select>
+                                <button 
+                                  type="button" 
+                                  onclick="addWorkoutToDay('{{ day }}')" 
+                                  style="padding: 8px 16px; background-color: #007BFF; color: #fff; border: none; border-radius: 5px; font-size: 14px; cursor: pointer; transition: background-color 0.3s ease;">
+                                  Add
+                                </button>
+                              </div>
+                            </td>
+                            
+                            <!-- Workouts Column -->
+                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">
+                              {% if workouts|length > 0 %}
+                              <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                                <thead>
+                                  <tr>
+                                    <th style="padding: 5px;">Workout Name</th>
+                                    <th style="padding: 5px;">Difficulty</th>
+                                    <th style="padding: 5px;">Target Muscle Group</th>
+                                    <th style="padding: 5px;">Duration (min)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {% for workout in workouts %}
+                                  <tr>
+                                    <td style="padding: 5px;">{{ workout.workout_name }}</td>
+                                    <td style="padding: 5px;">{{ workout.difficulty_level }}</td>
+                                    <td style="padding: 5px;">{{ workout.target_muscle_group }}</td>
+                                    <td style="padding: 5px;">{{ workout.duration }}</td>
+                                  </tr>
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                              {% else %}
+                              <p>No workouts scheduled.</p>
+                              {% endif %}
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+            
+                    <!-- Change Preferred Days Section -->
+                    <div style="flex: 1; border-left: 1px solid #ddd; padding-left: 20px;">
+                      <h3>Change Preferred Days</h3>
+                      <p>You can update your preferred days below:</p>
+                      <form id="days-form">
+                        <div id="days-selection">
+                          {% for day in days_of_week %}
+                          <label style="display: block; margin-bottom: 8px;">
+                            <input type="checkbox" name="days" value="{{ day }}" {% if day in days %}checked{% endif %} />
+                            {{ day }}
+                          </label>
+                          {% endfor %}
+                        </div>
+                        <button type="button" class="btn-primary" style="margin-top: 10px;" onclick="changeUserPreferredDays()">Save Days</button>
+                      </form>
+                    </div>
                   </div>
                 </div>
+                {% endif %}
               </div>
-              {% endif %}
             </div>
+            
             
             
           </div>
@@ -538,6 +576,72 @@
 
 
       <script>
+
+function addWorkoutToDay(day) {
+    // Prevent the default behavior (if triggered from a form submit)
+    event.preventDefault();
+
+    // Get the selected workout ID for the specific day
+    const workoutDropdown = document.getElementById(`add-workout-${day}`);
+    const selectedWorkoutId = workoutDropdown.value;
+
+    if (!selectedWorkoutId) {
+        alert("Please select a workout before adding.");
+        return;
+    }
+
+    // Prepare the URL for the Django backend function
+    const addWorkoutUrl = "{% url 'add_workout_to_day' %}"; // Replace with the actual Django URL name
+
+    // Prepare the data to send
+    const workoutData = {
+        day: day,
+        workout_id: selectedWorkoutId,
+    };
+
+    // Send the data to the backend using fetch
+    fetch(addWorkoutUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'), // CSRF Token for Django
+        },
+        body: JSON.stringify(workoutData),
+    })
+    .then(response => {
+        if (response.ok) {
+            // Reload the page to reflect changes
+            window.location.reload();
+        } else {
+            // Handle errors (e.g., invalid data or server issues)
+            alert("An error occurred while adding the workout. Please try again.");
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("An error occurred. Please try again.");
+    });
+}
+
+// Helper function to get CSRF token from cookies
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Check if this cookie string begins with the name we want
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+
 function changeUserPreferredDays() {
   // Get selected days from input (assume it's a multi-select dropdown or checkboxes)
   const selectedDays = Array.from(document.querySelectorAll("input[name='days']:checked"))

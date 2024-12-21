@@ -75,7 +75,7 @@ def get_all_workouts():
     """
     try:
         response = supabase.table('system_workout') \
-                           .select('workout_name, description, duration, difficulty_level, target_muscle_group') \
+                           .select('system_workout_id','workout_name, description, duration, difficulty_level, target_muscle_group') \
                            .execute()
         return response.data if response else []
     except Exception as e:
@@ -83,12 +83,45 @@ def get_all_workouts():
         return []
 
 @login_required
+def add_workout(request):
+    print("THE ADD WORKOUT IS BEING CALLED UPON")
+    if request.method == 'POST':
+        try:
+            user_id = request.session.get('user_id')  # Get the user ID from the session
+            data = json.loads(request.body)
+            day = data.get('day')
+            workout_id = data.get('workout_id')
+
+            if not user_id or not day or not workout_id:
+                return JsonResponse({'success': False, 'message': 'Missing required parameters.'}, status=400)
+            print("THE USER ID IS ",user_id)
+            print("the workout id is ",workout_id)
+            print('the day is ', day)
+
+            # Insert the new workout into the trainee_schedule table
+            response = supabase.table('trainee_schedule').insert({
+                'trainee_id': user_id,
+                'day': day,
+                'workout_id': workout_id
+            }).execute()
+
+            if response:
+                return JsonResponse({'success': True, 'message': 'Workout added successfully.'})
+            else:
+                return JsonResponse({'success': False, 'message': 'Failed to add workout.'}, status=500)
+
+        except Exception as e:
+            print("Error adding workout:", str(e))
+            return JsonResponse({'success': False, 'message': 'An error occurred.'}, status=500)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
+
+@login_required
 def get_user_schedule(request):
     user_id = request.session.get('user_id')
     user = get_user1(user_id)[0]
     days = get_user_preferred_days(user_id)
     days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    print('Days: ', days)
     
     # Fetch all workouts
     all_workouts = get_all_workouts()
