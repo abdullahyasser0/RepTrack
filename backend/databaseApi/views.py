@@ -79,7 +79,7 @@ def check_registered_nutritionist(request):
 
         # Retrieve coach details from the users table
         nutritionist_response = supabase.table('users') \
-                                  .select('name') \
+                                  .select('name','phone_number') \
                                   .eq('user_id', nutritionist_id) \
                                   .execute()
         nutritionist_data = nutritionist_response.data[0] if nutritionist_response.data else {}
@@ -90,18 +90,16 @@ def check_registered_nutritionist(request):
                 'has_coach': True,
                 'coach_id': nutritionist_id,
                 'coach_name': nutritionist_name,
+                'coach_number': nutritionist_data['phone_number'],
                 'user': user
             })
         else:
-            # Handle the case where coach details cannot be retrieved
             return render(request, "../templates/profile/registernutritionist.html", {
                 'has_coach': True,
                 'coach_id': nutritionist_id,
-                'coach_name': "Unknown Coach"
+                'coach_name': "Unknown Nutritionist"
             })
     else:
-        # User is not registered with a coach
-        # Fetch all available coaches
         nutritionists = get_nutritionist()
 
         return render(request, "../templates/profile/registernutritionist.html", {
@@ -125,11 +123,87 @@ def register_nutritionist(request):
             if response: 
                 return render(request, "../templates/profile/registernutritionist.html")
             else:
-                return render(request, "../templates/profile/registernutritionist.html")  #
+                return render(request, "../templates/profile/registernutritionist.html")  
         else:
             return render(request, "../templates/profile/registernutritionist.html")  
 
     return render(request, "../templates/profile/registernutritionist.html") 
+
+
+
+
+@login_required
+def rate_coach(request):
+    trainee_id = request.session.get('user_id')  # Get the trainee's user ID
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+
+        if not rating:
+            return JsonResponse({"message": "Please provide a rating."}, status=400)
+
+        # Fetch the coach_id from the registered_coach table
+        registered_coach_response = supabase.table('registered_coach') \
+                                             .select('coach_id') \
+                                             .eq('trainee_id', trainee_id) \
+                                             .execute()
+        registered_coach_data = registered_coach_response.data
+
+        if not registered_coach_data or len(registered_coach_data) == 0:
+            return JsonResponse({"message": "You are not registered with a coach."}, status=400)
+
+        coach_id = registered_coach_data[0]['coach_id']
+
+        # Insert the rating into the coach_ratings table
+        response = supabase.table('coach_ratings').insert({
+            'trainee_id': trainee_id,
+            'coach_id': coach_id,
+            'rating': int(rating)  # Ensure rating is stored as integer
+        }).execute()
+
+        if response:
+            return JsonResponse({"message": "Successfully rated your coach!"}, status=200)
+        else:
+            return JsonResponse({"message": "An error occurred while rating your coach."}, status=500)
+
+    return JsonResponse({"message": "Invalid request method."}, status=405)
+
+@login_required
+def rate_nutritionist(request):
+    trainee_id = request.session.get('user_id')  # Get the trainee's user ID
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+
+        if not rating:
+            return JsonResponse({"message": "Please provide a rating."}, status=400)
+
+        # Fetch the coach_id from the registered_coach table
+        registered_coach_response = supabase.table('registered_nutritionist') \
+                                             .select('nutritionist_id') \
+                                             .eq('trainee_id', trainee_id) \
+                                             .execute()
+        registered_coach_data = registered_coach_response.data
+
+        if not registered_coach_data or len(registered_coach_data) == 0:
+            return JsonResponse({"message": "You are not registered with a coach."}, status=400)
+
+        coach_id = registered_coach_data[0]['nutritionist_id']
+
+        # Insert the rating into the coach_ratings table
+        response = supabase.table('nutritionist_ratings').insert({
+            'trainee_id': trainee_id,
+            'nutritionist_id': coach_id,
+            'rating': int(rating)  # Ensure rating is stored as integer
+        }).execute()
+
+        if response:
+            return JsonResponse({"message": "Successfully rated your coach!"}, status=200)
+        else:
+            return JsonResponse({"message": "An error occurred while rating your coach."}, status=500)
+
+    return JsonResponse({"message": "Invalid request method."}, status=405)
+
 
 
 
@@ -150,17 +224,17 @@ def check_registered_coach(request):
 
         # Retrieve coach details from the users table
         coach_response = supabase.table('users') \
-                                  .select('name') \
+                                  .select('name','phone_number') \
                                   .eq('user_id', coach_id) \
                                   .execute()
         coach_data = coach_response.data[0] if coach_response.data else {}
-
         if coach_data:
             coach_name = f"{coach_data['name']}"
             return render(request, "../templates/profile/registercoach.html", {
                 'has_coach': True,
                 'coach_id': coach_id,
                 'coach_name': coach_name,
+                'coach_number': coach_data['phone_number'],
                 'user': user
             })
         else:

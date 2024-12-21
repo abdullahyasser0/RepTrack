@@ -31,5 +31,7 @@ urlpatterns = [path('login/', views.login, name='login'),
                 path('registerCoach/', check_registered_coach, name='registerCoach'),
                 path('register_coach', register_coach, name='register_coach'),
                 path('registerNutritionist/', check_registered_nutritionist, name='registerNutritionist'),
-                path('register_nutritionist', register_nutritionist, name='register_nutritionist')
+                path('register_nutritionist', register_nutritionist, name='register_nutritionist'),
+                path('rate-coach/', rate_coach, name='rate_coach'),
+                path('rate_nutritionist/', rate_nutritionist, name='rate_nutritionist'),
                 ]

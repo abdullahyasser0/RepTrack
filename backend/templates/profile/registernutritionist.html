@@ -466,9 +466,41 @@
 
                 {% if has_coach %}
                 <h2>You are already registered with a Nutritionist</h2>
-                <p>Coach Name: {{ coach_name }}</p>
-                <p>Coach ID: {{ coach_id }}</p>
+                <p>Nutritionist Name: {{ coach_name }}</p>
+                <p>Nutritionist ID: {{ coach_id }}</p>
+                <p><strong>Nutritionist Phone Number:</strong> {{ coach_number }}</p>
+                <p>Contact them and they will response ASAP!</p>
                 <p>If you wish to change your Nutritionist, please contact support.</p>
+
+                 <!-- Star Rating System -->
+                 <h3>Rate Your Coach</h3>
+                 <form id="rateCoachForm" method="POST" action="{% url 'rate_nutritionist' %}">
+                     {% csrf_token %}
+                     <div class="star-rating">
+                         <input type="radio" id="star5" name="rating" value="5" />
+                         <label for="star5" title="5 stars">&#9733;</label>
+                         <input type="radio" id="star4" name="rating" value="4" />
+                         <label for="star4" title="4 stars">&#9733;</label>
+                         <input type="radio" id="star3" name="rating" value="3" />
+                         <label for="star3" title="3 stars">&#9733;</label>
+                         <input type="radio" id="star2" name="rating" value="2" />
+                         <label for="star2" title="2 stars">&#9733;</label>
+                         <input type="radio" id="star1" name="rating" value="1" />
+                         <label for="star1" title="1 star">&#9733;</label>
+                     </div>
+                     <button type="submit">Submit Rating</button>
+                 </form>
+ 
+                 <!-- Success Message -->
+                 <div id="ratingSuccessMessage" style="display:none; color: green; margin-top: 10px;">
+                     Thank you for rating your Nutritionist!
+                 </div>
+ 
+                 <!-- Error Message -->
+                 <div id="ratingErrorMessage" style="display:none; color: red; margin-top: 10px;">
+                     You already rated your Nutritionist!
+                 </div>
+                </div>
             {% else %}
             <h1>You are not registered with a Nutritionist yet!</h1>
             <h3>Select a Coach</h3>
@@ -491,7 +523,47 @@
             
             </div>
             
-            
+              <!-- JavaScript for Rating Functionality -->
+              <script>
+                // Handle Rating Form Submission
+                document.getElementById('rateCoachForm').addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent default form submission
+        
+                    const form = this;
+                    const rating = form.querySelector('input[name="rating"]:checked') ? form.querySelector('input[name="rating"]:checked').value : null;
+        
+                    if (!rating) {
+                        alert('Please select a rating before submitting.');
+                        return;
+                    }
+        
+                    const rateCoachUrl = form.action;
+                    const formData = new FormData();
+                    formData.append('rating', rating);
+                    formData.append('csrfmiddlewaretoken', form.querySelector('[name="csrfmiddlewaretoken"]').value);
+        
+                    fetch(rateCoachUrl, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Show success message and reload the page
+                            document.getElementById('ratingSuccessMessage').style.display = 'block';
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 2000); // Reload after 2 seconds
+                        } else {
+                            // Show error message
+                            document.getElementById('ratingErrorMessage').style.display = 'block';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementById('ratingErrorMessage').style.display = 'block';
+                    });
+                });
+        </script>
             
           </div>
         </div>
@@ -536,4 +608,69 @@
             });
         });
     </script>
-    
+     <style>
+        /* Star Rating Styles */
+        .star-rating {
+            direction: rtl;
+            display: inline-block;
+            padding: 20px;
+        }
+
+        .star-rating input[type=radio] {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 30px;
+            color: grey;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input[type=radio]:checked ~ label {
+            color: gold;
+        }
+
+        /* Additional Styles for Consistency */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form-section {
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+            padding: 24px 29px;
+            font: 16px Poppins, sans-serif;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .star-rating label {
+                font-size: 24px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
