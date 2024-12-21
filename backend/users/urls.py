@@ -1,7 +1,7 @@
 from django.urls import path,include
 from . import views
 from databaseApi.views import *
-from users.views import signup_view,users,admins,coaches,dashboard,Equip,Payment,salesReport
+from users.views import users,admins,coaches,dashboard,Payment,salesReport
 from databaseApi.views import change_data,profile_view
 from users.views import admins,coaches,dashboard,Payment,salesReport
 from authentication.views import signup,change_Password,verify_token,signup,login, loginForm,logout_view,form_view
