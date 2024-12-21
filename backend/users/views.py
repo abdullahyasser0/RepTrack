@@ -1,6 +1,5 @@
 import sys
 import os
-from django.http import HttpResponse
 from authentication.views import logout_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -14,7 +13,7 @@ fake = Faker()
 
 DB = DataBase()
 
-
+# users,admins,coaches,dashboard, userstats,Equip,admins,coaches,dashboard,Payment,salesReport
 
 #stas
 def dashboard(request):
@@ -29,25 +28,12 @@ def userstats(request):
     user = DB.get_user(user_id)[0]
     return render(request, "../templates/Dashboard/UserStatistics.html", {'user':user})
 
-#wala haga iguess
-@login_required 
-def logout_view(request):
-    request.session.flush()
-    return redirect('login')
-
-
-#gym
-def Equip(request):
-    user_id = request.session.get('user_id')
-    user = DB.get_user(user_id)[0]
-    return render(request, "../templates/Admin/AddEquipment.html",{'users':users,'id':user_id,'user':user})
-
 
 #global to gyms
 def Payment(request):
     user_id = request.session.get('user_id')
     user = DB.get_user(user_id)[0]
-    return render(request, "../templates/Admin/Payment.html",{'users':users,'id':user_id,'user':user})
+    return render(request, "../templates/Admin/Payment.html",{'id':user_id,'user':user})
 
 
 #global to gyms
@@ -57,14 +43,6 @@ def salesReport(request):
     return render(request, "../templates/Admin/SalesReport.html",{'users':users,'id':user_id,'user':user}) #waiting for report to be passed here 
 
 
-#to feed
-def posts(request):
-    posts = DB.get_Posts()
-    c = DB.get_Comments()
-    user_id = request.session.get('user_id')
-    user = DB.get_user(user_id)[0]
-    print(user)
-    return render(request, "../templates/Community/posts.html",{'users':users,'id':user_id,'user':user,'posts':posts}) #waiting for report to be passed here 
 
 #users 
 @login_required 
@@ -85,56 +63,9 @@ def coaches(request):
 #Admins
 @login_required 
 def admins(request):
-    
     user_id = request.session.get('user_id')
     users = DB.get_user(user_id)
     return render(request, '../templates/profile/information.html', {'users': users,'id':user_id})
-
-#none
-@login_required
-def protected_page(request):
-    return render(request, "protected_page.html")
-
-## auth
-@logout_required
-def login(request):
-    return render(request,"login/Login.html")
-
-def form_view(request):
-    if request.method == 'POST':
-        form = SimpleForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            return HttpResponse(f"Thank you, {name}! Your email is {email}.")
-    else:
-        form = SimpleForm()
-    
-    return render(request, 'myform/form.html', {'form': form})
-
-# auth
-@logout_required
-def signup(request):
-    return render(request, "signup/signup.html")
-
-# auth
-@logout_required
-def signup_view(request):
-    if request.method == 'POST':
-        form = SignupForm(request.POST)  # Handle form submission
-        if form.is_valid():
-            # Retrieve form data
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            phone = form.cleaned_data['phone']
-            password = form.cleaned_data['password']
-
-            # For now, let's just return a success message
-            return HttpResponse(f"Signup successful! Username: {username}, Email: {email}, Phone: {phone}")
-    else:
-        form = SignupForm()  # Create a new form instance for GET request
-
-    return render(request, 'signup/signup.html', {'form': form})
 
 
 
@@ -198,4 +129,4 @@ def sales_report(request):
             'created_at': fake.date_this_year(),  # Random date within this year
         })
     # Render the report on the sales_report.html template
-    return render(request, 'users/sales_report.html', {'payment_data': payment_data})    
+    return render(request, 'users/sales_report.html', {'payment_data': payment_data})  

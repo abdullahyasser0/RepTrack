@@ -1,14 +1,15 @@
 from django.urls import path,include
 from . import views
-from databaseApi.views import change_data,profile_view,addPost,addComment
-from users.views import signup_view,users,admins,coaches,dashboard,Equip,Payment,salesReport
-from authentication.views import signup,change_Password,verify_token,signup, login
-
-urlpatterns = [path('login/', views.login, name='login'),
-                path('logout/', views.logout_view, name='logout'),
-                path("protectedpage/",views.protected_page),
-                path('form/', views.form_view),
-                path('signup/',views.signup),
+from databaseApi.views import change_data,profile_view
+from users.views import admins,coaches,dashboard,Payment,salesReport
+from authentication.views import signup,change_Password,verify_token,signup,login, loginForm,logout_view,form_view
+from feed.views import addPost,addComment
+from Gym.views import Equip
+urlpatterns = [
+                path('login/', loginForm, name='login'),
+                path('logout/', logout_view, name='logout'),
+                path('form/', form_view),
+                path('signup/',signup),
                 path('signupform/',signup, name = 'signupform'),
                 path('loginform/',login, name = 'loginform'),
                 # path('users/',get_Users),

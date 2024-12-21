@@ -24,6 +24,8 @@ from django.contrib.auth import login as auth_login, authenticate, logout
 from Database.DatabaseCreation import DataBase
 from .services.OTPService import OTPService
 from .services.UserService import UserService
+from .forms import SimpleForm,SignupForm
+from django.http import HttpResponse
 
 # UserService = UserService()
 OTP = OTPService()
@@ -42,6 +44,17 @@ def logout_required(view_func):
         return view_func(request, *args, **kwargs)
     return wrapper
 # 
+
+def form_view(request):
+    if request.method == 'POST':
+        form = SimpleForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            return HttpResponse(f"Thank you, {name}! Your email is {email}.")
+    else:
+        form = SimpleForm()
+
 
 # done
 @logout_required
@@ -65,7 +78,9 @@ def signup(request):
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-
+@logout_required
+def loginForm(request):
+    return render(request,"login/Login.html")
 # done
 @logout_required
 def login(request):
@@ -82,6 +97,7 @@ def login(request):
                 return JsonResponse({'success': False, 'error': 'Invalid credentials'}, status=401)  
         except Exception as e:
             return JsonResponse({'success': False, 'error': 'An error occurred'}, status=500)
+    print("YASSSATER")
     return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
     
 
@@ -320,3 +336,23 @@ def reset_password_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+
+
+@logout_required
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)  # Handle form submission
+        if form.is_valid():
+            # Retrieve form data
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            phone = form.cleaned_data['phone']
+            password = form.cleaned_data['password']
+
+            # For now, let's just return a success message
+            return HttpResponse(f"Signup successful! Username: {username}, Email: {email}, Phone: {phone}")
+    else:
+        form = SignupForm()  # Create a new form instance for GET request
+
+    return render(request, 'signup/signup.html', {'form': form})

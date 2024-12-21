@@ -91,3 +91,39 @@ class DataBase :
 
     def add_comment_to_post(self,description,name,postID):
         return self.supabase.table('comments').insert({'comment': description,"commentorName":name[0]["name"],"post_id":postID}).execute()
+
+
+    def get_workout(self):
+        return self.supabase.table('system_workout') \
+                           .select('system_workout_id','workout_name, description, duration, difficulty_level, target_muscle_group') \
+                           .execute()
+    
+    def add_workout(self,user_id,day,workout_id):
+        return self.supabase.table('trainee_schedule').insert({
+                'trainee_id': user_id,
+                'day': day,
+                'workout_id': workout_id
+            }).execute()
+    
+
+    def get_user_train_scheduel(self,user_id,day):
+        return self.supabase.table('trainee_schedule') \
+                                     .select('workout_id') \
+                                     .eq('trainee_id', user_id) \
+                                     .eq('day', day) \
+                                     .execute()
+    
+    def get_workout_byid(self,workout_ids):
+        return self.supabase.table('system_workout') \
+                                                    .select('system_workout_id, workout_name, description, duration, difficulty_level, target_muscle_group') \
+                                                    .in_('system_workout_id', workout_ids) \
+                                                    .execute()
+    
+    def delete_pred_day(self,user_id):
+        return self.supabase.table('user_preferred_days').delete().eq('Uid', user_id).execute()
+    
+    def insert_pref_day(self,day_records):
+        return self.supabase.table('user_preferred_days').insert(day_records).execute()
+    
+    def get_pref_days(self,user_id):
+        return self.supabase.table('user_preferred_days').select('day').eq('Uid', user_id).execute()
