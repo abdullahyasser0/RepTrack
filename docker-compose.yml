@@ -2,15 +2,23 @@ version: '3.4'
 
 services:
   backend:
-    image: backend
+    image: ${ACR_LOGINSERVER}/reptrack-production:latest
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - 80:8000
+      - "8000:8000"
     environment:
       ENVIRONMENT: production
       SMTP_EMAIL: ${SMTP_EMAIL}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SUPABASE_KEY: ${SUPABASE_KEY}
       SUPABASE_URL: ${SUPABASE_URL}
+      AZURE_CREDENTIALS: ${AZURE_CREDENTIALS}
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+          cpus: '0.5'
+      restart_policy:
+        condition: on-failure
