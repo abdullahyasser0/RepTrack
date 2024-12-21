@@ -165,20 +165,7 @@
       width: 37px;
     }
     
-    .facebook-button {
-      background-color: rgb(24, 119, 242);
-    }
-    
-    .google-button {
-      background-color: rgba(255, 255, 255, 0.02);
-      color: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(0, 0, 0, 0.4);
-    }
-    
-    .x-button {
-      background-color: rgb(0, 0, 0);
-    }
-    
+
     .visually-hidden {
       position: absolute;
       width: 1px;
@@ -358,18 +345,10 @@
     
           <button type="submit" class="signup-button">Sign Up</button>
     
-          <p class="divider-text">Or With</p>
-          <div class="divider-container">
-            <div class="divider-line"></div>
-            <div class="divider-line"></div>
-          </div>
-    
-          <button id="google-login-btn" type="button" class="social-button google-button">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6658a138975c44bb4d019120bf7b03debbd334555acb7fe26d08e5215b665bc6?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="Google logo" class="social-icon" />
-            <span>Signup with Google</span>
-          </button>
+
+  
           <div class="signup-prompt">
-            <span>Don't have an account?</span>
+            <span>Already have an account?</span>
             <a href="{% url 'login' %}" class="signup-link">Login here</a>
           </div>
     

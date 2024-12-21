@@ -20,9 +20,11 @@ from django.urls import path, include
 from users.views import signup_view
 from databaseApi.views import profile_view,change_data,change_Password,verify_token
 from users.views import signup_view,users,admins,coaches
-from databaseApi.views import profile_view,change_data,change_Password,forget_password_view,verify_otp_view,reset_password_view,addPost
+from databaseApi.views import profile_view,change_data,change_Password,forget_password_view,verify_otp_view,reset_password_view, save_user_days, addPost
 from users.views import signup_view,users,admins,coaches,dashboard, userstats
 from users.views import signup_view,users,admins,coaches,dashboard, userstats,Equip,Payment,salesReport,posts
+from databaseApi.views import *
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -50,6 +52,8 @@ urlpatterns = [
     path('payment/',Payment, name = 'payment'),
     path('SalesReport/',salesReport, name = 'SalesReport'),
     path('Posts/',posts, name = 'Posts'),
-    path('addPost/',addPost, name = 'addPost'),
+    path('schedule/',get_user_schedule, name = 'schedule'),
+    path('updatePreferredDays/',save_user_days, name = 'updatePreferredDays'),
+    path('add_workout_to_day ',add_workout, name = 'add_workout_to_day')
 
 ]

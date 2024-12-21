@@ -683,7 +683,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     .then(response => {
       if (response.ok) {
         // Redirect to profile on successful login
-        //window.location.href = "/profile/information.html";
+        window.location.reload();
         
       } else if (response.status === 401) {
         // Unauthorized error

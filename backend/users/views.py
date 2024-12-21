@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import User 
 from databaseApi.views import get_Users,get_user1,get_Coaches,get_Posts,get_Comments
 from databaseApi.views import logout_required
-
+from databaseApi.views import get_user_preferred_days
 
 # Create your views here.
 
