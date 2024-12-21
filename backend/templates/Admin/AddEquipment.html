@@ -423,33 +423,20 @@ font: 400 10px Poppins, sans-serif;
             </div>
   
             <div class="equipment-list">
+              {% for equip in equipments %}
               <div class="equipment-item">
-                <span>Treadmill</span>
-                <span>1</span>
-                <span>Active</span>
+                <span>{{equip.equipment_name}}</span>
+                <span>{{equip.equipment_quantity}}</span>
+                <span>{{equip.status}}</span>
                 <button class="edit-btn" data-toggle="modal" data-target="#exampleModal">Edit</button>
               </div>
+              {% endfor %}
               
-              <div class="equipment-item">
-                <span>10 lbs Dumbell</span>
-                <span>3</span>
-                <span>Inactive</span>
-                <button class="edit-btn" data-toggle="modal" data-target="#exampleModal">Edit</button>
-              </div>
               
-              <div class="equipment-item">
-                <span>15 lbs Dumbell</span>
-                <span>6</span>
-                <span>Active</span>
-                <button class="edit-btn" data-toggle="modal" data-target="#exampleModal">Edit</button>
-              </div>
               
-              <div class="equipment-item">
-                <span>20 lbs Dumbell</span>
-                <span>12</span>
-                <span>Active</span>
-                <button class="edit-btn" data-toggle="modal" data-target="#exampleModal">Edit</button>
-              </div>
+              
+              
+              
             </div>
   
             
@@ -496,4 +483,45 @@ font: 400 10px Poppins, sans-serif;
   </div>
 </div>
 </div>
+<script>
+    function changeData(){
+  const name = document.getElementById("name").value
+  const quantity = document.getElementById("quantity").value
+  const status = document.getElementById("status").value
+  const changedData = {
+    name: name,
+    quantity :quantity,
+    status: status,
+  };
+  const changedataurl = "{% url 'addEquippment' %}";
+  console.log("gg" , changedData)
+  fetch(changedataurl,{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken'),
+    },
+    body: JSON.stringify(changedData),
+}).then(response => {
+      if (response.ok) {
+        window.location.href = "{% url 'Posts' %}"; // Redirect on success
+      } else {
+        alert("An error occurred, please try again.");
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("An error occurred, please try again.");
+    });
+    function getCookie(name) {
+    const cookieValue = document.cookie
+      .split('; ')
+      .find(row => row.startsWith(name + '='))
+      .split('=')[1];
+    return decodeURIComponent(cookieValue);
+  }
+
+
+}
+</script>
 

@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from .models import User 
-from databaseApi.views import get_Users,get_user1,get_Coaches,get_Posts,get_Comments
+from databaseApi.views import get_Users,get_user1,get_Coaches,get_Posts,get_Comments,get_Equipments
 from databaseApi.views import logout_required
 
 
@@ -33,9 +33,10 @@ def logout_view(request):
     return redirect('login')
 
 def Equip(request):
+    equips = get_Equipments()
     user_id = request.session.get('user_id')
     user = get_user1(user_id)[0]
-    return render(request, "../templates/Admin/AddEquipment.html",{'users':users,'id':user_id,'user':user})
+    return render(request, "../templates/Admin/AddEquipment.html",{'users':users,'id':user_id,'user':user,"equipments":equips})
 
 def Payment(request):
     user_id = request.session.get('user_id')

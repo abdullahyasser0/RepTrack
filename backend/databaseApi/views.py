@@ -37,6 +37,8 @@ supabase: Client = create_client(supabase_url, supabase_key)
 #for admin
 def get_Memberships():
     return supabase.table("memberships").select("*").execute().data
+def get_Equipments():
+    return supabase.table("gym_equipment").select("*").execute().data
 
 #for admin
 def get_Profiles():
@@ -164,6 +166,20 @@ def addPost(request):
     photoUrl = data.get("photoURL")
     # name = data.get("posterName")
     update_response = supabase.table('posts').insert({'description': description,"photoUrl":photoUrl,"no_likes":0,"posterName":name[0]["name"]}).execute()
+    if update_response:
+                    
+                    return JsonResponse({'success': True })
+    else:
+                    return JsonResponse({'success': False, 'error': 'cant update password'}, status=500)
+def addEquippment(request):
+    id = request.session.get('user_id')
+    name = supabase.table('users').select('name').eq('user_id',id).execute().data
+    # print(,"ksgod")
+    data = json.loads(request.body)
+    eqipName = data.get("name")
+    quantity = data.get("quantity")
+    status = data.get("status")
+    update_response = supabase.table('gym_equipment').insert({'equipment_name': eqipName,"equipment_quantity":quantity,"status":status}).execute()
     if update_response:
                     
                     return JsonResponse({'success': True })
