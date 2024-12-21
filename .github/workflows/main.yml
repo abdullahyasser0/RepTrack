@@ -1,11 +1,10 @@
-name: Django CI
+name: Deploy Django App to Azure
 
 on:
   push:
-    branches: [ 53-restructure-backend-code ]
+    branches: [main]
   pull_request:
-    branches: [ 53-restructure-backend-code ]
-
+    branches: [main]
 
 jobs:
   build-and-deploy:
@@ -13,10 +12,6 @@ jobs:
 
     env:
       DJANGO_SETTINGS_MODULE: backend.settings
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-      SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
-      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
 
     steps:
     - name: Checkout code
@@ -28,25 +23,31 @@ jobs:
         python-version: '3.12'
 
     - name: Install dependencies
+      working-directory: backend
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install --no-cache-dir -r requirements.txt
+
+    - name: Collect static files
+      working-directory: backend
+      run: |
+        python manage.py collectstatic --noinput
 
     - name: Run migrations
       working-directory: backend
       run: |
         python manage.py migrate
 
-  
-
     - name: Login to Azure
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: Reptrack-Production
         slot-name: production
-        package: .
+        package: backend
