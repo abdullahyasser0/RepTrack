@@ -19,6 +19,15 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # step 3 
+      - name: Install Docker
+        run: |
+          echo "Installing Docker..."
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sudo sh get-docker.sh
+          sudo usermod -aG docker $USER
+          sudo systemctl start docker
+          sudo systemctl enable docker
 
       # Step 3: Log in to Azure Container Registry
       - name: Log in to ACR
@@ -27,7 +36,7 @@ jobs:
       # Step 4: Build the Docker image
       - name: Build Docker Image
         run: |
-          DOCKER_BUILDKIT=1 docker build \
+            DOCKER_BUILDKIT=1 docker build \
             --secret id=smtp_email,src=<(echo ${{ secrets.SMTP_EMAIL }}) \
             --secret id=smtp_password,src=<(echo ${{ secrets.SMTP_PASSWORD }}) \
             --secret id=supabase_key,src=<(echo ${{ secrets.SUPABASE_KEY }}) \
