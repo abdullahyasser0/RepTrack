@@ -405,6 +405,22 @@ font: 400 10px Poppins, sans-serif;
           <span>Feed</span>
         </a>
       </nav>
+      {% elif user.account_type == "gym_admin" %}
+      <!-- Nutritionist-specific sidebar buttons -->
+      <nav class="nav-menu">
+        <a href="{% url 'Equip' %}" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Add Equipment</span>
+        </a>
+        <a href="{% url 'payment' %}" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4069869669541f912d375e2daa0017d83c9b4f3ef7fbef7c22bf163e08e2995a?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Payment</span>
+        </a>
+        <a href="{% url 'salesReport' %}" class="nav-item" aria-current="false">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+          <span>Sales Report</span>
+        </a>
+      </nav>
   {% endif %}
   
     </nav>

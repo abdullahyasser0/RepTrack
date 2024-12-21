@@ -2,8 +2,8 @@ from django.urls import path,include
 from . import views
 from databaseApi.views import *
 from users.views import users,admins,coaches,dashboard,Payment,salesReport
-from databaseApi.views import change_data,profile_view
-from users.views import admins,coaches,dashboard,Payment,salesReport
+from databaseApi.views import change_data,profile_view,addPayment,addEquippment
+from users.views import admins,coaches,dashboard,salesReport
 from authentication.views import signup,change_Password,verify_token,signup,login, loginForm,logout_view,form_view
 from feed.views import addPost,addComment
 from Gym.views import Equip
@@ -27,6 +27,7 @@ urlpatterns = [
                 path('Dashoard/',views.user_dashboard, name = 'Dashboard'),
                 path('Equip/',Equip, name = 'Equip'),
                 path('payment/',Payment, name = 'payment'),
+                path('addPayment/',addPayment, name = 'addPayment'),
                 path('addPost/',addPost, name = 'addPost'),
                 path('addComment/',addComment, name = 'addComment'),
                 path('salesReport/',salesReport, name = 'salesReport'),
@@ -39,4 +40,5 @@ urlpatterns = [
                 path('register_nutritionist', register_nutritionist, name='register_nutritionist'),
                 path('rate-coach/', rate_coach, name='rate_coach'),
                 path('rate_nutritionist/', rate_nutritionist, name='rate_nutritionist'),
+                path('addEquippment/', addEquippment, name='addEquippment'),
                 ]
