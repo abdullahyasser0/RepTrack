@@ -127,3 +127,70 @@ class DataBase :
     
     def get_pref_days(self,user_id):
         return self.supabase.table('user_preferred_days').select('day').eq('Uid', user_id).execute()
+    
+    def get_nutritionists(self):
+        return self.supabase.table("users").select("*").eq('account_type','nutritionist').execute().data
+    
+    def user_nutritionist(self,user_id):
+        return self.supabase.table('registered_nutritionist') \
+                                         .select('nutritionist_id') \
+                                         .eq('trainee_id', user_id) \
+                                         .execute()
+    
+    def get_nutr_byid(self,nutritionist_id):
+        return self.supabase.table('users') \
+                                  .select('name','phone_number') \
+                                  .eq('user_id', nutritionist_id) \
+                                  .execute()
+    def add_nutri_touser(self,trainee_id,nutritionist_id):
+        return self.supabase.table('registered_nutritionist').insert({
+                'trainee_id': trainee_id,
+                'nutritionist_id': nutritionist_id 
+            }).execute()
+    
+    def get_user_coach(self,trainee_id):
+        return self.supabase.table('registered_coach') \
+                                             .select('coach_id') \
+                                             .eq('trainee_id', trainee_id) \
+                                             .execute()
+    
+    def add_coach_ratting(self,trainee_id,coach_id,rating):
+        return self.supabase.table('coach_ratings').insert({
+            'trainee_id': trainee_id,
+            'coach_id': coach_id,
+            'rating': int(rating)  # Ensure rating is stored as integer
+        }).execute()
+    
+    def user_nutritionist(self,trainee_id):
+        return self.supabase.table('registered_nutritionist') \
+                                             .select('nutritionist_id') \
+                                             .eq('trainee_id', trainee_id) \
+                                             .execute()
+    
+    def rate_nutritionist(self,trainee_id,coach_id,rating):
+        return self.supabase.table('nutritionist_ratings').insert({
+            'trainee_id': trainee_id,
+            'nutritionist_id': coach_id,
+            'rating': int(rating)  # Ensure rating is stored as integer
+        }).execute()
+    
+    def get_user_coach(self,user_id):
+        return self.supabase.table('registered_coach') \
+                                         .select('coach_id') \
+                                         .eq('trainee_id', user_id) \
+                                         .execute()
+    
+    def get_coach(self,coach_id):
+        return self.supabase.table('users') \
+                                  .select('name','phone_number') \
+                                  .eq('user_id', coach_id) \
+                                  .execute()
+    
+    def add_coach_touser(self,trainee_id,coach_id):
+        return self.supabase.table('registered_coach').insert({
+                'trainee_id': trainee_id,
+                'coach_id': coach_id
+            }).execute()
+    
+    def get_Coaches(self):
+        return self.supabase.table("users").select("*").eq('account_type','coach').execute().data

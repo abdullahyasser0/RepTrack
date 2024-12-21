@@ -397,7 +397,17 @@ font: 400 10px Poppins, sans-serif;
               <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
               <span>Feed</span>
             </a>
+            <a href="{% url 'registerCoach' %}" class="nav-item" aria-current="false">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+              <span>Register Coach</span>
+            </a>
           </nav>
+          <nav class="nav-menu">
+            <a href="{% url 'registerNutritionist' %}" class="nav-item" aria-current="false">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+              <span>Register Nutritionist</span>
+            </a>
+        </nav>
       {% elif user.account_type == "coach" %}
           <!-- Coach-specific sidebar buttons -->
           <nav class="nav-menu">
@@ -412,6 +422,10 @@ font: 400 10px Poppins, sans-serif;
               <a href="{% url 'Posts' %}" class="nav-item" aria-current="false">
                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                 <span>Feed</span>
+              </a>
+              <a href="{% url 'registerCoach' %}" class="active-nav-item nav-item" aria-current="false">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
+                <span>Register Coach</span>
               </a>
           </nav>
       {% elif user.account_type == "nutritionist" %}

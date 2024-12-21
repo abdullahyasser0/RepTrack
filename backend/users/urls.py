@@ -5,6 +5,8 @@ from users.views import admins,coaches,dashboard,Payment,salesReport
 from authentication.views import signup,change_Password,verify_token,signup,login, loginForm,logout_view,form_view
 from feed.views import addPost,addComment
 from Gym.views import Equip
+from databaseApi.views import *
+
 urlpatterns = [
                 path('login/', loginForm, name='login'),
                 path('logout/', logout_view, name='logout'),
@@ -29,5 +31,11 @@ urlpatterns = [
                 path('user-dashboard/', views.user_dashboard, name='user_dashboard'),
                 path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
                 path('sales-report/', views.sales_report, name='sales_report'),
+                path('registerCoach/', check_registered_coach, name='registerCoach'),
+                path('register_coach', register_coach, name='register_coach'),
+                path('registerNutritionist/', check_registered_nutritionist, name='registerNutritionist'),
+                path('register_nutritionist', register_nutritionist, name='register_nutritionist'),
+                path('rate-coach/', rate_coach, name='rate_coach'),
+                path('rate_nutritionist/', rate_nutritionist, name='rate_nutritionist'),
 
                 ]
