@@ -405,9 +405,9 @@ input {
           <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0cd30addb40561dc50395e3b22dad0e9978c7eabd875b15bc628038e2204ec2e?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="User profile" />
           <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/05229837cc58a5da944d256a84bead11172783df2ad4deeac2b4052a0af1e016?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="User profile" />
           <div class="profile-name">
-            <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/490a3cda14abc3aa26ec87893d8a5d5e589c6a71f3742fbe4d32be67a4b3148b?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Ahmed Bayoumi profile picture" />
-            <p id="nameLoggedin">{{user.name}}</p>
-            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/789cb086288498ecbcaea46c72312daecdc039757bc4fbbb600a00f6fec5b60e?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="23" />
+            <!-- <img class="profile-image" src="https://cdn.builder.io/api/v1/image/assets/TEMP/490a3cda14abc3aa26ec87893d8a5d5e589c6a71f3742fbe4d32be67a4b3148b?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Ahmed Bayoumi profile picture" /> -->
+            <!-- <p id="nameLoggedin">{{user.name}}</p> -->
+            <!-- <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/789cb086288498ecbcaea46c72312daecdc039757bc4fbbb600a00f6fec5b60e?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" width="23" /> -->
           </div>
         </div>
       </nav>
@@ -437,10 +437,6 @@ input {
                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e5b1e5633d6552fb186cda6d7b018a7309401bc6476ac546ea456b7a53218ee2?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                 <span>Feed</span>
               </a>
-              <a href="#registration" class="nav-item" aria-current="false">
-                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/914281251111c48bbb45ceb54ee84660c93b7b624e390d0d9f0ee4985913d692?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                <span>Registration</span>
-              </a>
               <a href="{% url 'usersData' %}" class="nav-item" aria-current="false">
                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/86184e038a7647fc42fa716208a0f37c701e13b2b4ed3f3d3bb780f80a2e6972?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                 <span>View Members</span>
@@ -448,10 +444,6 @@ input {
               <a href="{% url 'coachesData' %}" class="nav-item" aria-current="false">
                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/285c0da56596654a53b4f73089a93478c8405b5c7755f6096c2eb2f748089edb?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
                 <span>View Coaches</span>
-              </a>
-              <a href="{% url 'SalesReport' %}" class="nav-item" aria-current="false">
-                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8460cc8bd9034659fef3083f272f7eef42ed26000fa8674904531f0608029fc7?placeholderIfAbsent=true&apiKey=e9d236d8c0c94057ac283d5229bb03b9" alt="" class="nav-icon" aria-hidden="true" />
-                <span>Report</span>
               </a>
             </nav>
         {% elif user.account_type == "trainee" %}
