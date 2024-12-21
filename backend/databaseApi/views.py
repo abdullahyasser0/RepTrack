@@ -70,3 +70,20 @@ def change_data(request):
                 return JsonResponse({'success': False, 'error': 'Failed to update user data.'}, status=500)
         else:
             return JsonResponse({'success': False, 'error': 'User not found.'}, status=404)
+
+
+
+def addComment(request):
+    id = request.session.get('user_id')
+    name = DB.get_userName(id)
+    # print(name[0]["name"],"jj")
+    data = json.loads(request.body)
+    description = data.get("comment")
+    postID = data.get("postID")
+    # print(postID,"efhghghh")
+    update_response = DB.add_comment_to_post(description,name,postID)
+    if update_response:
+                    
+        return JsonResponse({'success': True })
+    else:
+        return JsonResponse({'success': False, 'error': 'cant update password'}, status=500)
