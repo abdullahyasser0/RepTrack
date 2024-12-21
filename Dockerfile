@@ -45,3 +45,4 @@ USER appuser
 
 # Use Gunicorn to serve the application in production
 CMD ["sh", "-c", "python backend/manage.py makemigrations && python backend/manage.py migrate && gunicorn --bind 0.0.0.0:80 backend.wsgi:application"]
+#alohaa
