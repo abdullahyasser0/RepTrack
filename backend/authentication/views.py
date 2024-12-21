@@ -41,7 +41,7 @@ def logout_required(view_func):
             return redirect('profiles')  
         return view_func(request, *args, **kwargs)
     return wrapper
-
+# 
 
 # done
 @logout_required
