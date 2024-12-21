@@ -1,7 +1,8 @@
 from django.urls import path,include
 from . import views
-from databaseApi.views import signup,change_data,change_Password,verify_token,profile_view,signup, login,addPost
+from databaseApi.views import change_data,profile_view,addPost
 from users.views import signup_view,users,admins,coaches,dashboard,Equip,Payment,salesReport
+from authentication.views import signup,change_Password,verify_token,signup, login
 
 urlpatterns = [path('login/', views.login, name='login'),
                 path('logout/', views.logout_view, name='logout'),
