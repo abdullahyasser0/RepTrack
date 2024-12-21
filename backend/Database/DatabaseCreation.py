@@ -194,3 +194,12 @@ class DataBase :
     
     def get_Coaches(self):
         return self.supabase.table("users").select("*").eq('account_type','coach').execute().data
+
+    def admin_add_workout(self,workout_name,description,duration,difficulty_level,target_muscle_group):
+        return self.supabase.table('system_workout').insert({
+                'workout_name': workout_name,
+                'description': description,
+                'duration': duration,
+                'difficulty_level': difficulty_level,
+                'target_muscle_group': target_muscle_group,
+            }).execute()

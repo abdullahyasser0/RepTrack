@@ -18,7 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from users.views import users,admins,coaches,dashboard, userstats,Payment,salesReport
-from databaseApi.views import profile_view,change_data
+from databaseApi.views import *
 from authentication.views import signup_view,change_Password,verify_token,change_Password,forget_password_view,verify_otp_view,reset_password_view
 from feed.views import posts
 from Gym.views import save_user_days,get_user_schedule,add_workout,Equip
@@ -55,6 +55,8 @@ urlpatterns = [
     path('Posts/',posts, name = 'Posts'),
     path('schedule/',get_user_schedule, name = 'schedule'),
     path('updatePreferredDays/',save_user_days, name = 'updatePreferredDays'),
-    path('add_workout_to_day ',add_workout, name = 'add_workout_to_day')
+    path('add_workout_to_day ',add_workout, name = 'add_workout_to_day'),
+    path('addworkout ',admin_add_workout, name = 'addworkout'),
+    path('workoutpage ',workoutview, name = 'workoutpage')
 
 ]

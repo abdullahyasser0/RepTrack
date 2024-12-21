@@ -44,7 +44,6 @@ def get_all_workouts():
 
 @login_required
 def add_workout(request):
-    print("THE ADD WORKOUT IS BEING CALLED UPON")
     if request.method == 'POST':
         try:
             user_id = request.session.get('user_id')  # Get the user ID from the session

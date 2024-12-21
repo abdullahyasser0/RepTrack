@@ -34,7 +34,39 @@ def profile_view(request):
     else:
         return redirect('login')
 
+def workoutview(request):
+    user_id = request.session.get('user_id')  
+    user = DB.get_user(user_id)[0]
+    return render(request, "../templates/Admin/AddWorkout.html", {
+                'user': user
+            })
 
+def admin_add_workout(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            workout_name = data.get('workout_name')
+            description = data.get('description')
+            duration = data.get('duration')
+            difficulty_level = data.get('difficulty_level')
+            target_muscle_group = data.get('target_muscle_group')
+
+            # Validate required fields
+            if not all([workout_name, description, duration, difficulty_level, target_muscle_group]):
+                return JsonResponse({'error': 'All fields are required.'}, status=400)
+
+            # Insert into system_workout table
+            response = DB.admin_add_workout(workout_name, description, duration, difficulty_level, target_muscle_group)
+
+            if response:
+                return JsonResponse({'success': 'Workout added successfully.'}, status=200)
+            else:
+                return JsonResponse({'error': 'Failed to add workout.'}, status=500)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON payload.'}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
 
 # auth
