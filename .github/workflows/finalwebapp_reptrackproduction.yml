@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: reptrackfinalproduction.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_105b8dbd9eb841a2ba2f05d8f10d845b }}/v1.0:${{ github.sha }}
+        tags: reptrackfinalproduction.azurecr.io/${{ secrets.ACR_USERNAME }}/v1.0:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
