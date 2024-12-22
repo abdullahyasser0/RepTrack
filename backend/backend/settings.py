@@ -30,6 +30,9 @@ ALLOWED_HOSTS = ['127.0.0.1',
                  ]
 # settings.py
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+CSRF_TRUSTED_ORIGINS = [
+    'https://reptrack-production.up.railway.app',
+]
 
 
 # Application definition
