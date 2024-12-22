@@ -23,8 +23,8 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://reptrackfinalproduction.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_105b8dbd9eb841a2ba2f05d8f10d845b }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_a8e2e7bf9d354be582c38b93ad36c131 }}
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
