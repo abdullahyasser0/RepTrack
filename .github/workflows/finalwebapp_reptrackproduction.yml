@@ -25,7 +25,14 @@ jobs:
         registry: https://reptrackfinalproduction.azurecr.io/
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
+        
+    - name: Set working directory to backend
+      run: 
+          cd backend
+          ls -la
 
+
+      
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
@@ -47,5 +54,5 @@ jobs:
       with:
         app-name: 'reptrackproduction'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_3178bf34411849cf83c9f047c9d699eb }}
-        images: 'reptrackfinalproduction.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_105b8dbd9eb841a2ba2f05d8f10d845b }}/v1.0:${{ github.sha }}'
+        publish-profile: ${{ secrets.ACR_USERNAME }}
+        images: 'reptrackfinalproduction.azurecr.io/${{ secrets.ACR_USERNAME }}/v1.0:${{ github.sha }}'
