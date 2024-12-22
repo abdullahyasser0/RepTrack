@@ -25,7 +25,9 @@ SECRET_KEY = "django-insecure-fh9-$@*4t7c$5*x9on1-%z!#svehd&m_-egtpkby+1e1!1eul#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1',
+                 'reptrack-production.up.railway.app'
+                 ]
 # settings.py
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
