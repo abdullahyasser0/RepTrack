@@ -16,7 +16,7 @@ ARG SUPABASE_KEY
 ARG SUPABASE_URL
 
 # Set the working directory in the container
-WORKDIR /usr/src/app
+WORKDIR /app/backend
 
 # Copy the requirements file into the container at /usr/src/app
 COPY requirements.txt ./
