@@ -25,6 +25,8 @@ class DataBase :
         return self.supabase.table("memberships").select("*").execute().data
     def add_Equip(self,data):
         return self.supabase.table('gym_equipment').insert(data).execute()
+    def get_Equip(self):
+        return self.supabase.table('gym_equipment').select("*").execute().data
 
     def get_Profiles(self):
         return self.supabase.table("profiles").select("*").execute().data

@@ -215,4 +215,5 @@ def get_user_preferred_days(user_id):
 def Equip(request):
     user_id = request.session.get('user_id')
     user = DB.get_user(user_id)[0]
-    return render(request, "../templates/Admin/AddEquipment.html",{'id':user_id,'user':user})
+    equipments = DB.get_Equip()
+    return render(request, "../templates/Admin/AddEquipment.html",{'id':user_id,'user':user,'equipments':equipments})
