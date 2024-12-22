@@ -41,7 +41,6 @@ def workoutview(request):
                 'user': user
             })
 
-<<<<<<< Updated upstream
 def admin_add_workout(request):
     if request.method == 'POST':
         try:
@@ -68,7 +67,6 @@ def admin_add_workout(request):
             return JsonResponse({'error': 'Invalid JSON payload.'}, status=400)
     else:
         return JsonResponse({'error': 'Invalid request method.'}, status=405)
-=======
 def addEquippment(request):
     id = request.session.get('user_id')
     
@@ -87,6 +85,7 @@ def addEquippment(request):
                     return JsonResponse({'success': False, 'error': 'cant update password'}, status=500)
 
 def addPayment(request):
+    print("I AM IN FUCKING ADD PAYMNT")
     id = request.session.get('user_id')
     data = json.loads(request.body)
     update_response = DB.insert_payment(data)
@@ -97,7 +96,6 @@ def addPayment(request):
     else:
                     return JsonResponse({'success': False, 'error': 'cant update password'}, status=500)
     
->>>>>>> Stashed changes
 
 
 # auth

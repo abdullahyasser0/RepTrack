@@ -40,5 +40,6 @@ urlpatterns = [
                 path('register_nutritionist', register_nutritionist, name='register_nutritionist'),
                 path('rate-coach/', rate_coach, name='rate_coach'),
                 path('rate_nutritionist/', rate_nutritionist, name='rate_nutritionist'),
-                path('addEquippment/', addEquippment, name='addEquippment'),
+                path('addEquippment/', addEquippment, name='addEquippment'), 
+                
                 ]

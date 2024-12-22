@@ -421,12 +421,8 @@ font: 400 10px Poppins, sans-serif;
             
             <div class="history-content">
               <div class="member-list">
-                <div class="member-header">Show Entities</div>
                 <div class="member-names">
-                  {% for payment in payments %}
-                  <div class="member-name">Payment ID</div>
-                  
-                        <div>{{payment.payment_id}}</div>
+
                     
                 </div>
                 
@@ -435,52 +431,32 @@ font: 400 10px Poppins, sans-serif;
               <div class="payment-details">
                 <div class="controls">
                   <div class="show-entries">
-                    <span>10</span>
-                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/08c48b95819abc85280d98fb453c5c0c71030cb5c288a7604864c3d71fd346ab?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="" class="nav-icon" />
+                   <div class="payment-container">
+                      {% for payment in payments %}
+                          <div class="payment-item">
+                              <div class="member-name">Payment ID: {{ payment.payment_id }}</div>
+                              <div class="payment-grid">
+                                  <div class="grid-column">
+                                      <div class="column-header">Member ID</div>
+                                      <div>{{ payment.user_id }}</div>
+                                  </div>
+                                  <div class="grid-column">
+                                      <div class="column-header">Phone Number</div>
+                                      <div>{{ payment.phone_number }}</div>
+                                  </div>
+                                  <div class="grid-column">
+                                      <div class="column-header">Payment Method</div>
+                                      <div>{{ payment.payment_type }}</div>
+                                  </div>
+                                  <div class="grid-column">
+                                      <div class="column-header">Date Paid</div>
+                                      <div>{{ payment.created_at }}</div>
+                                  </div>
+                              </div>
+                          </div>
+                      {% endfor %}
                   </div>
                   
-                  <div class="search-box">
-                    <div class="search-input">Search</div>
-                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/0453b159ff98b03fad4373e84bcd7d264889d06d26684f9be07063e0ce8a1c86?placeholderIfAbsent=true&apiKey=74d4c4701cc94ef982cf85de1c5ab7a1" alt="Search Icon" class="nav-icon" />
-                  </div>
-                </div>
-    
-                <div class="payment-grid">
-                  <div class="grid-column">
-                    <div class="column-header">Member ID</div>
-                    
-                    
-                        <div>{{payment.user_id}}</div>
-                    
-                  </div>
-                  
-                  <div class="grid-column">
-                    <div class="column-header">Phone Number</div>
-                    
-                    
-                        <div>{{payment.phone_number}}</div>
-                    
-                  </div>
-                  
-                  <div class="grid-column">
-                    <div class="column-header">Payment Method</div>
-                    
-                    
-                        <div>{{payment.payment_type}}</div>
-                    
-                  </div>
-                  
-                  <div class="grid-column">
-                    <div class="column-header">Date Paid</div>
-                    
-                    
-                        <div>{{payment.created_at}}</div>
-                    
-                  </div>
-                  
-                  
-                    
-                    {% endfor %}
                   
                 </div>
               </div>

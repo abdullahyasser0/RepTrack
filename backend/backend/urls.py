@@ -51,6 +51,7 @@ urlpatterns = [
     path('userstats/',userstats, name = 'userstats'),
     path('Equip/',Equip, name = 'Equip'),
     path('payment/',Payment, name = 'payment'),
+    path('addPayment/',addPayment, name = 'addPayment'),
     path('SalesReport/',salesReport, name = 'SalesReport'),
     path('Posts/',posts, name = 'Posts'),
     path('schedule/',get_user_schedule, name = 'schedule'),

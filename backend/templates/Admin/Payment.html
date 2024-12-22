@@ -816,7 +816,7 @@
                                 
                               </div>
                               <div class="button-group">
-                                <button type="submit" class="save-button" onclick="changeData()">Save</button>
+                                <button type="button" class="save-button" onclick="changeData()">Save</button>
                                 <button type="button" class="cancel-button">Cancel</button>
                               </div>
                             </div>
@@ -858,6 +858,7 @@
       </head>
       <script>
   function changeData(){
+    console.log('function has been called')
   const memberId = document.getElementById("memberId").value
   const number = document.getElementById("number").value
   const paymentMethod = document.getElementById("paymentMethod").value
@@ -877,7 +878,7 @@
     body: JSON.stringify(changedData),
 }).then(response => {
       if (response.ok) {
-        //window.location.href = "{% url 'profiles' %}"; // Redirect on success
+        window.location.reload();  // Redirect on success
       } else {
         alert("An error occurred, please try again.");
       }
