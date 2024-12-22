@@ -26,12 +26,6 @@ jobs:
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
         
-    - name: Set working directory to backend
-      run: 
-          cd backend
-          ls -la
-
-
       
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
