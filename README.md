@@ -79,4 +79,7 @@ Each sprint has a separate document detailing its:
 ## Tools and Boards
 We use **[Trello]** for tracking progress, managing backlogs, and updating sprint tasks.
 
+this repo was intended only for deployment 
+For a full review of the project please head to our main repo 
+https://github.com/abdullahyasser0/RepTrack
 ---
